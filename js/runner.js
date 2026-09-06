@@ -17,6 +17,10 @@
         -> the same result plus { initial, trace, final } from js/karel-api.py
       world     a Karel world object (see tasks/README.md)
 
+    Runner.setAi({ proxyUrl, classCode, clientId })
+                           where call_gpt() sends prompts (practice-ai.html sets this)
+    Runner.onAiCall(fn)    fn({prompt, ok, text, error, ms}) after every call_gpt()
+
     Runner.stop()          kill the running program and start a fresh worker
     Runner.warmUp()        start loading Python now (call it on page load)
     Runner.onStatus(fn)    fn({phase, detail, message}) as loading progresses;
@@ -43,6 +47,8 @@ var Runner = (function () {
   var job = null;               // the run in progress, or null
   var nextJobId = 1;
   var statusListeners = [];
+  var aiConfig = { proxyUrl: "", classCode: "", clientId: "" };
+  var aiListeners = [];
 
   function setStatus(next) {
     status = next;
@@ -69,6 +75,10 @@ var Runner = (function () {
         } else {
           setStatus({ phase: "loading", detail: msg.detail || "", message: "" });
         }
+        return;
+      }
+      if (msg.type === "ai") {
+        aiListeners.forEach(function (fn) { try { fn(msg); } catch (e) { /* ignore */ } });
         return;
       }
       if (!job) { return; }
@@ -200,6 +210,14 @@ var Runner = (function () {
     return true;
   }
 
+  function setAi(config) {
+    config = config || {};
+    Object.keys(aiConfig).forEach(function (k) { if (config[k] != null) { aiConfig[k] = String(config[k]); } });
+    if (worker) { worker.postMessage({ type: "config", ai: aiConfig }); }
+  }
+
+  function onAiCall(fn) { aiListeners.push(fn); }
+
   function onStatus(fn) {
     statusListeners.push(fn);
     try { fn(status); } catch (e) { /* ignore */ }
@@ -241,6 +259,10 @@ var Runner = (function () {
 
     if (type === "PyodideLoadError") {
       return "Python could not load in this browser. Check your internet connection and reload the page. If it still does not work, tell your teacher.";
+    }
+    if (type === "AIError") {
+      // Already a full sentence, from js/ai-api.py or the proxy.
+      return L + msg;
     }
     if (type === "KarelError") {
       // Already written for a beginner, in js/karel-api.py.
@@ -418,6 +440,8 @@ var Runner = (function () {
     runPython: runPython,
     runKarel: runKarel,
     stop: stop,
+    setAi: setAi,
+    onAiCall: onAiCall,
     warmUp: warmUp,
     onStatus: onStatus,
     explainError: explainError,

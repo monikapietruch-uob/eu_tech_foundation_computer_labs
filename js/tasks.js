@@ -117,6 +117,7 @@ var Tasks = (function () {
       return Runner.runPython({
         code: code,
         stdin: test.stdin || [],
+        timeoutMs: task.timeoutMs,
         onStdout: options.onStdout ? function (text) { options.onStdout(i, text); } : null
       }).then(function (run) {
         var result = {

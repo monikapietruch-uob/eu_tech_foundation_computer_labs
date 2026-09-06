@@ -1,0 +1,49 @@
+{
+  "id": "ai-w9-01",
+  "week": 9,
+  "type": "ai",
+  "timeoutMs": 90000,
+  "title": "Ask the AI one question",
+  "concepts": [
+    "API",
+    "function call",
+    "prompt",
+    "non-determinism"
+  ],
+  "brief": "Your program can send a question to an AI and get text back, using a function called call_gpt(). It works like any other function: you give it a string, it returns a string.\n\nAsk the AI one question and print the answer. Then run your program three times, without changing it, and look at the call log at the top of the page. What changed between the three answers?\n\nWrite what you noticed in the box that appears when the task is complete.",
+  "vocabulary": [
+    {
+      "term": "API",
+      "gloss": "a way for one program to ask another program (often on a server) to do something"
+    },
+    {
+      "term": "prompt",
+      "gloss": "the text you send to an AI model"
+    },
+    {
+      "term": "call_gpt()",
+      "gloss": "the function on this site that sends a prompt to the AI and returns its answer"
+    },
+    {
+      "term": "non-deterministic",
+      "gloss": "gives a different result each time, even with the same input"
+    }
+  ],
+  "starterCode": "# Ask the AI a question and print the answer.\n# call_gpt() takes a string and returns a string.\n\nanswer = call_gpt(\"Explain what a variable is, in one sentence.\")\n\n",
+  "tests": [
+    {
+      "name": "prints an answer of at least ten words",
+      "stdin": [],
+      "expectedStdout": "(\\S+\\s+){9,}\\S+",
+      "match": "regex",
+      "expectedShown": "at least ten words of answer"
+    }
+  ],
+  "reflectPrompt": "You ran the same program three times. What changed between the answers, and what stayed the same?",
+  "hints": [
+    "The starter code already asks the question and puts the answer in a variable. You only need to print that variable.",
+    "print(answer) — then press Run. If you see \"Type the class code\", type it in the box at the top of the page.",
+    "Run three times and open the call log. Same question, three different answers: that is normal for a language model."
+  ],
+  "solution": "answer = call_gpt(\"Explain what a variable is, in one sentence.\")\nprint(answer)\n"
+}

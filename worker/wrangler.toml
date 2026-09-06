@@ -1,0 +1,33 @@
+# worker/wrangler.toml — settings for the Cloudflare Worker that stands
+# between the students' browsers and the AI provider. See README.md.
+#
+# Things you change here are NOT secret. The two secrets (API_KEY and
+# CLASS_CODE) are set with `wrangler secret put`, never written in a file.
+
+name = "asf-ai-proxy"
+main = "worker.js"
+compatibility_date = "2026-09-01"
+
+# Rate limiting counters live in Workers KV. `wrangler kv namespace create`
+# prints the id to paste below (README, step 5).
+[[kv_namespaces]]
+binding = "RATE_LIMITS"
+id = "PASTE_YOUR_KV_NAMESPACE_ID_HERE"
+
+[vars]
+# Which page may call this Worker. Comma-separated, no spaces, no trailing
+# slash. The second one lets you test from your own machine.
+ALLOWED_ORIGINS = "https://monikapietruch-uob.github.io,http://localhost:8000"
+
+# Which AI provider to use: "groq" (free tier, default), "gemini", or
+# "openai-compatible" (any service that speaks the OpenAI chat API).
+PROVIDER = "groq"
+MODEL = "openai/gpt-oss-20b"
+# Only for PROVIDER = "openai-compatible": the base URL of the API.
+API_BASE_URL = ""
+
+# Caps. Change them here; the Worker reads them at runtime.
+MAX_PROMPT_CHARS = "500"
+MAX_TOKENS = "200"
+PER_MINUTE = "20"
+PER_DAY = "200"

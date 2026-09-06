@@ -21,10 +21,12 @@
 
   Messages this worker sends to runner.js:
     {type:"status", phase:"loading"|"ready"|"failed", detail?, message?, version?}
+    {type:"ai", prompt, ok, text?, error?, ms}   — one per call_gpt() call, for the log panel
     {type:"stdout", text}   — a chunk of what the program printed
     {type:"stderr", text}   — a chunk written to stderr (warnings etc.)
     {type:"result", id, ok, error, truncated}
   Messages it receives:
+    {type:"config", ai:{proxyUrl, classCode, clientId}}      — where call_gpt() sends prompts
     {type:"run", id, code, stdin:[...lines]}                 — a console program
     {type:"run", id, code, mode:"karel", world:{...}}        — a Karel program;
         the result then also carries initial, trace and final (see
@@ -46,6 +48,38 @@ var MAX_OUTPUT_BYTES = 200 * 1024;
 var pyodide = null;
 var hubRun = null;          // the Python-side _hub_run function
 var karelRun = null;        // the Python-side _hub_run_karel function (js/karel-api.py)
+var aiConfig = { proxyUrl: "", classCode: "", clientId: "" };   // set by a "config" message
+
+var AI_DEFAULT_ERROR = "The AI service did not answer. Check your class code, or try again in a minute.";
+
+// Called from Python (js/ai-api.py) as js.hubCallGpt(prompt). A SYNCHRONOUS
+// XMLHttpRequest, which is allowed inside a worker: the Python program
+// simply waits for the answer. Returns the proxy's JSON reply as a string
+// (never throws), and tells the page about the call for its log panel.
+self.hubCallGpt = function (prompt) {
+  var started = Date.now();
+  var result;
+  if (!aiConfig.proxyUrl) {
+    result = { ok: false, error: "The AI service is not set up on this site yet. Ask your teacher." };
+  } else if (!aiConfig.classCode) {
+    result = { ok: false, error: "Type the class code in the box at the top of the page first." };
+  } else {
+    try {
+      var xhr = new XMLHttpRequest();
+      xhr.open("POST", aiConfig.proxyUrl, false);          // false = synchronous
+      xhr.setRequestHeader("Content-Type", "application/json");
+      xhr.timeout = 45000;
+      xhr.send(JSON.stringify({ classCode: aiConfig.classCode, prompt: String(prompt), clientId: aiConfig.clientId }));
+      try { result = JSON.parse(xhr.responseText); }
+      catch (e) { result = { ok: false, error: AI_DEFAULT_ERROR }; }
+      if (!result || typeof result !== "object") { result = { ok: false, error: AI_DEFAULT_ERROR }; }
+    } catch (e) {
+      result = { ok: false, error: AI_DEFAULT_ERROR };
+    }
+  }
+  post({ type: "ai", prompt: String(prompt), ok: !!result.ok, text: result.text, error: result.error, ms: Date.now() - started });
+  return JSON.stringify(result);
+};
 var outputBytes = 0;
 var truncated = false;
 var stdoutDecoder = new TextDecoder("utf-8");
@@ -150,6 +184,9 @@ async function boot() {
     var karelSource = await (await fetch(new URL("karel-api.py", self.location.href))).text();
     pyodide.runPython(karelSource);
     karelRun = pyodide.globals.get("_hub_run_karel");
+    // call_gpt() for the AI task (week 9).
+    var aiSource = await (await fetch(new URL("ai-api.py", self.location.href))).text();
+    pyodide.runPython(aiSource);
     if (pyodide.version !== PYODIDE_VERSION) {
       console.warn("Pyodide version mismatch: vendor/pyodide is " + pyodide.version + ", runner expects " + PYODIDE_VERSION);
     }
@@ -161,6 +198,14 @@ async function boot() {
 
 self.onmessage = function (event) {
   var msg = event.data || {};
+  if (msg.type === "config") {
+    if (msg.ai) {
+      aiConfig.proxyUrl = String(msg.ai.proxyUrl || "");
+      aiConfig.classCode = String(msg.ai.classCode || "");
+      aiConfig.clientId = String(msg.ai.clientId || "");
+    }
+    return;
+  }
   if (msg.type !== "run") { return; }
 
   if (!hubRun) {

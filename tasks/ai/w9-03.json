@@ -1,0 +1,44 @@
+{
+  "id": "ai-w9-03",
+  "week": 9,
+  "type": "ai",
+  "timeoutMs": 90000,
+  "title": "Fact-check the AI",
+  "concepts": [
+    "hallucination",
+    "verification",
+    "prompt"
+  ],
+  "brief": "An AI language model produces text that sounds right. It does not check whether the text is true. Sometimes it is confidently wrong — that is called a hallucination.\n\nThink of a question you already know the answer to (a date, a place, a number from your own life or country). Send it to the AI and print its answer.\n\nThen write two sentences in the box: was the AI right, and how did you know? This is the important part.",
+  "vocabulary": [
+    {
+      "term": "hallucination",
+      "gloss": "when an AI states something false as if it were true"
+    },
+    {
+      "term": "verify",
+      "gloss": "check that something is true using a source you trust"
+    },
+    {
+      "term": "source",
+      "gloss": "where a piece of information comes from"
+    }
+  ],
+  "starterCode": "# Ask a question you already know the answer to, and print the AI's answer.\n\nquestion = \"...\"\n\n",
+  "tests": [
+    {
+      "name": "prints an answer",
+      "stdin": [],
+      "expectedStdout": "(\\S+\\s+){4,}\\S+",
+      "match": "regex",
+      "expectedShown": "at least five words of answer"
+    }
+  ],
+  "reflectPrompt": "Was the AI's answer right? How did you know? (two sentences)",
+  "hints": [
+    "Put your question inside the quotes, then: print(call_gpt(question))",
+    "Choose something you can check without the internet: your home town's population is hard to check, but the capital of your country is easy.",
+    "If the AI was right, say what source you would use to check anyway. If it was wrong, say exactly what was wrong."
+  ],
+  "solution": "question = \"What is the capital city of Poland?\"\nprint(call_gpt(question))\n"
+}

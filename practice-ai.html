@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <!--
-  practice-ai.html — week 9. This is where the call_gpt() tasks will live
-  (stage 7). It is a placeholder for now. Header, nav and footer come from
-  js/layout.js.
+  practice-ai.html — week 9: Python programs that call call_gpt(). This is
+  the Python task page (same shell, editor and test list as
+  practice-python.html) with an extra panel at the top: the class code box,
+  a "Test the connection" button, and a log of every call_gpt() call so
+  students can see that the same prompt gives different answers. The
+  tasks it lists are type "ai" (data-task-types on <body>). The proxy's
+  address comes from js/ai-config.js; js/ai-screen.js runs the panel.
 -->
 <html lang="en">
 <head>
@@ -12,26 +16,167 @@
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
-<body>
+<body data-task-types="ai">
 
   <div data-layout="header"></div>
   <div data-layout="nav"></div>
 
   <main class="container">
     <h1>Working with AI</h1>
-    <p class="page-intro">Week 9. Write a Python program that asks an AI a question and prints the answer.</p>
+    <p class="page-intro">Week 9. Your Python program can ask an AI a question with call_gpt() and print the answer.</p>
 
-    <section>
-      <div class="editor-placeholder">
-        <h4>Not ready yet</h4>
-        <p>This task opens in week 9. Your teacher will give you a class code to use it.</p>
-        <a class="btn outline" href="index.html">Back to the hub</a>
+    <!-- AI panel: class code, connection test, call log -->
+    <section class="ai-panel" id="aiPanel">
+      <div class="ai-row">
+        <label for="classCode">Class code (from the board)</label>
+        <input type="text" id="classCode" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type it here" />
+        <button type="button" class="btn outline" id="aiTest">Test the connection</button>
+        <span class="ai-status" id="aiStatus" role="status" aria-live="polite"></span>
       </div>
+      <p class="muted small">The code is kept only for this tab. Every call_gpt() call — the question and the answer — appears in the log below, so you can compare answers.</p>
+      <details class="ai-log-wrap" id="aiLogWrap" open>
+        <summary>Call log <span class="muted" id="aiLogCount">(0 calls)</span></summary>
+        <ol class="ai-log" id="aiLog" aria-live="polite"></ol>
+        <button type="button" class="btn outline small-btn" id="aiLogClear">Clear the log</button>
+      </details>
     </section>
+
+    <div class="task-layout" id="taskLayout">
+
+      <!-- LEFT: task list and the task itself -->
+      <aside class="task-side">
+        <nav class="task-nav" aria-label="Tasks">
+          <h2 class="task-nav-title">Tasks</h2>
+          <div id="taskNav">
+            <p class="muted">Loading the task list…</p>
+          </div>
+          <div class="task-nav-extra">
+            <h3>Before you start</h3>
+            <a href="practice-python.html">Python practice (weeks 2–4)</a>
+          </div>
+        </nav>
+
+        <section class="task-brief" id="taskBrief" aria-live="polite">
+          <p class="week-label" id="taskWeek"></p>
+          <h2 id="taskTitle">Loading…</h2>
+          <div class="concepts" id="taskConcepts"></div>
+          <div class="brief-text" id="taskText"></div>
+
+          <div class="vocab" id="taskVocab"></div>
+
+          <div class="hints">
+            <button type="button" class="btn outline" id="hintButton">Show a hint</button>
+            <ol class="hint-list" id="hintList"></ol>
+          </div>
+        </section>
+      </aside>
+
+      <!-- RIGHT: editor, controls, output, tests -->
+      <section class="task-work">
+
+        <!-- Karel's world: shown only for karel tasks -->
+        <section class="karel-panel" id="karelPanel" hidden>
+          <div class="karel-head">
+            <span class="karel-world-name" id="karelWorldName">Karel's world</span>
+            <label class="karel-goal-toggle"><input type="checkbox" id="karelGoal" checked /> Show the goal</label>
+          </div>
+          <div class="karel-canvas-wrap" id="karelWrap">
+            <canvas id="karelCanvas" role="img" aria-label="Karel's world"></canvas>
+          </div>
+          <div class="karel-controls">
+            <label for="karelSpeed">Speed</label>
+            <select id="karelSpeed">
+              <option value="slow">Slow</option>
+              <option value="normal" selected>Normal</option>
+              <option value="fast">Fast</option>
+              <option value="instant">Instant</option>
+            </select>
+            <button type="button" class="btn outline small-btn" id="karelPlayPause" disabled>Pause</button>
+            <button type="button" class="btn outline small-btn" id="karelStep" disabled>Step ▶</button>
+            <button type="button" class="btn outline small-btn" id="karelReplay" disabled>Replay</button>
+            <span class="karel-counter" id="karelCounter" aria-live="polite"></span>
+          </div>
+        </section>
+
+        <div class="editor-head">
+          <label for="code">Your program</label>
+          <span class="editor-hint">Tab inserts 4 spaces. To leave the editor with the keyboard, press Escape, then Tab.</span>
+        </div>
+
+        <div class="editor" id="editor">
+          <pre class="gutter" id="gutter" aria-hidden="true">1</pre>
+          <textarea id="code" spellcheck="false" wrap="off" autocomplete="off" autocapitalize="off" rows="14"></textarea>
+        </div>
+
+        <div class="controls">
+          <button type="button" class="btn" id="runButton">Run</button>
+          <button type="button" class="btn stop" id="stopButton" disabled>Stop</button>
+          <button type="button" class="btn outline" id="resetButton">Reset code</button>
+          <span class="runner-status" id="runnerStatus" role="status" aria-live="polite">
+            <span class="dot" id="statusDot"></span>
+            <span id="statusText">Starting Python…</span>
+          </span>
+        </div>
+        <p class="saved-note" id="savedNote">Your work is saved only in this browser, on this computer.</p>
+
+        <div class="verdict" id="verdict" hidden></div>
+
+        <!-- Reflection questions: shown after a task is passed -->
+        <section class="reflect" id="reflect" hidden>
+          <h3>Two questions about your learning</h3>
+          <p class="muted small">Your answers are saved in this browser. Later, use “Copy my reflections” to paste them into Padlet.</p>
+          <label for="reflectTried">What did you try first, and what happened?</label>
+          <textarea id="reflectTried" rows="3"></textarea>
+          <label for="reflectWord">What is one word from this task you could now explain to a classmate?</label>
+          <textarea id="reflectWord" rows="2"></textarea>
+          <div id="reflectExtra" hidden>
+            <label for="reflectWriting" id="reflectExtraLabel"></label>
+            <textarea id="reflectWriting" rows="3"></textarea>
+          </div>
+          <div class="reflect-foot">
+            <span class="muted small" id="reflectSaved"></span>
+            <button type="button" class="btn outline small-btn" id="copyReflections">Copy my reflections</button>
+          </div>
+        </section>
+
+        <div class="output-head">
+          <span>Output</span>
+          <span class="muted" id="outputNote"></span>
+        </div>
+        <pre class="stdout" id="stdout" aria-live="polite">Press Run to see what your program prints.</pre>
+
+        <div class="error" id="error" hidden>
+          <p class="explanation" id="explanation"></p>
+          <details id="details">
+            <summary>Show the full Python error</summary>
+            <pre id="traceback"></pre>
+          </details>
+        </div>
+
+        <h3 class="tests-title" id="testsTitle">Tests</h3>
+        <p class="muted small" id="testsIntro">Each test runs your whole program once. The task is complete when every test passes.</p>
+        <ol class="tests" id="tests" aria-live="polite"></ol>
+
+        <div class="next" id="next" hidden>
+          <a class="btn" id="nextLink" href="#">Next task</a>
+        </div>
+      </section>
+    </div>
   </main>
 
   <div data-layout="footer"></div>
 
   <script src="js/layout.js"></script>
+  <script src="js/runner.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/reflections.js"></script>
+  <script src="js/karel-render.js"></script>
+  <script src="js/karel-play.js"></script>
+  <script src="js/karel-check.js"></script>
+  <script src="js/task-shell.js"></script>
+  <script src="js/task-screen.js"></script>
+  <script src="js/ai-config.js"></script>
+  <script src="js/ai-screen.js"></script>
 </body>
 </html>

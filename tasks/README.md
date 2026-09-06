@@ -13,6 +13,7 @@ tasks/
     ...
   karel/              type "karel" — a program that moves Karel; checked against a goal world
   web/                types "html-editor", "inspect", "walkthrough", "summary" — weeks 6 to 8
+  ai/                 type "ai" — console tasks whose programs may call call_gpt() (week 9)
 ```
 
 ## index.json
@@ -69,7 +70,7 @@ task list can be drawn without fetching every task file.
 |---|---|
 | `id` | unique; used in the page URL (`practice-python.html?task=console-w2-01`) |
 | `week` | the teaching week it belongs to |
-| `type` | `console`, `karel`, `html-editor`, `inspect`, `walkthrough` or `summary`. The index entry carries the same `type`, which decides which page the task opens on |
+| `type` | `console`, `karel`, `ai`, `html-editor`, `inspect`, `walkthrough` or `summary`. The index entry carries the same `type`, which decides which page the task opens on |
 | `concepts` | short tags shown on the task card and used for revision lists |
 | `brief` | what to make — this is the only instruction the student sees, so make it complete. Separate paragraphs with a blank line (`\n\n`). Wrap sample output in ``` fences on their own lines and it is shown as code |
 | `vocabulary` | terms with a one-line gloss; shown beside the brief |
@@ -249,3 +250,20 @@ export.
 when the summary is within the word range, no run of eight or more words
 is copied from the text, and every self-check is ticked. The summary is
 saved as a reflection and included in the Padlet export.
+
+## `ai` tasks (week 9)
+
+Exactly like `console` tasks — same `tests`, `hints`, `solution` — but they
+open on `practice-ai.html`, where `call_gpt()` is available (see
+`worker/README.md`). Two extra fields:
+
+- `timeoutMs` — each AI call takes a few seconds, so raise the run limit
+  from the default 10 s (the tasks use 90 000–120 000).
+- `reflectPrompt` — an extra, task-specific question shown with the two
+  standard reflection questions after the task is passed; the answer is
+  saved and exported with the reflections. Any task type can use it.
+
+Because answers are different every time, tests check the *shape* of the
+output (a `regex` for "at least ten words", or "three numbered lines"),
+never the words. Keep one test per AI task: each test is one run, and each
+run makes real AI calls.

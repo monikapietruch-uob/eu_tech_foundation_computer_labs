@@ -155,6 +155,30 @@
           "title": "Summarise: how HTTPS protects your data"
         }
       ]
+    },
+    {
+      "week": 9,
+      "title": "Working with AI",
+      "tasks": [
+        {
+          "id": "ai-w9-01",
+          "type": "ai",
+          "file": "ai/w9-01.json",
+          "title": "Ask the AI one question"
+        },
+        {
+          "id": "ai-w9-02",
+          "type": "ai",
+          "file": "ai/w9-02.json",
+          "title": "A glossary from a loop"
+        },
+        {
+          "id": "ai-w9-03",
+          "type": "ai",
+          "file": "ai/w9-03.json",
+          "title": "Fact-check the AI"
+        }
+      ]
     }
   ]
 }

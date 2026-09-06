@@ -1,0 +1,44 @@
+{
+  "id": "ai-w9-02",
+  "week": 9,
+  "type": "ai",
+  "timeoutMs": 120000,
+  "title": "A glossary from a loop",
+  "concepts": [
+    "for loop",
+    "list",
+    "f-string",
+    "prompt"
+  ],
+  "brief": "You have a list of three words from this unit. Use a for loop to ask the AI to define each one in one simple sentence, and print the definitions as a numbered glossary:\n\n```\n1. variable: ...\n2. server: ...\n3. encryption: ...\n```\n\nBuild each prompt from the word, so the loop body is the same for every word.",
+  "vocabulary": [
+    {
+      "term": "f-string",
+      "gloss": "a string with values inside curly brackets, like f\"Define {word}\""
+    },
+    {
+      "term": "glossary",
+      "gloss": "a list of words with their meanings"
+    },
+    {
+      "term": "enumerate()",
+      "gloss": "gives you a number with each item when you loop over a list"
+    }
+  ],
+  "starterCode": "words = [\"variable\", \"server\", \"encryption\"]\n\n# For each word, ask the AI for a one-sentence definition\n# and print it as:  1. variable: ...\n\n",
+  "tests": [
+    {
+      "name": "prints three numbered lines with the three words",
+      "stdin": [],
+      "expectedStdout": "^1[.)] *variable:.+\\n[\\s\\S]*^2[.)] *server:.+\\n[\\s\\S]*^3[.)] *encryption:.+",
+      "match": "regex",
+      "expectedShown": "1. variable: …\n2. server: …\n3. encryption: …"
+    }
+  ],
+  "hints": [
+    "for word in words: — inside the loop, build the prompt with an f-string: f\"Define the word {word} in one simple sentence.\"",
+    "You need a number for each line. Start with number = 1 before the loop and add 1 at the end of each turn, or use for number, word in enumerate(words, start=1).",
+    "Print with an f-string too: print(f\"{number}. {word}: {definition}\")"
+  ],
+  "solution": "words = [\"variable\", \"server\", \"encryption\"]\n\nfor number, word in enumerate(words, start=1):\n    definition = call_gpt(f\"Define the word {word} in one simple sentence, for a beginner.\")\n    print(f\"{number}. {word}: {definition}\")\n"
+}

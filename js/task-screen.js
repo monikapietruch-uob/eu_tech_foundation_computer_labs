@@ -164,6 +164,7 @@
   var transcript = [];
 
   function isKarel() { return task && task.type === "karel"; }
+  // "ai" tasks are console tasks that may call call_gpt(); same screen.
 
   function run() {
     if (Runner.isRunning) { return; }
@@ -498,6 +499,9 @@
   });
   el.code.addEventListener("scroll", function () { el.gutter.scrollTop = el.code.scrollTop; });
 
-  TaskShell.init({ types: ["console", "karel"], render: renderTask });
+  // practice-python.html shows console + karel; practice-ai.html sets
+  // data-task-types="ai" on <body> and reuses everything here.
+  var pageTypes = (document.body.getAttribute("data-task-types") || "console karel").split(/\s+/);
+  TaskShell.init({ types: pageTypes, render: renderTask });
   Runner.warmUp();
 })();

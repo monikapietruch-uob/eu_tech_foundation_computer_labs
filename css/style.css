@@ -614,6 +614,25 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
   .match-row { grid-template-columns: 1fr; }
 }
 
+/* ── AI panel (practice-ai.html) ── */
+.ai-panel { background: #fff; border-radius: 10px; padding: 1rem 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); margin: 1.5rem 0 0; }
+.ai-row { display: flex; align-items: center; gap: 0.6rem; flex-wrap: wrap; }
+.ai-row label { font-weight: 700; font-size: 0.95rem; }
+.ai-row input { font: inherit; font-size: 1rem; padding: 0.45rem 0.7rem; border: 2px solid #c8d0e8; border-radius: 6px; width: 12rem; letter-spacing: 0.05em; }
+.ai-row .btn { font: inherit; cursor: pointer; }
+.ai-row .btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.ai-status { font-size: 0.9rem; flex-basis: 100%; }
+.ai-status.good { color: #2e5a06; } .ai-status.bad { color: #8a1c1c; } .ai-status.wait { color: #6b4e00; }
+.ai-log-wrap { margin-top: 0.6rem; }
+.ai-log-wrap summary { font-weight: 700; font-size: 0.95rem; cursor: pointer; }
+.ai-log { list-style: none; margin: 0.6rem 0; max-height: 22rem; overflow: auto; display: flex; flex-direction: column; gap: 0.5rem; }
+.ai-call { border: 1px solid #e0e4ef; border-left: 4px solid #64A70B; border-radius: 6px; padding: 0.5rem 0.8rem; font-size: 0.92rem; }
+.ai-call.failed { border-left-color: #C8102E; }
+.ai-call-head { font-size: 0.78rem; color: #777; font-variant-numeric: tabular-nums; margin-bottom: 0.2rem; }
+.ai-q, .ai-a { margin: 0.15rem 0; white-space: pre-wrap; }
+.ai-a strong { color: #0f3460; }
+.ai-log-wrap .small-btn { margin-top: 0.2rem; }
+
 /* ── Karel's world ── */
 .karel-panel { margin-bottom: 1.1rem; }
 .karel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.4rem; }

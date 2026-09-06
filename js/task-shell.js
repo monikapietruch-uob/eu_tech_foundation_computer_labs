@@ -29,6 +29,7 @@ var TaskShell = (function () {
   var PAGE_FOR_TYPE = {
     console: "practice-python.html",
     karel: "practice-python.html",
+    ai: "practice-ai.html",
     "html-editor": "practice-web.html",
     inspect: "practice-web.html",
     walkthrough: "practice-web.html",
@@ -38,7 +39,8 @@ var TaskShell = (function () {
   var el = {};
   ["taskNav", "taskWeek", "taskTitle", "taskConcepts", "taskText", "taskVocab",
    "hintButton", "hintList", "verdict", "next", "nextLink",
-   "reflect", "reflectTried", "reflectWord", "reflectSaved", "copyReflections", "savedNote"]
+   "reflect", "reflectTried", "reflectWord", "reflectSaved", "copyReflections", "savedNote",
+   "reflectExtra", "reflectExtraLabel", "reflectWriting"]
     .forEach(function (id) { el[id] = document.getElementById(id); });
 
   var options = { types: [], render: function () {} };
@@ -190,6 +192,16 @@ var TaskShell = (function () {
     var r = (saved && saved.reflections) || {};
     el.reflectTried.value = r.tried || "";
     el.reflectWord.value = r.word || "";
+    // Some tasks ask a third, task-specific question (task.reflectPrompt).
+    if (el.reflectExtra) {
+      if (task.reflectPrompt) {
+        el.reflectExtra.hidden = false;
+        text(el.reflectExtraLabel, task.reflectPrompt);
+        el.reflectWriting.value = r.writing || "";
+      } else {
+        el.reflectExtra.hidden = true;
+      }
+    }
     text(el.reflectSaved, "");
     el.reflect.hidden = false;
   }
@@ -202,6 +214,10 @@ var TaskShell = (function () {
       // Save both boxes every time, so a quick edit to one never loses the other.
       Progress.saveReflection(task.id, task, "tried", el.reflectTried.value);
       Progress.saveReflection(task.id, task, "word", el.reflectWord.value);
+      if (el.reflectWriting && task.reflectPrompt) {
+        Progress.saveReflection(task.id, task, "writing", el.reflectWriting.value);
+        Progress.saveReflection(task.id, task, "writingPrompt", task.reflectPrompt);
+      }
       text(el.reflectSaved, Progress.available() ? "Saved in this browser." : "Could not save — this browser does not allow it.");
     }, 400);
   }
@@ -233,6 +249,7 @@ var TaskShell = (function () {
     el.hintButton.addEventListener("click", showHint);
     el.reflectTried.addEventListener("input", reflectionChanged);
     el.reflectWord.addEventListener("input", reflectionChanged);
+    if (el.reflectWriting) { el.reflectWriting.addEventListener("input", reflectionChanged); }
     el.copyReflections.addEventListener("click", function () { Reflections.copy(index, el.copyReflections); });
     if (el.savedNote && !Progress.available()) {
       text(el.savedNote, "This browser does not allow saving, so your work will be lost when you close the page. Copy anything important somewhere safe.");
