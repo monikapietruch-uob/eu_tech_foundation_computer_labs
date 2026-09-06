@@ -1,0 +1,63 @@
+{
+  "id": "console-w2-03",
+  "week": 2,
+  "type": "console",
+  "title": "Add two numbers",
+  "concepts": [
+    "input",
+    "int()",
+    "data type",
+    "arithmetic"
+  ],
+  "brief": "Ask the user for two numbers with input(). Add them together. Then print the sum in this form:\n\n```\n4 + 5 = 9\n```\n\nThe tests will try different numbers. Look carefully at what your program prints if the answer looks wrong.",
+  "vocabulary": [
+    {
+      "term": "input()",
+      "gloss": "a function that waits for the user to type something, and gives you what they typed"
+    },
+    {
+      "term": "int()",
+      "gloss": "a function that changes text like \"4\" into the number 4"
+    },
+    {
+      "term": "data type",
+      "gloss": "the kind of value: text (str), whole number (int), decimal (float)"
+    }
+  ],
+  "starterCode": "# Ask for two numbers, add them, and print the answer.\n# Example: if the user types 4 and 5, print:   4 + 5 = 9\n\nfirst = input(\"First number: \")\nsecond = input(\"Second number: \")\n\n",
+  "tests": [
+    {
+      "name": "adds 4 and 5",
+      "stdin": [
+        "4",
+        "5"
+      ],
+      "expectedStdout": "4 + 5 = 9",
+      "match": "contains"
+    },
+    {
+      "name": "adds 10 and 20",
+      "stdin": [
+        "10",
+        "20"
+      ],
+      "expectedStdout": "10 + 20 = 30",
+      "match": "contains"
+    },
+    {
+      "name": "adds 7 and 8",
+      "stdin": [
+        "7",
+        "8"
+      ],
+      "expectedStdout": "7 + 8 = 15",
+      "match": "contains"
+    }
+  ],
+  "hints": [
+    "input() always gives you text (a string), even when the user types a number. What happens when you add two strings with +? Try it and look at the output.",
+    "Change the text into a whole number with int(). For example: first = int(input(\"First number: \"))",
+    "After both variables are numbers, print with commas: print(first, \"+\", second, \"=\", first + second)"
+  ],
+  "solution": "first = int(input(\"First number: \"))\nsecond = int(input(\"Second number: \"))\n\nprint(first, \"+\", second, \"=\", first + second)\n"
+}

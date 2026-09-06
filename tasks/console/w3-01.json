@@ -1,0 +1,55 @@
+{
+  "id": "console-w3-01",
+  "week": 3,
+  "type": "console",
+  "title": "The five times table",
+  "concepts": [
+    "for loop",
+    "range()",
+    "arithmetic",
+    "print"
+  ],
+  "brief": "Use a loop to print the five times table, from 1 times 5 up to 10 times 5. Print one line for each, in exactly this form:\n\n```\n1 x 5 = 5\n2 x 5 = 10\n```\n\nand so on, up to 10 x 5 = 50. Use a small letter x, with a space on each side.",
+  "vocabulary": [
+    {
+      "term": "loop",
+      "gloss": "code that repeats"
+    },
+    {
+      "term": "for loop",
+      "gloss": "a loop that runs once for each item in a list or a range"
+    },
+    {
+      "term": "range(1, 11)",
+      "gloss": "the numbers 1, 2, 3 … 10 (the last number, 11, is not included)"
+    }
+  ],
+  "starterCode": "# Print the five times table from 1 x 5 to 10 x 5, one line each\n\n",
+  "tests": [
+    {
+      "name": "prints the whole table",
+      "stdin": [],
+      "expectedStdout": "1 x 5 = 5\n2 x 5 = 10\n3 x 5 = 15\n4 x 5 = 20\n5 x 5 = 25\n6 x 5 = 30\n7 x 5 = 35\n8 x 5 = 40\n9 x 5 = 45\n10 x 5 = 50\n",
+      "match": "exact"
+    },
+    {
+      "name": "gets 7 x 5 right",
+      "stdin": [],
+      "expectedStdout": "7 x 5 = 35",
+      "match": "contains"
+    },
+    {
+      "name": "prints exactly ten lines",
+      "stdin": [],
+      "expectedStdout": "^(?:[^\\n]*\\n){10}$",
+      "match": "regex",
+      "expectedShown": "exactly 10 lines"
+    }
+  ],
+  "hints": [
+    "A for loop with range() counts for you: for i in range(1, 11): — remember the colon, and indent the line inside the loop by 4 spaces.",
+    "Inside the loop, i is 1 the first time, then 2, then 3, up to 10. The answer for each line is i * 5.",
+    "Print each line with commas: print(i, \"x 5 =\", i * 5)"
+  ],
+  "solution": "for i in range(1, 11):\n    print(i, \"x 5 =\", i * 5)\n"
+}

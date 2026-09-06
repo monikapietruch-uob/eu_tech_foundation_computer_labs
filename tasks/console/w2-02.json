@@ -1,0 +1,54 @@
+{
+  "id": "console-w2-02",
+  "week": 2,
+  "type": "console",
+  "title": "A variable with your name",
+  "concepts": [
+    "variable",
+    "string",
+    "integer",
+    "print"
+  ],
+  "brief": "The program already has two variables: name and age. Do not change them.\n\nPrint two lines using the variables, not by typing the values again:\n\n```\nMy name is Karel.\nI am 3 years old.\n```\n\nIf you change the value of name later, your program should print the new name without any other change.",
+  "vocabulary": [
+    {
+      "term": "variable",
+      "gloss": "a name that holds a value, so you can use the value later"
+    },
+    {
+      "term": "integer",
+      "gloss": "a whole number, like 3 or 42 (Python calls it int)"
+    },
+    {
+      "term": "value",
+      "gloss": "the data a variable holds, for example \"Karel\" or 3"
+    }
+  ],
+  "starterCode": "name = \"Karel\"\nage = 3\n\n# Print the two lines below, using the variables\n\n",
+  "tests": [
+    {
+      "name": "prints the name line",
+      "stdin": [],
+      "expectedStdout": "My name is Karel.",
+      "match": "contains"
+    },
+    {
+      "name": "prints the age line",
+      "stdin": [],
+      "expectedStdout": "I am 3 years old.",
+      "match": "contains"
+    },
+    {
+      "name": "prints exactly two lines",
+      "stdin": [],
+      "expectedStdout": "My name is Karel.\nI am 3 years old.\n",
+      "match": "trimmed"
+    }
+  ],
+  "hints": [
+    "print() can show more than one thing. Put a comma between them: print(\"My name is\", name)",
+    "With commas, print() puts a space between each thing. To get the full stop right after the name, join the text with +: print(\"My name is \" + name + \".\")",
+    "age is a number, so you cannot join it to text with +. Either use commas — print(\"I am\", age, \"years old.\") — or change it to text first with str(age)."
+  ],
+  "solution": "name = \"Karel\"\nage = 3\n\nprint(\"My name is \" + name + \".\")\nprint(\"I am\", age, \"years old.\")\n"
+}

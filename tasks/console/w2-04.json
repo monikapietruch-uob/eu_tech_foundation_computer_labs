@@ -1,0 +1,52 @@
+{
+  "id": "console-w2-04",
+  "week": 2,
+  "type": "console",
+  "title": "What type is it?",
+  "concepts": [
+    "data type",
+    "type()",
+    "list",
+    "print"
+  ],
+  "brief": "The list values holds four different kinds of value. Print the type of each one, one per line, in the same order as the list.\n\nPython has a function called type() that tells you the type of a value. print(type(42)) shows <class 'int'>.",
+  "vocabulary": [
+    {
+      "term": "type()",
+      "gloss": "a function that tells you what kind of value something is"
+    },
+    {
+      "term": "list",
+      "gloss": "a collection of values in order, written in square brackets"
+    },
+    {
+      "term": "float",
+      "gloss": "a number with a decimal point, like 3.5"
+    },
+    {
+      "term": "bool",
+      "gloss": "a value that is True or False"
+    }
+  ],
+  "starterCode": "values = [42, \"hello\", 3.5, True]\n\n# Print the type of each value in the list, one per line\n\n",
+  "tests": [
+    {
+      "name": "prints all four types in order",
+      "stdin": [],
+      "expectedStdout": "<class 'int'>\n<class 'str'>\n<class 'float'>\n<class 'bool'>\n",
+      "match": "exact"
+    },
+    {
+      "name": "includes the True value",
+      "stdin": [],
+      "expectedStdout": "<class 'bool'>",
+      "match": "contains"
+    }
+  ],
+  "hints": [
+    "You can get one value from a list with its position in square brackets. The first value is values[0], the second is values[1].",
+    "Print the type of the first value like this: print(type(values[0])). Then do the same for positions 1, 2 and 3.",
+    "Four print lines is fine. If you know for loops already, for value in values: print(type(value)) does the same job in two lines."
+  ],
+  "solution": "values = [42, \"hello\", 3.5, True]\n\nprint(type(values[0]))\nprint(type(values[1]))\nprint(type(values[2]))\nprint(type(values[3]))\n"
+}

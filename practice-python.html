@@ -1,9 +1,12 @@
 <!DOCTYPE html>
 <!--
-  practice-python.html — weeks 2 to 4. This is where the console tasks and
-  the Karel robot tasks will live (stages 3 and 4). For now it links to the
-  existing robot exercise in exercises/ex-1/. Header, nav and footer come
-  from js/layout.js.
+  practice-python.html — weeks 2 to 4. The task screen: a list of tasks on
+  the left with the current task's brief, vocabulary and hints; a code
+  editor, Run/Stop, output and test results on the right. The page picks
+  the task from ?task=<id> in the URL, or the first task in tasks/index.json.
+  Logic is in js/task-screen.js; task loading and checking in js/tasks.js;
+  Python itself in js/runner.js. Header, nav and footer come from
+  js/layout.js.
 -->
 <html lang="en">
 <head>
@@ -22,31 +25,90 @@
     <h1>Python practice</h1>
     <p class="page-intro">Weeks 2 to 4. Write Python in your browser. You do not need to install anything.</p>
 
-    <section id="tasks">
-      <h2>Tasks</h2>
-      <p>More tasks will appear here each week. Start with the robot.</p>
+    <div class="task-layout" id="taskLayout">
 
-      <div class="card-grid">
-        <div class="card small">
-          <p class="week-label">Week 2</p>
-          <h3>Robot Diamond Mission</h3>
-          <p>Write a function called <code>turn_right()</code> and move the robot to the diamond.</p>
-          <a class="btn" href="exercises/ex-1/ex-1-move-robot.html">Open exercise</a>
+      <!-- LEFT: task list and the task itself -->
+      <aside class="task-side">
+        <nav class="task-nav" aria-label="Tasks">
+          <h2 class="task-nav-title">Tasks</h2>
+          <div id="taskNav">
+            <p class="muted">Loading the task list…</p>
+          </div>
+          <div class="task-nav-extra">
+            <h3>Also try</h3>
+            <a href="exercises/ex-1/ex-1-move-robot.html">Robot Diamond Mission</a>
+          </div>
+        </nav>
+
+        <section class="task-brief" id="taskBrief" aria-live="polite">
+          <p class="week-label" id="taskWeek"></p>
+          <h2 id="taskTitle">Loading…</h2>
+          <div class="concepts" id="taskConcepts"></div>
+          <div class="brief-text" id="taskText"></div>
+
+          <div class="vocab" id="taskVocab"></div>
+
+          <div class="hints">
+            <button type="button" class="btn outline" id="hintButton">Show a hint</button>
+            <ol class="hint-list" id="hintList"></ol>
+          </div>
+        </section>
+      </aside>
+
+      <!-- RIGHT: editor, controls, output, tests -->
+      <section class="task-work">
+        <div class="editor-head">
+          <label for="code">Your program</label>
+          <span class="editor-hint">Tab inserts 4 spaces. To leave the editor with the keyboard, press Escape, then Tab.</span>
         </div>
-      </div>
-    </section>
 
-    <section>
-      <div class="editor-placeholder">
-        <h4>More coming soon</h4>
-        <p>The Python editor and the Karel robot tasks are not ready yet. Your teacher will tell you when to use them.</p>
-        <a class="btn outline" href="index.html">Back to the hub</a>
-      </div>
-    </section>
+        <div class="editor" id="editor">
+          <pre class="gutter" id="gutter" aria-hidden="true">1</pre>
+          <textarea id="code" spellcheck="false" wrap="off" autocomplete="off" autocapitalize="off" rows="14"></textarea>
+        </div>
+
+        <div class="controls">
+          <button type="button" class="btn" id="runButton">Run</button>
+          <button type="button" class="btn stop" id="stopButton" disabled>Stop</button>
+          <button type="button" class="btn outline" id="resetButton">Reset code</button>
+          <span class="runner-status" id="runnerStatus" role="status" aria-live="polite">
+            <span class="dot" id="statusDot"></span>
+            <span id="statusText">Starting Python…</span>
+          </span>
+        </div>
+
+        <div class="verdict" id="verdict" hidden></div>
+
+        <div class="output-head">
+          <span>Output</span>
+          <span class="muted" id="outputNote"></span>
+        </div>
+        <pre class="stdout" id="stdout" aria-live="polite">Press Run to see what your program prints.</pre>
+
+        <div class="error" id="error" hidden>
+          <p class="explanation" id="explanation"></p>
+          <details id="details">
+            <summary>Show the full Python error</summary>
+            <pre id="traceback"></pre>
+          </details>
+        </div>
+
+        <h3 class="tests-title">Tests</h3>
+        <p class="muted small">Each test runs your whole program once. The task is complete when every test passes.</p>
+        <ol class="tests" id="tests" aria-live="polite"></ol>
+
+        <div class="next" id="next" hidden>
+          <a class="btn" id="nextLink" href="#">Next task</a>
+        </div>
+      </section>
+    </div>
   </main>
 
   <div data-layout="footer"></div>
 
   <script src="js/layout.js"></script>
+  <script src="js/runner.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/task-screen.js"></script>
 </body>
 </html>

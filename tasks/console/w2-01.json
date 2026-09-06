@@ -1,0 +1,47 @@
+{
+  "id": "console-w2-01",
+  "week": 2,
+  "type": "console",
+  "title": "Say hello",
+  "concepts": [
+    "print",
+    "string",
+    "output"
+  ],
+  "brief": "Make the computer say hello. Write a program that prints exactly this line:\n\n```\nHello, world!\n```\n\nCheck the capital H, the comma and the exclamation mark.",
+  "vocabulary": [
+    {
+      "term": "print",
+      "gloss": "a function that shows text on the screen"
+    },
+    {
+      "term": "string",
+      "gloss": "text inside quotes, like \"hello\""
+    },
+    {
+      "term": "output",
+      "gloss": "what the program shows when it runs"
+    }
+  ],
+  "starterCode": "# Write your code below this line\n\n",
+  "tests": [
+    {
+      "name": "prints Hello, world!",
+      "stdin": [],
+      "expectedStdout": "Hello, world!\n",
+      "match": "exact"
+    },
+    {
+      "name": "uses a capital H and an exclamation mark",
+      "stdin": [],
+      "expectedStdout": "Hello, world!",
+      "match": "contains"
+    }
+  ],
+  "hints": [
+    "Use print(). Put the text inside the round brackets, and put quotes around the text.",
+    "The text must be exactly Hello, world! — a capital H, then a comma, a space, and an exclamation mark at the end.",
+    "The whole program is one line: print(\"Hello, world!\")"
+  ],
+  "solution": "print(\"Hello, world!\")\n"
+}

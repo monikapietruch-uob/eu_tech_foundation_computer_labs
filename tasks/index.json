@@ -1,0 +1,46 @@
+{
+  "weeks": [
+    {
+      "week": 2,
+      "title": "Variables, input and output",
+      "tasks": [
+        {
+          "id": "console-w2-01",
+          "file": "console/w2-01.json",
+          "title": "Say hello"
+        },
+        {
+          "id": "console-w2-02",
+          "file": "console/w2-02.json",
+          "title": "A variable with your name"
+        },
+        {
+          "id": "console-w2-03",
+          "file": "console/w2-03.json",
+          "title": "Add two numbers"
+        },
+        {
+          "id": "console-w2-04",
+          "file": "console/w2-04.json",
+          "title": "What type is it?"
+        }
+      ]
+    },
+    {
+      "week": 3,
+      "title": "Loops, conditions and checking input",
+      "tasks": [
+        {
+          "id": "console-w3-01",
+          "file": "console/w3-01.json",
+          "title": "The five times table"
+        },
+        {
+          "id": "console-w3-02",
+          "file": "console/w3-02.json",
+          "title": "Pass or fail?"
+        }
+      ]
+    }
+  ]
+}

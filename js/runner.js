@@ -280,7 +280,7 @@ var Runner = (function () {
 
     if (type === "TypeError") {
       if (/can only concatenate str|must be str, not/.test(msg)) {
-        return L + "you are trying to join text and a number with +. Change the number into text first with str(), for example: \"Age: \" + str(age).";
+        return L + "you are trying to join text and a number with +. If you want to build a sentence, change the number into text with str(), for example \"Age: \" + str(age). If you want to do maths, the text must become a number first: int(age).";
       }
       m = /unsupported operand type\(s\) for ([^:]+): '([^']+)' and '([^']+)'/.exec(msg);
       if (m) {

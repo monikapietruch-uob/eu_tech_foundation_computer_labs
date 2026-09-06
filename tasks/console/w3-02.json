@@ -1,0 +1,66 @@
+{
+  "id": "console-w3-02",
+  "week": 3,
+  "type": "console",
+  "title": "Pass or fail?",
+  "concepts": [
+    "if / else",
+    "condition",
+    "comparison",
+    "input validation"
+  ],
+  "brief": "Ask the user for a mark with input(). If the mark is 40 or more, print pass. If it is less than 40, print fail.\n\nOne more thing: people make mistakes. If the user types something that is not a number, such as forty, do not crash. Print this instead:\n\n```\nPlease type a number.\n```",
+  "vocabulary": [
+    {
+      "term": "condition",
+      "gloss": "a question that is True or False, like mark >= 40"
+    },
+    {
+      "term": "if / else",
+      "gloss": "run one block of code when the condition is True, another when it is False"
+    },
+    {
+      "term": "validation",
+      "gloss": "checking that the input is what you expected, before you use it"
+    },
+    {
+      "term": ".isdigit()",
+      "gloss": "asks a string: are you only made of digits 0–9? Gives True or False"
+    }
+  ],
+  "starterCode": "# Ask for a mark. Print pass (40 or more) or fail (less than 40).\n# If the input is not a number, print: Please type a number.\n\nmark = input(\"Mark: \")\n\n",
+  "tests": [
+    {
+      "name": "says pass for 40",
+      "stdin": [
+        "40"
+      ],
+      "expectedStdout": "^pass\\s*$",
+      "match": "regex",
+      "expectedShown": "pass  (on a line by itself)"
+    },
+    {
+      "name": "says fail for 39",
+      "stdin": [
+        "39"
+      ],
+      "expectedStdout": "^fail\\s*$",
+      "match": "regex",
+      "expectedShown": "fail  (on a line by itself)"
+    },
+    {
+      "name": "does not crash on forty",
+      "stdin": [
+        "forty"
+      ],
+      "expectedStdout": "Please type a number.",
+      "match": "contains"
+    }
+  ],
+  "hints": [
+    "First check the input is a number. The text you got from input() has a method for this: mark.isdigit() is True if every character is a digit. Put your if around that.",
+    "Only after the check is it safe to use int(mark). Then compare: if int(mark) >= 40: print pass, else print fail.",
+    "The shape is two ifs, one inside the other. if mark.isdigit(): (indented) if int(mark) >= 40: print(\"pass\") else: print(\"fail\") — and an else on the outer if that prints Please type a number."
+  ],
+  "solution": "mark = input(\"Mark: \")\n\nif mark.isdigit():\n    if int(mark) >= 40:\n        print(\"pass\")\n    else:\n        print(\"fail\")\nelse:\n    print(\"Please type a number.\")\n"
+}
