@@ -14,14 +14,14 @@
   <script>
     // Work out the site root: "/<repo-name>/" on GitHub Pages, "/" locally.
     (function () {
-      var m = window.location.pathname.match(/^\/eu_tech_foundation_computer_labs\//);
+      var m = window.location.pathname.match(/^\/EU-Tech-Foundation-Practice-Hub\//);
       var base = document.createElement("base");
       base.href = m ? m[0] : "/";
       document.head.appendChild(base);
     })();
   </script>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/style.css?v=3" />
 </head>
 <body>
 
@@ -43,6 +43,6 @@
 
   <div data-layout="footer"></div>
 
-  <script src="js/layout.js"></script>
+  <script src="js/layout.js?v=3"></script>
 </body>
 </html>

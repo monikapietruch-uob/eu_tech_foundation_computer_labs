@@ -95,6 +95,19 @@ First-time setup, once: on github.com open the repository → **Settings →
 Pages → Source: Deploy from a branch → Branch `main`, folder `/ (root)` →
 Save**. The URL appears on that page.
 
+**After a push, force browsers to fetch the new files.** Every stylesheet
+and script link in the HTML pages carries a version tag, `?v=3`. Browsers
+(and GitHub's cache) keep old copies for a while, so when you change any
+CSS or JS, change the number in all the HTML files at once:
+
+```bash
+cd ~/projects/tech-group-my
+sed -i '' 's/?v=3/?v=4/g' *.html dev/*.html js/runner-worker.js
+```
+
+(then commit and push). If a page looks wrong right after a push, a hard
+reload — Shift+Cmd+R — fetches everything fresh for you.
+
 GitHub Pages runs on Linux, where file names are case-sensitive. macOS is
 not, so a wrongly-cased path works on a Mac and breaks online. Keep file
 names lower-case and check paths in a fresh browser after each push.

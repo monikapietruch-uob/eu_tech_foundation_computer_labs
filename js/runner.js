@@ -38,7 +38,9 @@ var Runner = (function () {
 
   // Resolve the worker's URL relative to this script, whatever page loads it.
   var scriptUrl = (document.currentScript && document.currentScript.src) || "js/runner.js";
-  var WORKER_URL = new URL("runner-worker.js", scriptUrl).href;
+  // Carry the ?v= cache-busting tag from this script's URL to the worker's.
+  var version = (/[?&]v=([^&]+)/.exec(scriptUrl) || [])[1];
+  var WORKER_URL = new URL("runner-worker.js" + (version ? "?v=" + version : ""), scriptUrl).href;
 
   var worker = null;
   var status = { phase: "idle", detail: "", message: "" };
