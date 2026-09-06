@@ -36,8 +36,13 @@ var TaskShell = (function () {
     summary: "practice-web.html"
   };
 
+  var TYPE_LABEL = {
+    console: "Python", karel: "Karel", ai: "AI",
+    "html-editor": "HTML & CSS", inspect: "Inspect", walkthrough: "Web", summary: "Summary"
+  };
+
   var el = {};
-  ["taskNav", "taskWeek", "taskTitle", "taskConcepts", "taskText", "taskVocab",
+  ["taskNav", "taskPicker", "taskPickerTitle", "taskPickerNote", "taskLayout", "taskWeek", "taskTitle", "taskConcepts", "taskText", "taskVocab",
    "hintButton", "hintList", "verdict", "next", "nextLink",
    "reflect", "reflectTried", "reflectWord", "reflectSaved", "copyReflections", "savedNote",
    "reflectExtra", "reflectExtraLabel", "reflectWriting"]
@@ -71,28 +76,46 @@ var TaskShell = (function () {
     return Tasks.flatList(index).filter(onThisPage);
   }
 
-  // ------------------------------------------------------------ nav
+  // ------------------------------------------------------------ tiles
   function renderNav() {
     clear(el.taskNav);
     (index.weeks || []).forEach(function (week) {
       var mine = (week.tasks || []).filter(onThisPage);
       if (!mine.length) { return; }
-      var group = make("div", "task-week");
-      group.appendChild(make("h3", null, "Week " + week.week + " · " + week.title));
-      var list = make("ol", "task-list");
-      mine.forEach(function (entry) {
+      var group = make("div", "tile-week");
+      var head = make("h3", null, "Week " + week.week);
+      head.appendChild(make("span", "tile-week-title", week.title));
+      group.appendChild(head);
+      var grid = make("ol", "tile-grid");
+      mine.forEach(function (entry, i) {
         var item = make("li");
-        var link = make("a", null, entry.title);
+        var link = make("a", "tile", null);
         link.href = urlFor(entry);
-        if (task && entry.id === task.id) { link.setAttribute("aria-current", "page"); }
         var saved = Progress.get(entry.id);
-        if (doneThisVisit[entry.id] || (saved && saved.status === "passed")) { item.className = "done"; }
+        var done = doneThisVisit[entry.id] || (saved && saved.status === "passed");
+        var started = !done && saved && saved.status === "started";
+        if (task && entry.id === task.id) { link.setAttribute("aria-current", "page"); }
+        link.className = "tile" + (done ? " done" : started ? " started" : "");
+        var top = make("div", "tile-top");
+        top.appendChild(make("span", "tile-num", String(i + 1)));
+        top.appendChild(make("span", "tile-type type-" + typeOf(entry), TYPE_LABEL[typeOf(entry)] || typeOf(entry)));
+        if (done) { var tick = make("span", "tile-tick", "✓"); tick.setAttribute("aria-label", "done"); top.appendChild(tick); }
+        link.appendChild(top);
+        link.appendChild(make("span", "tile-title", entry.title));
         item.appendChild(link);
-        list.appendChild(item);
+        grid.appendChild(item);
       });
-      group.appendChild(list);
+      group.appendChild(grid);
       el.taskNav.appendChild(group);
     });
+  }
+
+  // With a task open the tiles shrink to a strip; with none they are the page.
+  function showPickerOnly(only) {
+    if (el.taskPicker) { el.taskPicker.classList.toggle("compact", !only); }
+    if (el.taskLayout) { el.taskLayout.hidden = only; }
+    if (el.taskPickerTitle) { text(el.taskPickerTitle, only ? "Choose a task" : "Tasks"); }
+    if (el.taskPickerNote) { el.taskPickerNote.hidden = !only; }
   }
 
   // ------------------------------------------------------------ brief
@@ -224,6 +247,7 @@ var TaskShell = (function () {
 
   // ------------------------------------------------------------ load
   function showLoadError(message) {
+    showPickerOnly(false);
     text(el.taskTitle, "Could not load this task");
     clear(el.taskText);
     el.taskText.appendChild(make("p", null, message));
@@ -236,9 +260,14 @@ var TaskShell = (function () {
     return Tasks.loadTask(id).then(function (t) {
       task = t;
       renderNav();
+      showPickerOnly(false);
       renderBrief();
       clearVerdict();
       options.render(task);
+      // The tiles sit above the task; bring the task into view.
+      if (el.taskLayout && el.taskLayout.scrollIntoView) {
+        el.taskLayout.scrollIntoView({ behavior: "auto", block: "start" });
+      }
     });
   }
 
@@ -260,8 +289,13 @@ var TaskShell = (function () {
       var wanted = taskIdFromUrl();
       var list = pageList();
       var exists = list.some(function (e) { return e.id === wanted; });
-      if (!exists) { wanted = list.length ? list[0].id : null; }
-      if (!wanted) { showLoadError("There are no tasks in the list yet."); return; }
+      if (!list.length) { showLoadError("There are no tasks in the list yet."); return; }
+      if (!exists) {
+        // No task chosen: show the tiles and nothing else.
+        renderNav();
+        showPickerOnly(true);
+        return;
+      }
       return openTask(wanted);
     }).catch(function (err) {
       showLoadError(err.message + " Check that the site is running from a web server (python3 -m http.server), not opened as a file.");

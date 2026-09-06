@@ -22,47 +22,67 @@
     <h1>EU Foundation - Tech Practice Hub</h1>
     <p class="page-intro">Practise the words and ideas from class by writing real code. Choose a section to start.</p>
 
-    <!-- PROGRESS: filled in by js/hub.js from what is saved in this browser -->
-    <section id="progress" class="progress-section">
-      <h2>Your progress</h2>
+    <!-- BLOCKS: one row per block; js/hub.js fills in the progress of each -->
+    <section id="practice" class="blocks">
+      <h2>Practice</h2>
       <p id="progressIntro">Loading…</p>
-      <div class="progress-strip" id="progressStrip"></div>
-    </section>
 
-    <!-- PRACTICE AREAS -->
-    <section id="practice">
-      <h2>Practice areas</h2>
-      <p>Each section matches the weeks on your teaching plan.</p>
+      <div class="block-rows">
 
-      <div class="card-grid sections">
+        <article class="block-row" data-weeks="2,3,4">
+          <div class="block-band">
+            <span class="block-weeks">Weeks 2–4</span>
+            <h3>Python practice</h3>
+          </div>
+          <div class="block-body">
+            <p>Write short Python programs and move a robot called Karel around a grid. Variables, input, loops, conditions and functions.</p>
+            <div class="block-progress" data-progress></div>
+          </div>
+          <div class="block-action">
+            <a class="btn" href="practice-python.html">Open Python practice</a>
+          </div>
+        </article>
 
-        <div class="card small">
-          <p class="week-label">Weeks 2&ndash;4</p>
-          <h3>Python practice</h3>
-          <p>Write short Python programs and move a robot around a grid.</p>
-          <a class="btn" href="practice-python.html">Open Python practice</a>
-        </div>
+        <article class="block-row" data-weeks="6,7,8">
+          <div class="block-band">
+            <span class="block-weeks">Weeks 6–8</span>
+            <h3>How the web works</h3>
+          </div>
+          <div class="block-body">
+            <p>Build a small page, look inside real websites for problems, follow a request from your browser to a server and back, and summarise how HTTPS keeps you safe.</p>
+            <div class="block-progress" data-progress></div>
+          </div>
+          <div class="block-action">
+            <a class="btn" href="practice-web.html">Open web practice</a>
+          </div>
+        </article>
 
-        <div class="card small">
-          <p class="week-label">Weeks 6&ndash;8</p>
-          <h3>How the web works</h3>
-          <p>Look inside real web pages and learn what happens when you open a website.</p>
-          <a class="btn" href="practice-web.html">Open web practice</a>
-        </div>
+        <article class="block-row" data-weeks="9">
+          <div class="block-band">
+            <span class="block-weeks">Week 9</span>
+            <h3>Working with AI</h3>
+          </div>
+          <div class="block-body">
+            <p>Write a Python program that asks an AI a question with call_gpt() and prints the answer. Then check whether the answer is true.</p>
+            <div class="block-progress" data-progress></div>
+          </div>
+          <div class="block-action">
+            <a class="btn" href="practice-ai.html">Open the AI task</a>
+          </div>
+        </article>
 
-        <div class="card small">
-          <p class="week-label">Week 9</p>
-          <h3>Working with AI</h3>
-          <p>Write a Python program that asks an AI a question and prints the answer.</p>
-          <a class="btn" href="practice-ai.html">Open the AI task</a>
-        </div>
-
-        <div class="card small">
-          <p class="week-label">Any time</p>
-          <h3>Extra practice and games</h3>
-          <p>Play coding games and try more exercises when you want extra practice.</p>
-          <a class="btn" href="#games">See the games</a>
-        </div>
+        <article class="block-row block-row-extra">
+          <div class="block-band">
+            <span class="block-weeks">Any time</span>
+            <h3>Extra practice and games</h3>
+          </div>
+          <div class="block-body">
+            <p>Coding games made by other people, and the official guides, for when you want more.</p>
+          </div>
+          <div class="block-action">
+            <a class="btn outline" href="#games">See the games</a>
+          </div>
+        </article>
 
       </div>
     </section>

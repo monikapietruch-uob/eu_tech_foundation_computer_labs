@@ -27,20 +27,23 @@
     <h1>Python practice</h1>
     <p class="page-intro">Weeks 2 to 4. Write Python in your browser. You do not need to install anything.</p>
 
-    <div class="task-layout" id="taskLayout">
-
-      <!-- LEFT: task list and the task itself -->
-      <aside class="task-side">
-        <nav class="task-nav" aria-label="Tasks">
-          <h2 class="task-nav-title">Tasks</h2>
-          <div id="taskNav">
-            <p class="muted">Loading the task list…</p>
-          </div>
-          <div class="task-nav-extra">
+    <!-- TASK TILES: one small card per task, grouped by week (js/task-shell.js) -->
+    <section class="task-picker" id="taskPicker" aria-label="Choose a task">
+      <div class="task-picker-head">
+        <h2 id="taskPickerTitle">Choose a task</h2>
+        <p class="muted small" id="taskPickerNote">Tasks go in order. A tick means you finished it on this computer.</p>
+      </div>
+      <div id="taskNav"><p class="muted">Loading the task list…</p></div>
+      <div class="task-nav-extra">
             <h3>Also try</h3>
             <a href="exercises/ex-1/ex-1-move-robot.html">Robot Diamond Mission</a>
           </div>
-        </nav>
+    </section>
+
+    <div class="task-layout" id="taskLayout" hidden>
+
+      <!-- LEFT: task list and the task itself -->
+      <aside class="task-side">
 
         <section class="task-brief" id="taskBrief" aria-live="polite">
           <p class="week-label" id="taskWeek"></p>
