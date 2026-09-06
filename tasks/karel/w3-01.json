@@ -1,0 +1,142 @@
+{
+  "id": "karel-w3-01",
+  "week": 3,
+  "type": "karel",
+  "title": "Find the beeper, whatever the distance",
+  "concepts": [
+    "while loop",
+    "condition",
+    "front_is_clear()",
+    "beepers_present()"
+  ],
+  "brief": "The beeper is somewhere in the corridor, but you do not know where, and you do not know how long the corridor is. Your program is tested on three different corridors, and the same code must work for all of them.\n\nWalk until you find the beeper. Pick it up. Carry it to the end wall and put it down there.\n\nYou cannot count squares this time. Ask Karel questions instead: no_beepers_present() and front_is_clear() give True or False, and a while loop repeats while a condition is True.",
+  "vocabulary": [
+    {
+      "term": "while loop",
+      "gloss": "repeats the indented lines while the condition is True"
+    },
+    {
+      "term": "condition",
+      "gloss": "a question with a True or False answer"
+    },
+    {
+      "term": "front_is_clear()",
+      "gloss": "True if there is no wall in front of Karel"
+    },
+    {
+      "term": "no_beepers_present()",
+      "gloss": "True if Karel's square has no beeper"
+    }
+  ],
+  "worlds": [
+    {
+      "name": "Short corridor",
+      "world": {
+        "cols": 5,
+        "rows": 1,
+        "karel": {
+          "col": 1,
+          "row": 1,
+          "dir": "east"
+        },
+        "walls": [],
+        "beepers": [
+          {
+            "col": 3,
+            "row": 1,
+            "count": 1
+          }
+        ],
+        "karelBeepers": 0
+      },
+      "goal": {
+        "karel": {
+          "col": 5,
+          "row": 1
+        },
+        "beepers": [
+          {
+            "col": 5,
+            "row": 1,
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Beeper very close",
+      "world": {
+        "cols": 9,
+        "rows": 1,
+        "karel": {
+          "col": 1,
+          "row": 1,
+          "dir": "east"
+        },
+        "walls": [],
+        "beepers": [
+          {
+            "col": 2,
+            "row": 1,
+            "count": 1
+          }
+        ],
+        "karelBeepers": 0
+      },
+      "goal": {
+        "karel": {
+          "col": 9,
+          "row": 1
+        },
+        "beepers": [
+          {
+            "col": 9,
+            "row": 1,
+            "count": 1
+          }
+        ]
+      }
+    },
+    {
+      "name": "Long corridor",
+      "world": {
+        "cols": 12,
+        "rows": 1,
+        "karel": {
+          "col": 1,
+          "row": 1,
+          "dir": "east"
+        },
+        "walls": [],
+        "beepers": [
+          {
+            "col": 11,
+            "row": 1,
+            "count": 1
+          }
+        ],
+        "karelBeepers": 0
+      },
+      "goal": {
+        "karel": {
+          "col": 12,
+          "row": 1
+        },
+        "beepers": [
+          {
+            "col": 12,
+            "row": 1,
+            "count": 1
+          }
+        ]
+      }
+    }
+  ],
+  "starterCode": "def main():\n    # Walk until Karel finds the beeper\n    while no_beepers_present():\n        move()\n    \n\n",
+  "hints": [
+    "The first loop is written for you: while no_beepers_present(): move(). When it stops, Karel is standing on the beeper. What should Karel do next?",
+    "After pick_beeper(), Karel must walk to the wall. That is another while loop, with a different question: while front_is_clear(): move()",
+    "The whole program is: the first loop, then pick_beeper(), then the second loop, then put_beeper(). Check every line inside a loop is indented one level more than the while."
+  ],
+  "solution": "def main():\n    while no_beepers_present():\n        move()\n    pick_beeper()\n    while front_is_clear():\n        move()\n    put_beeper()\n"
+}

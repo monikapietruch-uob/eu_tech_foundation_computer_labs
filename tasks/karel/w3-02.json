@@ -1,0 +1,126 @@
+{
+  "id": "karel-w3-02",
+  "week": 3,
+  "type": "karel",
+  "title": "Pick up every beeper",
+  "concepts": [
+    "while loop",
+    "if",
+    "beepers_present()",
+    "fencepost"
+  ],
+  "brief": "There are beepers on some squares of the corridor, but not all of them. Pick up every beeper. Karel should finish at the end wall.\n\nTested on two corridors of different lengths, with beepers in different places.\n\nBe careful with the last square: a loop that moves and then checks will miss it.",
+  "vocabulary": [
+    {
+      "term": "if",
+      "gloss": "run the indented lines only when the condition is True"
+    },
+    {
+      "term": "beepers_present()",
+      "gloss": "True if Karel's square has at least one beeper"
+    },
+    {
+      "term": "fencepost",
+      "gloss": "the problem of the first or last item being different from the others — here, the last square"
+    },
+    {
+      "term": "pass",
+      "gloss": "a line that does nothing. It keeps a function valid while it is still empty — replace it with real commands"
+    }
+  ],
+  "worlds": [
+    {
+      "name": "Seven squares",
+      "world": {
+        "cols": 7,
+        "rows": 1,
+        "karel": {
+          "col": 1,
+          "row": 1,
+          "dir": "east"
+        },
+        "walls": [],
+        "beepers": [
+          {
+            "col": 2,
+            "row": 1,
+            "count": 1
+          },
+          {
+            "col": 4,
+            "row": 1,
+            "count": 1
+          },
+          {
+            "col": 5,
+            "row": 1,
+            "count": 1
+          },
+          {
+            "col": 7,
+            "row": 1,
+            "count": 1
+          }
+        ],
+        "karelBeepers": 0
+      },
+      "goal": {
+        "karel": {
+          "col": 7,
+          "row": 1
+        },
+        "beepers": []
+      }
+    },
+    {
+      "name": "Ten squares, beeper on the first",
+      "world": {
+        "cols": 10,
+        "rows": 1,
+        "karel": {
+          "col": 1,
+          "row": 1,
+          "dir": "east"
+        },
+        "walls": [],
+        "beepers": [
+          {
+            "col": 1,
+            "row": 1,
+            "count": 1
+          },
+          {
+            "col": 3,
+            "row": 1,
+            "count": 1
+          },
+          {
+            "col": 9,
+            "row": 1,
+            "count": 1
+          },
+          {
+            "col": 10,
+            "row": 1,
+            "count": 1
+          }
+        ],
+        "karelBeepers": 0
+      },
+      "goal": {
+        "karel": {
+          "col": 10,
+          "row": 1
+        },
+        "beepers": []
+      }
+    }
+  ],
+  "starterCode": "def main():\n    pass  # replace this line with Karel's commands\n\n",
+  "hints": [
+    "On each square, ask if beepers_present(). If yes, pick_beeper(). Then move. Put that inside while front_is_clear().",
+    "A loop of 'check, then move' stops when Karel reaches the last square — but Karel never checks that last square. Do one more check after the loop.",
+    "Shape: while front_is_clear(): [if beepers_present(): pick_beeper()] [move()] — and then the same if, once more, after the loop ends."
+  ],
+  "solution": "def main():\n    while front_is_clear():\n        if beepers_present():\n            pick_beeper()\n        move()\n    if beepers_present():\n        pick_beeper()\n"
+}

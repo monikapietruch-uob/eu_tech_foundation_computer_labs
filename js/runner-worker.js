@@ -25,7 +25,10 @@
     {type:"stderr", text}   — a chunk written to stderr (warnings etc.)
     {type:"result", id, ok, error, truncated}
   Messages it receives:
-    {type:"run", id, code, stdin:[...lines]}
+    {type:"run", id, code, stdin:[...lines]}                 — a console program
+    {type:"run", id, code, mode:"karel", world:{...}}        — a Karel program;
+        the result then also carries initial, trace and final (see
+        js/karel-api.py for the format)
 */
 "use strict";
 
@@ -42,6 +45,7 @@ var MAX_OUTPUT_BYTES = 200 * 1024;
 
 var pyodide = null;
 var hubRun = null;          // the Python-side _hub_run function
+var karelRun = null;        // the Python-side _hub_run_karel function (js/karel-api.py)
 var outputBytes = 0;
 var truncated = false;
 var stdoutDecoder = new TextDecoder("utf-8");
@@ -142,6 +146,10 @@ async function boot() {
     post({ type: "status", phase: "loading", detail: "Preparing the runner" });
     pyodide.runPython(PRELUDE);
     hubRun = pyodide.globals.get("_hub_run");
+    // Karel lives in its own Python file so it stays readable.
+    var karelSource = await (await fetch(new URL("karel-api.py", self.location.href))).text();
+    pyodide.runPython(karelSource);
+    karelRun = pyodide.globals.get("_hub_run_karel");
     if (pyodide.version !== PYODIDE_VERSION) {
       console.warn("Pyodide version mismatch: vendor/pyodide is " + pyodide.version + ", runner expects " + PYODIDE_VERSION);
     }
@@ -165,14 +173,17 @@ self.onmessage = function (event) {
   truncated = false;
   var result;
   try {
-    var json = hubRun(msg.code, JSON.stringify(msg.stdin || []));
+    var json = msg.mode === "karel"
+      ? karelRun(msg.code, JSON.stringify(msg.world || {}))
+      : hubRun(msg.code, JSON.stringify(msg.stdin || []));
     result = JSON.parse(json);
   } catch (err) {
     // Only reached if something goes wrong inside the runner itself,
     // not inside the student's code (that is caught in Python).
     result = { ok: false, error: { type: "RunnerError", message: String(err && err.message ? err.message : err), line: null, traceback: "" } };
   }
-  post({ type: "result", id: msg.id, ok: result.ok, error: result.error, truncated: truncated });
+  post({ type: "result", id: msg.id, ok: result.ok, error: result.error, truncated: truncated,
+         initial: result.initial, trace: result.trace, final: result.final });
 };
 
 boot();

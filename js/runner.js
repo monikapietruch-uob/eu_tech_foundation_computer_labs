@@ -13,6 +13,10 @@
       error     null, or { type, message, line, traceback, explanation }
                 where explanation is a plain-English sentence for the student
 
+    Runner.runKarel({ code, world, timeoutMs, onStdout })
+        -> the same result plus { initial, trace, final } from js/karel-api.py
+      world     a Karel world object (see tasks/README.md)
+
     Runner.stop()          kill the running program and start a fresh worker
     Runner.warmUp()        start loading Python now (call it on page load)
     Runner.onStatus(fn)    fn({phase, detail, message}) as loading progresses;
@@ -75,7 +79,8 @@ var Runner = (function () {
         job.stderr.push(msg.text);
         if (job.onStderr) { job.onStderr(msg.text); }
       } else if (msg.type === "result" && msg.id === job.id) {
-        finish({ error: msg.error || null, truncated: !!msg.truncated });
+        finish({ error: msg.error || null, truncated: !!msg.truncated,
+                 initial: msg.initial, trace: msg.trace, final: msg.final });
       }
     };
 
@@ -109,6 +114,9 @@ var Runner = (function () {
       error.explanation = explainError(error);
     }
     done.resolve({
+      initial: extra.initial || null,
+      trace: extra.trace || null,
+      final: extra.final || null,
       timeoutMs: done.timeoutMs,
       stdout: done.stdout.join(""),
       stderr: done.stderr.join(""),
@@ -125,10 +133,9 @@ var Runner = (function () {
     return readyPromise;
   }
 
-  function runPython(options) {
+  // Shared by runPython and runKarel: payload is what the worker receives.
+  function startJob(payload, options) {
     options = options || {};
-    var code = String(options.code || "");
-    var stdin = Array.isArray(options.stdin) ? options.stdin.map(String) : [];
     var timeoutMs = typeof options.timeoutMs === "number" ? options.timeoutMs : DEFAULT_TIMEOUT_MS;
 
     if (job) {
@@ -161,9 +168,29 @@ var Runner = (function () {
           replaceWorker();                       // the only way to interrupt Python
           finish({ timedOut: true });
         }, timeoutMs);
-        worker.postMessage({ type: "run", id: thisJob.id, code: code, stdin: stdin });
+        payload.type = "run";
+        payload.id = thisJob.id;
+        worker.postMessage(payload);
       });
     });
+  }
+
+  function runPython(options) {
+    options = options || {};
+    return startJob({
+      code: String(options.code || ""),
+      stdin: Array.isArray(options.stdin) ? options.stdin.map(String) : []
+    }, options);
+  }
+
+  function runKarel(options) {
+    options = options || {};
+    return startJob({
+      code: String(options.code || ""),
+      stdin: [],
+      mode: "karel",
+      world: options.world || {}
+    }, options);
   }
 
   function stop() {
@@ -214,6 +241,10 @@ var Runner = (function () {
 
     if (type === "PyodideLoadError") {
       return "Python could not load in this browser. Check your internet connection and reload the page. If it still does not work, tell your teacher.";
+    }
+    if (type === "KarelError") {
+      // Already written for a beginner, in js/karel-api.py.
+      return L + msg;
     }
     if (type === "RunnerError") {
       return "Something went wrong inside the runner, not in your program. Reload the page and try again. If it happens again, tell your teacher.";
@@ -385,6 +416,7 @@ var Runner = (function () {
 
   return {
     runPython: runPython,
+    runKarel: runKarel,
     stop: stop,
     warmUp: warmUp,
     onStatus: onStatus,

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <!--
   practice-python.html — weeks 2 to 4. The task screen: a list of tasks on
-  the left with the current task's brief, vocabulary and hints; a code
-  editor, Run/Stop, output and test results on the right. The page picks
-  the task from ?task=<id> in the URL, or the first task in tasks/index.json.
+  the left with the current task's brief, vocabulary and hints; on the right
+  a code editor, Run/Stop, output and — depending on the task type — either
+  test results (console tasks) or Karel's world on a canvas with playback
+  controls (karel tasks). The page picks the task from ?task=<id> in the
+  URL, or the first task in tasks/index.json.
   Logic is in js/task-screen.js; task loading and checking in js/tasks.js;
-  Python itself in js/runner.js. Header, nav and footer come from
-  js/layout.js.
+  Karel drawing/playback/checking in js/karel-*.js; Python itself in
+  js/runner.js. Header, nav and footer come from js/layout.js.
 -->
 <html lang="en">
 <head>
@@ -57,6 +59,31 @@
 
       <!-- RIGHT: editor, controls, output, tests -->
       <section class="task-work">
+
+        <!-- Karel's world: shown only for karel tasks -->
+        <section class="karel-panel" id="karelPanel" hidden>
+          <div class="karel-head">
+            <span class="karel-world-name" id="karelWorldName">Karel's world</span>
+            <label class="karel-goal-toggle"><input type="checkbox" id="karelGoal" checked /> Show the goal</label>
+          </div>
+          <div class="karel-canvas-wrap" id="karelWrap">
+            <canvas id="karelCanvas" role="img" aria-label="Karel's world"></canvas>
+          </div>
+          <div class="karel-controls">
+            <label for="karelSpeed">Speed</label>
+            <select id="karelSpeed">
+              <option value="slow">Slow</option>
+              <option value="normal" selected>Normal</option>
+              <option value="fast">Fast</option>
+              <option value="instant">Instant</option>
+            </select>
+            <button type="button" class="btn outline small-btn" id="karelPlayPause" disabled>Pause</button>
+            <button type="button" class="btn outline small-btn" id="karelStep" disabled>Step ▶</button>
+            <button type="button" class="btn outline small-btn" id="karelReplay" disabled>Replay</button>
+            <span class="karel-counter" id="karelCounter" aria-live="polite"></span>
+          </div>
+        </section>
+
         <div class="editor-head">
           <label for="code">Your program</label>
           <span class="editor-hint">Tab inserts 4 spaces. To leave the editor with the keyboard, press Escape, then Tab.</span>
@@ -93,8 +120,8 @@
           </details>
         </div>
 
-        <h3 class="tests-title">Tests</h3>
-        <p class="muted small">Each test runs your whole program once. The task is complete when every test passes.</p>
+        <h3 class="tests-title" id="testsTitle">Tests</h3>
+        <p class="muted small" id="testsIntro">Each test runs your whole program once. The task is complete when every test passes.</p>
         <ol class="tests" id="tests" aria-live="polite"></ol>
 
         <div class="next" id="next" hidden>
@@ -109,6 +136,9 @@
   <script src="js/layout.js"></script>
   <script src="js/runner.js"></script>
   <script src="js/tasks.js"></script>
+  <script src="js/karel-render.js"></script>
+  <script src="js/karel-play.js"></script>
+  <script src="js/karel-check.js"></script>
   <script src="js/task-screen.js"></script>
 </body>
 </html>

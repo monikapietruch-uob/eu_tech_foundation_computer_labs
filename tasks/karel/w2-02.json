@@ -1,0 +1,74 @@
+{
+  "id": "karel-w2-02",
+  "week": 2,
+  "type": "karel",
+  "title": "Carry the beeper to the corner",
+  "concepts": [
+    "sequence",
+    "pick_beeper()",
+    "put_beeper()",
+    "turn_left()"
+  ],
+  "brief": "There is a beeper (a small marker) on the floor. Karel's bag is empty.\n\nWalk to the beeper, pick it up, carry it to the bottom-right corner, and put it down there. Karel should finish in the corner.\n\nKarel can only turn left. Three left turns make a right turn.",
+  "vocabulary": [
+    {
+      "term": "beeper",
+      "gloss": "a small marker Karel can pick up and put down"
+    },
+    {
+      "term": "pick_beeper()",
+      "gloss": "pick up one beeper from Karel's square into the bag"
+    },
+    {
+      "term": "put_beeper()",
+      "gloss": "put one beeper from the bag on Karel's square"
+    },
+    {
+      "term": "turn_left()",
+      "gloss": "turn Karel 90 degrees to the left, without moving"
+    },
+    {
+      "term": "pass",
+      "gloss": "a line that does nothing. It keeps a function valid while it is still empty — replace it with real commands"
+    }
+  ],
+  "world": {
+    "cols": 5,
+    "rows": 3,
+    "karel": {
+      "col": 1,
+      "row": 2,
+      "dir": "east"
+    },
+    "walls": [],
+    "beepers": [
+      {
+        "col": 3,
+        "row": 2,
+        "count": 1
+      }
+    ],
+    "karelBeepers": 0
+  },
+  "goal": {
+    "karel": {
+      "col": 5,
+      "row": 1
+    },
+    "beepers": [
+      {
+        "col": 5,
+        "row": 1,
+        "count": 1
+      }
+    ],
+    "checkKarelDirection": false
+  },
+  "starterCode": "def main():\n    pass  # replace this line with Karel's commands\n\n",
+  "hints": [
+    "Move to the beeper first: it is two squares ahead. Then pick_beeper().",
+    "The corner is at the far right, one row down. Karel is facing east, so move to the right wall first, then turn to face south. Turning right is three turn_left() calls.",
+    "After facing south, move one square down into the corner, then put_beeper(). Twelve commands in total is fine."
+  ],
+  "solution": "def main():\n    move()\n    move()\n    pick_beeper()\n    move()\n    move()\n    turn_left()\n    turn_left()\n    turn_left()\n    move()\n    put_beeper()\n"
+}

@@ -1,0 +1,56 @@
+{
+  "id": "karel-w2-01",
+  "week": 2,
+  "type": "karel",
+  "title": "Move to the wall",
+  "concepts": [
+    "function",
+    "sequence",
+    "main()"
+  ],
+  "brief": "Karel is a robot. Karel understands a few commands, and each command is a function you call.\n\nKarel is at the left end of a corridor, facing east. Move Karel to the far end, right up against the wall.\n\nWrite your commands inside main(). One move() moves Karel one square. Count the squares!",
+  "vocabulary": [
+    {
+      "term": "function",
+      "gloss": "a named piece of code you can run by writing its name with brackets, like move()"
+    },
+    {
+      "term": "call",
+      "gloss": "to run a function: move() calls the function move"
+    },
+    {
+      "term": "sequence",
+      "gloss": "commands run one after another, in the order you write them"
+    },
+    {
+      "term": "main()",
+      "gloss": "the function where your program starts"
+    }
+  ],
+  "world": {
+    "cols": 6,
+    "rows": 3,
+    "karel": {
+      "col": 1,
+      "row": 1,
+      "dir": "east"
+    },
+    "walls": [],
+    "beepers": [],
+    "karelBeepers": "infinite"
+  },
+  "goal": {
+    "karel": {
+      "col": 6,
+      "row": 1
+    },
+    "checkKarelDirection": false
+  },
+  "starterCode": "def main():\n    move()\n    \n\n",
+  "hints": [
+    "Each move() moves Karel exactly one square. Karel starts on square 1 and the wall is after square 6.",
+    "Karel needs to move 5 times: from square 1 to 2, 2 to 3, 3 to 4, 4 to 5, and 5 to 6.",
+    "Write move() five times inside main(), each on its own line, all indented by 4 spaces."
+  ],
+  "solution": "def main():\n    move()\n    move()\n    move()\n    move()\n    move()\n"
+}

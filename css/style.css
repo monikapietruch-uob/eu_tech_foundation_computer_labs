@@ -492,6 +492,22 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 
 .next { margin-top: 1.25rem; text-align: right; }
 
+/* ── Karel's world ── */
+.karel-panel { margin-bottom: 1.1rem; }
+.karel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
+.karel-world-name { font-weight: 700; font-size: 0.95rem; }
+.karel-goal-toggle { font-size: 0.85rem; color: #555; display: inline-flex; align-items: center; gap: 0.35rem; cursor: pointer; }
+.karel-canvas-wrap { display: flex; justify-content: center; background: #eef1f8; border-radius: 8px; padding: 0.75rem; }
+.karel-canvas-wrap canvas { display: block; max-width: 100%; }
+.karel-controls { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; margin-top: 0.6rem; font-size: 0.9rem; }
+.karel-controls label { color: #555; }
+.karel-controls select { font: inherit; font-size: 0.9rem; padding: 0.25rem 0.4rem; border: 1px solid #c8d0e8; border-radius: 6px; background: #fff; color: #1a1a2e; }
+.karel-controls select:focus-visible { outline: 3px solid #1a1a2e; outline-offset: 2px; }
+.btn.small-btn { font: inherit; font-size: 0.85rem; padding: 0.3rem 0.7rem; cursor: pointer; }
+.btn.small-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+.karel-counter { color: #555; font-variant-numeric: tabular-nums; margin-left: auto; font-size: 0.85rem; }
+.test-why .small-btn { margin-top: 0.4rem; }
+
 @media (max-width: 900px) {
   .task-layout { grid-template-columns: 1fr; }
   .diff { grid-template-columns: 1fr; }
