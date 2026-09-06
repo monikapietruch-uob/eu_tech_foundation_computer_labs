@@ -1,0 +1,270 @@
+/* Basic reset */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  background: #f5f7fa;
+  color: #1a1a2e;
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  padding: 2rem;
+}
+
+.page {
+  max-width: 1150px;
+  margin: 0 auto;
+}
+
+.exercise-header {
+  margin-bottom: 2rem;
+  text-align: center;
+}
+
+.eyebrow {
+  color: #c8102e;
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin-bottom: 0.4rem;
+  text-transform: uppercase;
+}
+
+h1 {
+  font-size: 2.2rem;
+  margin-bottom: 0.75rem;
+}
+
+.intro {
+  color: #555;
+  max-width: 780px;
+  margin: 0 auto;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 1.3fr 0.8fr;
+  gap: 2rem;
+  align-items: start;
+}
+
+.panel,
+.reflection-panel {
+  background: #ffffff;
+  border-radius: 12px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.panel h2,
+.reflection-panel h2 {
+  margin-bottom: 1rem;
+  font-size: 1.4rem;
+}
+
+.step-card {
+  border-left: 5px solid #d7dce8;
+  background: #f8f9fc;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.step-card.active {
+  border-left-color: #c8102e;
+  background: #fff4f6;
+}
+
+.step-card.completed {
+  border-left-color: #64a70b;
+  background: #f3faed;
+}
+
+.step-card h3 {
+  margin-bottom: 0.5rem;
+  font-size: 1.1rem;
+}
+
+.step-card p {
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.step-card ul {
+  margin-left: 1.2rem;
+  color: #444;
+}
+
+.step-icon {
+  display: block;
+  width: 48px;
+  height: auto;
+  margin: 0.7rem 0;
+}
+
+.example {
+  background: #eef1f7;
+  padding: 0.6rem;
+  border-radius: 6px;
+}
+
+pre {
+  background: #1a1a2e;
+  color: #ffffff;
+  padding: 0.6rem;
+  border-radius: 6px;
+  margin: 0.5rem 0;
+  overflow-x: auto;
+}
+
+code {
+  font-family: Consolas, monospace;
+  font-size: 0.95rem;
+}
+
+.task-panel {
+  position: sticky;
+  top: 1.5rem;
+}
+
+.task-panel p {
+  color: #444;
+  margin-bottom: 1rem;
+}
+
+.checklist {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.checklist label {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  background: #f8f9fc;
+  border-radius: 8px;
+  padding: 0.7rem;
+  cursor: pointer;
+}
+
+.checklist input {
+  margin-top: 0.3rem;
+}
+
+.progress-box {
+  margin: 1rem 0 1.5rem;
+}
+
+#progressText {
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 14px;
+  background: #e0e4ef;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 0%;
+  height: 100%;
+  background: #64a70b;
+  transition: width 0.2s ease;
+}
+
+.mini-demo {
+  background: #f5f7fa;
+  border-left: 5px solid #64a70b;
+  border-radius: 8px;
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.mini-demo h3 {
+  margin-bottom: 0.75rem;
+}
+
+.demo-button,
+.main-button {
+  display: inline-block;
+  border: none;
+  background: #c8102e;
+  color: #ffffff;
+  padding: 0.65rem 1rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  text-decoration: none;
+}
+
+.demo-button:hover,
+.main-button:hover {
+  background: #64a70b;
+}
+
+.css-examples {
+  display: none;
+  margin-top: 1rem;
+}
+
+.css-examples.visible {
+  display: block;
+}
+
+.buttons {
+  margin-top: 1rem;
+}
+
+.reflection-panel {
+  margin-top: 2rem;
+}
+
+.reflection-panel ol {
+  margin-left: 1.4rem;
+}
+
+.reflection-panel li {
+  margin-bottom: 0.5rem;
+}
+
+.padlet-section {
+  margin-top: 2rem;
+  text-align: left;
+}
+
+.padlet-button {
+  display: inline-block;
+  background: #64a70b;
+  color: white;
+  padding: 0.8rem 1.4rem;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 1rem;
+  font-weight: 600;
+}
+
+.padlet-button:hover {
+  background: #4f8508;
+}
+
+
+@media (max-width: 900px) {
+  body {
+    padding: 1rem;
+  }
+
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .task-panel {
+    position: static;
+  }
+}

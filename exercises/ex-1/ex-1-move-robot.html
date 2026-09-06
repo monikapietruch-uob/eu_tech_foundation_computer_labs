@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Robot Diamond Mission — Python Commands</title>
+
+  <link rel="stylesheet" href="ex-1-move-robot.css" />
+</head>
+
+<body>
+  <main class="page">
+    <h1>Robot Diamond Mission</h1>
+
+    <p class="intro">
+      Practise Python-style commands by moving the robot, turning it, creating your own function, and picking up the diamond.
+    </p>
+
+    <div class="game-layout">
+      <!-- LEFT SIDE: CODE WINDOW -->
+      <section class="panel code-panel">
+        <h2>Your Python Code</h2>
+
+        <p>
+          The robot understands these commands:
+        </p>
+
+        <ul class="command-list">
+          <li><code>move()</code></li>
+          <li><code>turn_left()</code></li>
+          <li><code>pick_diamond()</code></li>
+        </ul>
+
+        <p>
+          Your task is to complete the function <code>turn_right()</code>.
+          Do not change the code below the comment line.
+        </p>
+
+        <textarea id="codeInput">def turn_right():
+
+
+
+
+# IMPORTANT: Do not change the code below this line
+move()
+move()
+turn_right()
+move()
+pick_diamond()</textarea>
+
+        <div class="buttons">
+          <button id="runButton" type="button">Run Code</button>
+          <button id="resetButton" type="button">Reset</button>
+          <button id="hintButton" type="button">Hint</button>
+          <a class="back-link" href="../../index.html">Back to Practice Hub</a>
+        </div>
+
+        <p class="hint-box" id="hintBox">
+          A right turn is the same as three left turns.
+          Inside <code>turn_right()</code>, write <code>turn_left()</code> three times.
+          Remember to indent the three lines.
+        </p>
+
+        <p class="message" id="message"></p>
+      </section>
+
+      <!-- RIGHT SIDE: ROBOT GRID -->
+      <section class="panel visual-panel">
+        <h2>Robot Grid</h2>
+
+        <div class="game-area">
+          <div class="grid" id="grid">
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+            <div class="cell"></div>
+
+            <div class="target" id="target">💎</div>
+            <div class="robot" id="robot">🤖➡️</div>
+          </div>
+        </div>
+
+        <div class="mission-box">
+          <h3>Mission</h3>
+
+          <p>
+            Complete the function <code>turn_right()</code>.
+          </p>
+
+          <p>
+            Then run the code to move the robot to the diamond and pick it up.
+          </p>
+
+          <p>
+            The robot starts facing right.
+          </p>
+        </div>
+      </section>
+    </div>
+    <div class="padlet-section">
+        <a class="padlet-button" href="padletlink" target="_blank">
+            Open Padlet
+        </a>
+    </div>
+
+  </main>
+
+  <script src="ex-1-move-robot.js"></script>
+</body>
+</html>

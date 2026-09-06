@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!--
+  404.html — GitHub Pages shows this page automatically when a link points
+  to a file that does not exist. It gives students a way back to the hub.
+  GitHub Pages serves this page at whatever URL the student typed, which
+  may be several folders deep, so the small script below sets a <base>
+  so that the stylesheet, script and links still resolve from the site root.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Page not found — Tech Practice Hub</title>
+  <script>
+    // Work out the site root: "/<repo-name>/" on GitHub Pages, "/" locally.
+    (function () {
+      var m = window.location.pathname.match(/^\/eu_tech_foundation_computer_labs\//);
+      var base = document.createElement("base");
+      base.href = m ? m[0] : "/";
+      document.head.appendChild(base);
+    })();
+  </script>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <div data-layout="header"></div>
+  <div data-layout="nav"></div>
+
+  <main class="container">
+    <h1>Page not found</h1>
+    <p class="page-intro">This page does not exist. The link may be wrong, or the page may have moved.</p>
+
+    <section>
+      <div class="editor-placeholder">
+        <h4>What to do</h4>
+        <p>Go back to the hub and choose a section from there.</p>
+        <a class="btn" href="index.html">Back to the hub</a>
+      </div>
+    </section>
+  </main>
+
+  <div data-layout="footer"></div>
+
+  <script src="js/layout.js"></script>
+</body>
+</html>

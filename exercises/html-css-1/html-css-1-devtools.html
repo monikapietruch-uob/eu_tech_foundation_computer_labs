@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>DevTools Website Makeover — HTML & CSS Exercise</title>
+
+  <link rel="stylesheet" href="html-css-1-devtools.css" />
+</head>
+
+<body>
+  <main class="page">
+    <header class="exercise-header">
+      <p class="eyebrow">HTML &amp; CSS Practice</p>
+      <h1>DevTools Website Makeover</h1>
+
+      <p class="intro">
+        Ready to redesign your favourite brand? <br> Open your favourite website 
+        and make your own temporary makeover by changing the text, colours, font size, and spacing.
+      </p>
+    </header>
+
+    <section class="layout">
+      <!-- LEFT -->
+      <section class="panel instruction-panel">
+        <h2>Step-by-step instructions</h2>
+
+        <div class="step-card active" data-step="1">
+          <h3>Step 1: Open your favourite website</h3>
+          <p>
+            Open a website you like in a new browser tab. 
+          </p>
+          <p class="example">
+            Example: a news site, online shop, sports site, fashion brand or learning website.
+          </p>
+        </div>
+
+        <div class="step-card" data-step="2">
+          <h3>Step 2: Open DevTools</h3>
+          <p>
+            Right-click on the page and choose <strong>Inspect</strong>.
+          </p>
+          <p>
+            You can also use the keyboard shortcut:
+          </p>
+          <ul>
+            <li><strong>Windows / Chromebook:</strong> Ctrl + Shift + I</li>
+            <li><strong>Mac:</strong> Cmd + Option + I</li>
+          </ul>
+        </div>
+        <div class="step-card" data-step="3">
+          <h3>Step 3: Select an element</h3>
+
+          <p>
+            Click the selection tool in DevTools. It usually looks like an arrow inside a box.
+          </p>
+
+          <img 
+            class="step-icon" 
+            src="assets/select-tool.png" 
+            alt="DevTools selection tool icon"
+          />
+
+          <p>
+            Then click a heading, paragraph, button, image, or menu item on the website.
+          </p>
+        </div>
+
+        <div class="step-card" data-step="4">
+          <h3>Step 4: Change some text</h3>
+          <p>
+            In the <strong>Elements</strong> panel, double-click some visible text and change it.
+          </p>
+          <p class="example">
+            Example: change a heading to <strong>Welcome to my redesigned website</strong>.
+          </p>
+        </div>
+
+        <div class="step-card" data-step="5">
+          <h3>Step 5: Change the colour</h3>
+          <p>
+            In the <strong>Styles</strong> panel, find or add a CSS colour rule.
+          </p>
+          <p>
+            Try changing:
+          </p>
+          <pre><code>color: red;</code></pre>
+          <p>
+            or:
+          </p>
+          <pre><code>background-color: yellow;</code></pre>
+        </div>
+
+        <div class="step-card" data-step="6">
+          <h3>Step 6: Change the font size</h3>
+          <p>
+            In the <strong>Styles</strong> panel, try adding:
+          </p>
+          <pre><code>font-size: 40px;</code></pre>
+          <p>
+            Watch what happens to the selected element.
+          </p>
+        </div>
+
+        <div class="step-card" data-step="7">
+          <h3>Step 7: Change spacing</h3>
+          <p>
+            Try adding one of these CSS rules:
+          </p>
+          <pre><code>padding: 20px;</code></pre>
+          <pre><code>margin: 30px;</code></pre>
+          <p>
+            Notice how the element moves or gets more space around it.
+          </p>
+        </div>
+
+        <div class="step-card" data-step="8">
+          <h3>Step 8: Take a screenshot</h3>
+          <p>
+            Take a screenshot of your changed website.
+          </p>
+          <p>
+            Remember: DevTools changes are temporary. If you refresh the page, your changes disappear.
+          </p>
+        </div>
+      </section>
+
+      <!-- RIGHT SIDE: TASK CARD -->
+      <aside class="panel task-panel">
+        <h2>Your mission</h2>
+
+        <p>
+          Make at least <strong>four temporary changes</strong> to your chosen website.
+        </p>
+
+        <form class="checklist" id="checklist">
+          <label>
+            <input type="checkbox" />
+            I opened a website.
+          </label>
+
+          <label>
+            <input type="checkbox" />
+            I opened DevTools.
+          </label>
+
+          <label>
+            <input type="checkbox" />
+            I selected an element.
+          </label>
+
+          <label>
+            <input type="checkbox" />
+            I changed some text.
+          </label>
+
+          <label>
+            <input type="checkbox" />
+            I changed a colour.
+          </label>
+
+          <label>
+            <input type="checkbox" />
+            I changed the font size.
+          </label>
+
+          <label>
+            <input type="checkbox" />
+            I changed spacing.
+          </label>
+
+          <label>
+            <input type="checkbox" />
+            I took a screenshot.
+          </label>
+        </form>
+
+        <div class="progress-box">
+          <p id="progressText">0 of 8 tasks completed</p>
+          <div class="progress-bar">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+        </div>
+
+        <div class="mini-demo">
+          <h3>Try these CSS edits</h3>
+
+          <button class="demo-button" id="colourButton" type="button">
+            Show colour examples
+          </button>
+
+          <div class="css-examples" id="cssExamples">
+            <pre><code>color: blue;</code></pre>
+            <pre><code>background-color: pink;</code></pre>
+            <pre><code>font-size: 36px;</code></pre>
+            <pre><code>border: 3px solid green;</code></pre>
+            <pre><code>padding: 20px;</code></pre>
+          </div>
+        </div>
+
+        <div class="buttons">
+          <a class="main-button" href="../../index.html">Back to Practice Hub</a>
+        </div>
+      </aside>
+    </section>
+
+    <section class="reflection-panel">
+      <h2>Reflection questions</h2>
+
+      <ol>
+        <li>What website did you choose?</li>
+        <li>Which element did you inspect first?</li>
+        <li>What text did you change?</li>
+        <li>Which CSS change made the biggest visual difference?</li>
+        <li>What happened when you refreshed the page?</li>
+      </ol>
+    </section>
+
+        <div class="padlet-section">
+      <a class="padlet-button" href="YOUR_PADLET_LINK_HERE" target="_blank">
+        Open Padlet
+      </a>
+    </div>
+
+  </main>
+
+  <script src="html-css-1-devtools.js"></script>
+</body>
+</html>

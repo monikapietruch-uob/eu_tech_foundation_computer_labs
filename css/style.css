@@ -1,0 +1,353 @@
+/*
+  css/style.css — the one stylesheet for every page of the Practice Hub.
+  Holds the fonts, the UoB colours, the shared header/nav/footer, and the
+  card layouts used on the hub and section pages. Individual exercises in
+  exercises/ have their own small stylesheets and do not load this one.
+  Note: url() paths in here are relative to THIS file, so fonts and assets
+  are reached with "../".
+*/
+
+/* ── Fonts ── */
+@font-face {
+  font-family: "Bebas Neue";
+  src: url("../fonts/BebasNeue-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ite Body";
+  src: url("../fonts/lte50136.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: "Ite Body";
+  src: url("../fonts/lte50138.ttf") format("truetype");
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ── Reset & base ── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  font-family: "Ite Body", Arial, sans-serif;
+  background: #f5f7fa;
+  color: #1a1a2e;
+  line-height: 1.6;
+}
+
+/* ── Headings ── */
+h1, h2, h3, h4 {
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+}
+
+.container {
+  width: 100%;
+  max-width: none;
+  margin: 0;
+  padding: 0 2rem;
+}
+
+/* ── Keyboard focus ── */
+a:focus-visible,
+button:focus-visible {
+  outline: 3px solid #1a1a2e;
+  outline-offset: 2px;
+}
+
+/* ── Header ── */
+header {
+  background-image: url("../assets/banner.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: #000;
+  height: 254px;
+  padding: 0;
+}
+
+main h1 {
+  font-size: 2rem;
+  letter-spacing: -0.5px;
+  text-align: center;
+  margin-top: 2rem;
+}
+
+.page-intro {
+  text-align: center;
+  color: #555;
+  max-width: 60ch;
+  margin: 0.5rem auto 0;
+}
+
+/* ── Nav ── */
+nav {
+  background: #C8102E;
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+nav .container {
+  display: flex;
+  gap: 0;
+  flex-wrap: wrap;
+}
+
+nav a {
+  color: #FFFFFF;
+  text-decoration: none;
+  padding: 0.85rem 1.25rem;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s, color 0.15s;
+}
+
+nav a:hover {
+  background: #800029;
+  color: #fff;
+}
+
+/* The page the student is on now */
+nav a[aria-current="page"] {
+  background: #1a1a2e;
+  color: #fff;
+  box-shadow: inset 0 -4px 0 #fff;
+}
+
+nav a:focus-visible {
+  outline-color: #fff;
+  outline-offset: -3px;
+}
+
+/* ── Sections ── */
+section {
+  padding: 3rem 0;
+  border-bottom: 1px solid #e0e4ef;
+}
+
+section:last-child { border-bottom: none; }
+
+section h2 {
+  font-size: 1.6rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a2e;
+}
+
+section > p {
+  color: #555;
+  margin-bottom: 1.5rem;
+}
+
+/* ── Cards ── */
+.card {
+  background: #fff;
+  border-radius: 10px;
+  padding: 1.5rem;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.07);
+  margin-bottom: 1.5rem;
+}
+
+.card h3 {
+  font-size: 1.1rem;
+  margin-bottom: 0.5rem;
+  color: #1a1a2e;
+}
+
+.card p {
+  color: #555;
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.card iframe {
+  border-radius: 6px;
+  display: block;
+  margin-bottom: 0.75rem;
+}
+
+.hint {
+  font-size: 0.85rem !important;
+  color: #888 !important;
+  margin-bottom: 0 !important;
+}
+
+/* ── Card grid ── */
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1rem;
+}
+
+/* Four wide cards for the hub page sections */
+.card-grid.sections {
+  grid-template-columns: repeat(4, 1fr);
+}
+
+.card.small {
+  margin-bottom: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.card.small p {
+  flex: 1;
+}
+
+.card .week-label {
+  flex: 0 0 auto; /* the week label must not stretch like the description does */
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  color: #C8102E;
+  margin-bottom: 0.25rem;
+}
+
+/* ── Placeholder for a section that is not built yet ── */
+.editor-placeholder {
+  background: #fff;
+  border: 2px dashed #c8d0e8;
+  border-radius: 10px;
+  padding: 2rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.editor-placeholder h4 {
+  font-size: 1.2rem;
+  color: #0f3460;
+  margin-bottom: 0.5rem;
+}
+
+.editor-placeholder p {
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+.editor-preview {
+  background: #d3d3d6;
+  border-radius: 8px;
+  min-height: 400px;
+  margin-bottom: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 2rem;
+}
+
+.editor-preview-icon {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 1.25rem;
+}
+
+.editor-preview-icon .screen {
+  width: 120px;
+  height: 80px;
+  border: 4px solid #5a5a66;
+  border-radius: 8px;
+  background: #ececef;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editor-preview-icon .tag-left {
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: 1.8rem;
+  color: #5a5a66;
+  letter-spacing: 1px;
+}
+
+.editor-preview-icon .stand {
+  width: 14px;
+  height: 22px;
+  background: #5a5a66;
+  margin-top: 4px;
+  border-radius: 2px;
+}
+
+.editor-preview-icon .base {
+  width: 70px;
+  height: 10px;
+  background: #5a5a66;
+  border-radius: 8px;
+  margin-top: 4px;
+}
+
+.editor-preview-text {
+  font-family: "Bebas Neue", Impact, sans-serif;
+  font-size: 1.2rem;
+  color: #1a1a2e;
+  margin-bottom: 0.4rem;
+  letter-spacing: 1px;
+}
+
+.editor-preview-subtext {
+  color: #555;
+  font-size: 0.95rem;
+  max-width: 420px;
+  margin-bottom: 0;
+}
+
+/* ── Buttons ── */
+.btn {
+  display: inline-block;
+  background: #C8102E;
+  color: #fff;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.9rem;
+  font-weight: 500;
+  transition: background 0.15s;
+  align-self: flex-start;
+}
+
+.btn:hover { background: #64A70B; }
+
+.btn.outline {
+  background: transparent;
+  border: 2px solid #64A70B;
+  color: #00594F;
+}
+
+.btn.outline:hover {
+  background: #64A70B;
+  color: #fff;
+}
+
+/* ── Footer ── */
+footer {
+  background: #C8102E;
+  color: #FFFFFF;
+  text-align: center;
+  padding: 1.5rem 0;
+  font-size: 0.9rem;
+}
+
+/* ── Responsive ── */
+@media (max-width: 1100px) {
+  .card-grid { grid-template-columns: repeat(3, 1fr); }
+  .card-grid.sections { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 600px) {
+  .container { padding: 0 1rem; }
+  header { height: 140px; }
+  nav a { padding: 0.75rem 0.9rem; font-size: 0.82rem; }
+  .card-grid,
+  .card-grid.sections { grid-template-columns: 1fr; }
+}
