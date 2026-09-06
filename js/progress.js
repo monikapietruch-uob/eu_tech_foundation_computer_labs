@@ -11,7 +11,9 @@
         "attempts": 3,                      how many times Run was pressed
         "firstPassedAt": "2026-09-21T10:12:00.000Z" | null,
         "lastCode": "def main(): ...",      restored when the task is reopened
-        "reflections": { "tried": "...", "word": "..." },
+        "reflections": { "tried": "...", "word": "...",
+                         "writing": "...", "writingPrompt": "..." },   the web tasks add a writing answer
+        "data": { ... },                    task-type state (the web tasks: HTML, ticks, answers…)
         "updatedAt": "..."
       }
     }
@@ -29,7 +31,9 @@
     markPassed(taskId, task)          status "passed", firstPassedAt if new
     saveCode(taskId, task, code)      debounced; use flushCode() before leaving
     flushCode()
-    saveReflection(taskId, task, key, text)   key is "tried" or "word"
+    saveReflection(taskId, task, key, text)   key is "tried", "word", "writing" or "writingPrompt"
+    saveData(taskId, task, patch)     debounced; merges patch into the task's data object
+    getData(taskId)                   -> the task's data object ({} if none)
     summary(index)                    -> [{week, title, done, total}]
     reflectionsAsText(index)          -> plain text for Padlet
     clearAll()
@@ -124,6 +128,33 @@ var Progress = (function () {
   window.addEventListener("beforeunload", flushCode);
   window.addEventListener("pagehide", flushCode);
 
+  var pendingData = null, pendingDataTimer = null;
+  function saveData(taskId, task, patch) {
+    if (pendingData && pendingData.taskId !== taskId) { flushData(); }
+    pendingData = pendingData || { taskId: taskId, task: task, patch: {} };
+    Object.keys(patch).forEach(function (k) { pendingData.patch[k] = patch[k]; });
+    clearTimeout(pendingDataTimer);
+    pendingDataTimer = setTimeout(flushData, DEBOUNCE_MS);
+  }
+
+  function flushData() {
+    clearTimeout(pendingDataTimer);
+    if (!pendingData) { return; }
+    var data = load(); var e = entryFor(data, pendingData.taskId, pendingData.task);
+    e.data = e.data || {};
+    Object.keys(pendingData.patch).forEach(function (k) { e.data[k] = pendingData.patch[k]; });
+    if (e.status !== "passed") { e.status = "started"; }
+    save(data);
+    pendingData = null;
+  }
+  window.addEventListener("beforeunload", flushData);
+  window.addEventListener("pagehide", flushData);
+
+  function getData(taskId) {
+    var e = load()[taskId];
+    return (e && e.data) ? JSON.parse(JSON.stringify(e.data)) : {};
+  }
+
   function saveReflection(taskId, task, key, textValue) {
     var data = load(); var e = entryFor(data, taskId, task);
     e.reflections[key] = String(textValue || "");
@@ -142,7 +173,8 @@ var Progress = (function () {
   }
 
   function hasReflection(e) {
-    return e && e.reflections && ((e.reflections.tried || "").trim() || (e.reflections.word || "").trim());
+    var r = e && e.reflections;
+    return r && ((r.tried || "").trim() || (r.word || "").trim() || (r.writing || "").trim());
   }
 
   // Plain text, in teaching order, only for tasks with something written.
@@ -168,6 +200,10 @@ var Progress = (function () {
       lines.push((e.reflections.tried || "").trim() || "(no answer yet)");
       lines.push("What is one word from this task you could now explain to a classmate?");
       lines.push((e.reflections.word || "").trim() || "(no answer yet)");
+      if ((e.reflections.writing || "").trim()) {
+        lines.push(e.reflections.writingPrompt || "My writing for this task:");
+        lines.push(e.reflections.writing.trim());
+      }
       lines.push("");
     });
     if (count === 0) { return ""; }
@@ -175,8 +211,8 @@ var Progress = (function () {
   }
 
   function clearAll() {
-    pending = null;
-    clearTimeout(pendingTimer);
+    pending = null; pendingData = null;
+    clearTimeout(pendingTimer); clearTimeout(pendingDataTimer);
     try { window.localStorage.removeItem(KEY); return true; } catch (e) { return false; }
   }
 
@@ -185,6 +221,7 @@ var Progress = (function () {
     markStarted: markStarted, recordAttempt: recordAttempt, markPassed: markPassed,
     saveCode: saveCode, flushCode: flushCode,
     saveReflection: saveReflection,
+    saveData: saveData, flushData: flushData, getData: getData,
     summary: summary, reflectionsAsText: reflectionsAsText,
     clearAll: clearAll,
     available: function () { return storageWorks; }

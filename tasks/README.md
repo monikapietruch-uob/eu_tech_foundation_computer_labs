@@ -12,6 +12,7 @@ tasks/
     w2-01.json
     ...
   karel/              type "karel" — a program that moves Karel; checked against a goal world
+  web/                types "html-editor", "inspect", "walkthrough", "summary" — weeks 6 to 8
 ```
 
 ## index.json
@@ -68,7 +69,7 @@ task list can be drawn without fetching every task file.
 |---|---|
 | `id` | unique; used in the page URL (`practice-python.html?task=console-w2-01`) |
 | `week` | the teaching week it belongs to |
-| `type` | `console` or `karel` |
+| `type` | `console`, `karel`, `html-editor`, `inspect`, `walkthrough` or `summary`. The index entry carries the same `type`, which decides which page the task opens on |
 | `concepts` | short tags shown on the task card and used for revision lists |
 | `brief` | what to make — this is the only instruction the student sees, so make it complete. Separate paragraphs with a blank line (`\n\n`). Wrap sample output in ``` fences on their own lines and it is shown as code |
 | `vocabulary` | terms with a one-line gloss; shown beside the brief |
@@ -190,3 +191,61 @@ trace; the whole program runs to the end (or to an error) inside the
 worker; then the page plays the trace back on the canvas at the speed the
 student chooses, with a step button. That is why an infinite loop costs a
 fraction of a second, not a frozen tab.
+
+## The web tasks (weeks 6 to 8)
+
+All four share `id`, `week`, `type`, `title`, `concepts`, `brief`,
+`vocabulary` and `hints`, and are rendered by `js/web-tasks.js` on
+`practice-web.html`.
+
+### `html-editor`
+
+```json
+"starterHtml": "<!DOCTYPE html>…", "starterCss": "body { … }",
+"checks": [
+  { "label": "There is exactly one h1", "kind": "count", "selector": "h1", "exact": 1 },
+  { "label": "At least three paragraphs", "kind": "count", "selector": "p", "min": 3 },
+  { "label": "The page has a title", "kind": "title" },
+  { "label": "The h1 is not black", "kind": "style", "selector": "h1", "property": "color", "notIn": ["rgb(0, 0, 0)"] },
+  { "label": "Text is at least 18px", "kind": "style", "selector": "p", "property": "font-size", "min": 18 }
+]
+```
+
+The checks run against the live preview every time it updates. `count`
+takes `exact`, `min` and/or `max`; `style` reads the computed style of the
+first matching element and takes `equals`, `notIn` (a list of values that
+fail) or `min` (numeric, in px); `title` passes when `<title>` is not
+empty. `solutionHtml` / `solutionCss` are for the teacher page.
+
+### `inspect`
+
+```json
+"sample": "samples/cafe-site.html",
+"problems": [
+  { "id": "alt", "label": "An image has no alt text", "why": "model answer shown after Reveal" },
+  { "id": "d1",  "label": "The page has no <title>", "decoy": true }
+]
+```
+
+The sample page must mark each real problem with `data-flaw="…"` so
+`samples/reveal.js` can outline it when the page is loaded with
+`?reveal=1`. Items with `"decoy": true` are not problems on that page;
+ticking one fails the check. Complete when every real problem is ticked
+with a sentence of at least four words and no decoy is ticked.
+
+### `walkthrough`
+
+`steps` (each `{term, title, text}` — the term is shown in bold inside
+the text), `matching` (each `{term, definition}`; definitions are shown in
+a fixed shuffled order with a dropdown of all terms) and `writingPrompt`.
+Complete when all matches are right and the writing has at least 15
+words. The writing is saved as a reflection and included in the Padlet
+export.
+
+### `summary`
+
+`text` (the passage), `noteFrame` (`[{key, label}]` inputs), `targetWords`,
+`minWords`, `maxWords` and `selfChecks` (a list of questions). Complete
+when the summary is within the word range, no run of eight or more words
+is copied from the text, and every self-check is ticked. The summary is
+saved as a reflection and included in the Padlet export.

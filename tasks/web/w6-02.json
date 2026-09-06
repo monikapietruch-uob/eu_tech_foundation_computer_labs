@@ -1,0 +1,65 @@
+{
+  "id": "web-w6-02",
+  "week": 6,
+  "type": "html-editor",
+  "title": "Links, images and lists",
+  "concepts": [
+    "link",
+    "attribute",
+    "alt text",
+    "list"
+  ],
+  "brief": "Some tags need extra information, called attributes: a link needs to know where it goes, an image needs to know which file to show and what it shows.\n\nAdd three things to the page: a link to the university website that opens in a new tab, alt text on the image, and a list of three meeting rules. The checklist shows what is still missing.",
+  "vocabulary": [
+    {
+      "term": "attribute",
+      "gloss": "extra information inside an opening tag, like href=\"…\" or alt=\"…\""
+    },
+    {
+      "term": "href",
+      "gloss": "the address a link goes to"
+    },
+    {
+      "term": "alt text",
+      "gloss": "words that describe an image, read aloud by screen readers and shown if the image fails to load"
+    },
+    {
+      "term": "ul / li",
+      "gloss": "an unordered (bullet) list, and one item in it"
+    }
+  ],
+  "starterHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Robotics Club</title>\n</head>\n<body>\n  <h1>Robotics Club</h1>\n  <p>We are part of the University of Bedfordshire.</p>\n\n  <img src=\"samples/img/gym.svg\" width=\"160\" height=\"120\" alt=\"\">\n\n  <h2>Meeting rules</h2>\n  <p>Be on time. Share the tools. Ask questions.</p>\n</body>\n</html>\n",
+  "starterCss": "body { font-family: Arial, sans-serif; padding: 1rem; }\nimg { border: 1px solid #ccc; }\n",
+  "checks": [
+    {
+      "label": "There is a link (a) whose href starts with https://",
+      "kind": "count",
+      "selector": "a[href^='https://']",
+      "min": 1
+    },
+    {
+      "label": "The link opens in a new tab (target=\"_blank\")",
+      "kind": "count",
+      "selector": "a[target='_blank']",
+      "min": 1
+    },
+    {
+      "label": "The image has alt text that is not empty",
+      "kind": "count",
+      "selector": "img[alt]:not([alt=''])",
+      "min": 1
+    },
+    {
+      "label": "There is a bullet list (ul) with at least three items (li)",
+      "kind": "count",
+      "selector": "ul > li",
+      "min": 3
+    }
+  ],
+  "hints": [
+    "A link looks like <a href=\"https://www.beds.ac.uk\">the university website</a>. Put it inside the first paragraph.",
+    "To open in a new tab, add a second attribute: target=\"_blank\". Attributes are separated by a space.",
+    "Replace the rules paragraph with <ul> <li>Be on time.</li> <li>Share the tools.</li> <li>Ask questions.</li> </ul>. And put words inside the empty alt=\"\" — say what the picture shows."
+  ],
+  "solutionHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Robotics Club</title>\n</head>\n<body>\n  <h1>Robotics Club</h1>\n  <p>We are part of the <a href=\"https://www.beds.ac.uk\" target=\"_blank\">University of Bedfordshire</a>.</p>\n\n  <img src=\"samples/img/gym.svg\" width=\"160\" height=\"120\" alt=\"A dumbbell\">\n\n  <h2>Meeting rules</h2>\n  <ul>\n    <li>Be on time.</li>\n    <li>Share the tools.</li>\n    <li>Ask questions.</li>\n  </ul>\n</body>\n</html>\n"
+}

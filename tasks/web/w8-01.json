@@ -1,0 +1,59 @@
+{
+  "id": "web-w8-01",
+  "week": 8,
+  "type": "summary",
+  "title": "Summarise: how HTTPS protects your data",
+  "concepts": [
+    "summarising",
+    "note-taking",
+    "HTTPS",
+    "encryption"
+  ],
+  "brief": "Read the text about HTTPS. Take notes in the frame: the main idea, the key words, and the examples you will leave out. Then write a summary of about 30 words in your own words.\n\nA good summary keeps the main idea, drops the examples, and does not copy sentences from the text. Use the self-check list before you finish.",
+  "vocabulary": [
+    {
+      "term": "summary",
+      "gloss": "a short version of a text that keeps only the main ideas"
+    },
+    {
+      "term": "main idea",
+      "gloss": "the one thing the text is really about"
+    },
+    {
+      "term": "paraphrase",
+      "gloss": "say the same thing in your own words"
+    },
+    {
+      "term": "encryption",
+      "gloss": "scrambling data so only the intended receiver can read it"
+    }
+  ],
+  "text": "When you open a website, your browser and the site's server send messages to each other across the internet. Those messages pass through many other computers on the way, and any of them could read the messages if they were sent as plain text. HTTPS solves this with encryption. Before any data is sent, the browser and the server agree on a secret key that only they know. Every message is then scrambled with that key, so a computer in the middle sees only meaningless characters. HTTPS also proves that the server really is the site it claims to be. That is why your browser shows a padlock: your password and your card number travel safely, to the real site.",
+  "noteFrame": [
+    {
+      "key": "main",
+      "label": "Main idea (one line)"
+    },
+    {
+      "key": "keywords",
+      "label": "Key words (3 to 5)"
+    },
+    {
+      "key": "drop",
+      "label": "Examples and details to leave out"
+    }
+  ],
+  "targetWords": 30,
+  "minWords": 20,
+  "maxWords": 40,
+  "selfChecks": [
+    "Did you include the main idea?",
+    "Did you use your own words?",
+    "Did you leave out the examples?"
+  ],
+  "hints": [
+    "The main idea is in the middle of the text: HTTPS uses encryption so that messages between browser and server cannot be read on the way.",
+    "The padlock, the password, the card number — these are examples. Leave them out of the summary.",
+    "Try starting with the term: HTTPS is… It encrypts… It also… — three short sentences are enough for 30 words."
+  ]
+}

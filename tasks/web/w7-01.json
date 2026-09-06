@@ -1,0 +1,106 @@
+{
+  "id": "web-w7-01",
+  "week": 7,
+  "type": "walkthrough",
+  "title": "What happens when you press Enter",
+  "concepts": [
+    "request",
+    "response",
+    "server",
+    "DNS",
+    "database",
+    "HTTPS"
+  ],
+  "brief": "You type an address and press Enter. Less than a second later a page appears. A lot happens in that second, and it involves several computers.\n\nType any address in the box, press Enter, and step through what happens. Then match the terms to their meanings, and explain one of them in your own words.",
+  "vocabulary": [
+    {
+      "term": "request",
+      "gloss": "a message from your browser asking a server for something"
+    },
+    {
+      "term": "response",
+      "gloss": "the server's reply: the page, or an error"
+    },
+    {
+      "term": "server",
+      "gloss": "a computer that waits for requests and sends back responses"
+    },
+    {
+      "term": "DNS",
+      "gloss": "the internet's phone book: it turns a name like beds.ac.uk into a number (an IP address)"
+    }
+  ],
+  "steps": [
+    {
+      "term": "browser",
+      "title": "Your browser reads the address",
+      "text": "The browser looks at the address you typed and works out which website you want and which page on it."
+    },
+    {
+      "term": "DNS",
+      "title": "DNS finds the server's number",
+      "text": "Computers find each other by number, not by name. The browser asks a DNS server: what is the number for this name?"
+    },
+    {
+      "term": "request",
+      "title": "The browser sends a request",
+      "text": "Now it knows where to go, the browser sends a request over the internet: please give me this page. With HTTPS, the request is encrypted so nobody on the way can read it."
+    },
+    {
+      "term": "server",
+      "title": "The server receives it",
+      "text": "The server is a computer that waits all day for requests. It reads yours and works out what to send back."
+    },
+    {
+      "term": "database",
+      "title": "The server asks its database",
+      "text": "Most pages are built from stored data: products, posts, your account. The server asks its database for what it needs and builds the page."
+    },
+    {
+      "term": "response",
+      "title": "The server sends a response",
+      "text": "The response carries the finished page (HTML, CSS, JavaScript) back to your browser, encrypted again with HTTPS."
+    },
+    {
+      "term": "render",
+      "title": "Your browser renders the page",
+      "text": "The browser reads the HTML, applies the CSS and runs the JavaScript, and draws the page on your screen. That is what you see."
+    }
+  ],
+  "matching": [
+    {
+      "term": "server",
+      "definition": "a computer that waits for requests and sends back responses"
+    },
+    {
+      "term": "request",
+      "definition": "a message from a browser asking for a page or some data"
+    },
+    {
+      "term": "response",
+      "definition": "the reply that carries the page back to the browser"
+    },
+    {
+      "term": "database",
+      "definition": "where a website keeps its stored information, like accounts and products"
+    },
+    {
+      "term": "HTTPS",
+      "definition": "the version of the web's protocol that encrypts what is sent, shown as a padlock"
+    },
+    {
+      "term": "authentication",
+      "definition": "checking who you are, for example with a password"
+    },
+    {
+      "term": "encryption",
+      "definition": "scrambling data so only the intended receiver can read it"
+    }
+  ],
+  "writingPrompt": "In two sentences, explain to someone who has never heard the word what a server does.",
+  "hints": [
+    "Each step has one key word in bold. Read the step, then find that word in the matching exercise.",
+    "Request and response are a pair: the browser sends one, the server sends the other. HTTPS is about keeping both private.",
+    "For the writing: start with what a server is (a computer that…), then say what it does when your browser asks for a page."
+  ]
+}

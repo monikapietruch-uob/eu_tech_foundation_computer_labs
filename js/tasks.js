@@ -6,7 +6,7 @@
 
     Tasks.loadIndex()          -> Promise<index>   the list of tasks by week
     Tasks.loadTask(id)         -> Promise<task>    one task's full file
-    Tasks.flatList(index)      -> [{id, file, title, week}] in teaching order
+    Tasks.flatList(index)      -> [{id, type, file, title, week}] in teaching order
     Tasks.neighbours(index,id) -> {prev, next}     entries either side of a task
     Tasks.runTests(task, code, {onTest})
                                -> Promise<{passed, total, results, aborted}>
@@ -51,7 +51,7 @@ var Tasks = (function () {
     var list = [];
     (index.weeks || []).forEach(function (week) {
       (week.tasks || []).forEach(function (entry) {
-        list.push({ id: entry.id, file: entry.file, title: entry.title, week: week.week });
+        list.push({ id: entry.id, type: entry.type, file: entry.file, title: entry.title, week: week.week });
       });
     });
     return list;

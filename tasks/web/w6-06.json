@@ -1,0 +1,76 @@
+{
+  "id": "web-w6-06",
+  "week": 6,
+  "type": "inspect",
+  "title": "Inspect this page: Riverside Library",
+  "concepts": [
+    "accessibility",
+    "DevTools",
+    "alt text",
+    "heading levels",
+    "contrast",
+    "label"
+  ],
+  "brief": "A library's website. Last one: find all five without using the hints.\n\nFive things on this page make it hard for some people to use. Find them. Tick each one you find and write one sentence saying why it matters for a real user. Not every item in the list is a real problem on this page, so look before you tick.\n\nTo look at the real HTML: right-click anything on the sample page and choose Inspect. The browser's developer tools open and show the tag under your mouse.",
+  "vocabulary": [
+    {
+      "term": "accessibility",
+      "gloss": "making a page usable by everyone, including people who use a screen reader, a keyboard only, or have low vision"
+    },
+    {
+      "term": "screen reader",
+      "gloss": "software that reads a page aloud for people who cannot see it"
+    },
+    {
+      "term": "DevTools",
+      "gloss": "the browser's developer tools; right-click and choose Inspect to see the HTML of any element"
+    },
+    {
+      "term": "label",
+      "gloss": "the text that tells you what a form box is for, connected to the box with <label>"
+    }
+  ],
+  "sample": "samples/library-site.html",
+  "problems": [
+    {
+      "id": "alt",
+      "label": "An image has no alt text",
+      "why": "Someone using a screen reader hears nothing for the picture, and if the image fails to load there is no text instead."
+    },
+    {
+      "id": "heading",
+      "label": "A heading jumps from h1 straight to h4",
+      "why": "Screen readers and outlines use heading levels like a contents page; a skipped level makes the structure confusing."
+    },
+    {
+      "id": "contrast",
+      "label": "Grey text on a grey background is hard to read",
+      "why": "Low contrast is hard for everyone, and impossible for many people with low vision or on a phone in sunlight."
+    },
+    {
+      "id": "divbutton",
+      "label": "A button is made from a <div>, not a <button>",
+      "why": "A div cannot be reached with the Tab key or pressed with Enter, so keyboard and screen-reader users cannot use it."
+    },
+    {
+      "id": "label",
+      "label": "A form input has no label",
+      "why": "Placeholder text disappears when you type and is not read reliably; a label says what the box is for."
+    },
+    {
+      "id": "d1",
+      "label": "The page uses no CSS at all",
+      "decoy": true
+    },
+    {
+      "id": "d2",
+      "label": "The opening hours are an image, not text",
+      "decoy": true
+    }
+  ],
+  "hints": [
+    "Start with what you can see: is any text hard to read? Then what you can hear: what would a screen reader say for the picture?",
+    "Right-click the big red button and choose Inspect. Is it a <button> or something else? Do the same for the box in the form.",
+    "Look at the headings in order: h1, then what comes next? Real problems on this page: 5. The other two items in the list are not true here."
+  ]
+}

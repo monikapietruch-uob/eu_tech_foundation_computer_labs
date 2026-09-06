@@ -7,32 +7,38 @@
         {
           "id": "karel-w2-01",
           "file": "karel/w2-01.json",
-          "title": "Move to the wall"
+          "title": "Move to the wall",
+          "type": "karel"
         },
         {
           "id": "karel-w2-02",
           "file": "karel/w2-02.json",
-          "title": "Carry the beeper to the corner"
+          "title": "Carry the beeper to the corner",
+          "type": "karel"
         },
         {
           "id": "console-w2-01",
           "file": "console/w2-01.json",
-          "title": "Say hello"
+          "title": "Say hello",
+          "type": "console"
         },
         {
           "id": "console-w2-02",
           "file": "console/w2-02.json",
-          "title": "A variable with your name"
+          "title": "A variable with your name",
+          "type": "console"
         },
         {
           "id": "console-w2-03",
           "file": "console/w2-03.json",
-          "title": "Add two numbers"
+          "title": "Add two numbers",
+          "type": "console"
         },
         {
           "id": "console-w2-04",
           "file": "console/w2-04.json",
-          "title": "What type is it?"
+          "title": "What type is it?",
+          "type": "console"
         }
       ]
     },
@@ -43,27 +49,32 @@
         {
           "id": "karel-w3-01",
           "file": "karel/w3-01.json",
-          "title": "Find the beeper, whatever the distance"
+          "title": "Find the beeper, whatever the distance",
+          "type": "karel"
         },
         {
           "id": "karel-w3-02",
           "file": "karel/w3-02.json",
-          "title": "Pick up every beeper"
+          "title": "Pick up every beeper",
+          "type": "karel"
         },
         {
           "id": "karel-w3-03",
           "file": "karel/w3-03.json",
-          "title": "Climb the stairs"
+          "title": "Climb the stairs",
+          "type": "karel"
         },
         {
           "id": "console-w3-01",
           "file": "console/w3-01.json",
-          "title": "The five times table"
+          "title": "The five times table",
+          "type": "console"
         },
         {
           "id": "console-w3-02",
           "file": "console/w3-02.json",
-          "title": "Pass or fail?"
+          "title": "Pass or fail?",
+          "type": "console"
         }
       ]
     },
@@ -74,7 +85,74 @@
         {
           "id": "karel-w4-01",
           "file": "karel/w4-01.json",
-          "title": "Tidy the whole room"
+          "title": "Tidy the whole room",
+          "type": "karel"
+        }
+      ]
+    },
+    {
+      "week": 6,
+      "title": "The frontend: HTML, CSS and accessibility",
+      "tasks": [
+        {
+          "id": "web-w6-01",
+          "type": "html-editor",
+          "file": "web/w6-01.json",
+          "title": "Page structure and headings"
+        },
+        {
+          "id": "web-w6-02",
+          "type": "html-editor",
+          "file": "web/w6-02.json",
+          "title": "Links, images and lists"
+        },
+        {
+          "id": "web-w6-03",
+          "type": "html-editor",
+          "file": "web/w6-03.json",
+          "title": "Basic CSS styling"
+        },
+        {
+          "id": "web-w6-04",
+          "type": "inspect",
+          "file": "web/w6-04.json",
+          "title": "Inspect this page: The Corner Cafe"
+        },
+        {
+          "id": "web-w6-05",
+          "type": "inspect",
+          "file": "web/w6-05.json",
+          "title": "Inspect this page: FitZone Gym"
+        },
+        {
+          "id": "web-w6-06",
+          "type": "inspect",
+          "file": "web/w6-06.json",
+          "title": "Inspect this page: Riverside Library"
+        }
+      ]
+    },
+    {
+      "week": 7,
+      "title": "The backend: servers, requests and HTTPS",
+      "tasks": [
+        {
+          "id": "web-w7-01",
+          "type": "walkthrough",
+          "file": "web/w7-01.json",
+          "title": "What happens when you press Enter"
+        }
+      ]
+    },
+    {
+      "week": 8,
+      "title": "Consolidation: summarising the web",
+      "tasks": [
+        {
+          "id": "web-w8-01",
+          "type": "summary",
+          "file": "web/w8-01.json",
+          "title": "Summarise: how HTTPS protects your data"
         }
       ]
     }

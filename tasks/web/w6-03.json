@@ -1,0 +1,75 @@
+{
+  "id": "web-w6-03",
+  "week": 6,
+  "type": "html-editor",
+  "title": "Basic CSS styling",
+  "concepts": [
+    "CSS",
+    "selector",
+    "property",
+    "value",
+    "contrast"
+  ],
+  "brief": "HTML says what things are. CSS says how they look. A CSS rule has a selector (which elements), then properties and values inside curly brackets.\n\nThe page is correct but plain. In the CSS box, give the page a background colour, make the h1 a different colour from the text, and make the paragraphs easier to read: at least 18px, with more space between lines.\n\nKeep the text easy to read — dark text on a light background, or light on dark.",
+  "vocabulary": [
+    {
+      "term": "selector",
+      "gloss": "the part of a rule that chooses elements: h1, p, body"
+    },
+    {
+      "term": "property",
+      "gloss": "what you are changing: color, background-color, font-size"
+    },
+    {
+      "term": "value",
+      "gloss": "what you change it to: red, #C8102E, 18px"
+    },
+    {
+      "term": "contrast",
+      "gloss": "the difference between text colour and background colour; low contrast is hard to read"
+    }
+  ],
+  "starterHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Robotics Club</title>\n</head>\n<body>\n  <h1>Robotics Club</h1>\n  <p>We meet every Tuesday at 5 pm in room B12. Everyone is welcome, even if you have never built a robot.</p>\n  <h2>What we do</h2>\n  <p>We build small robots, write the code that controls them, and enter a competition in spring.</p>\n</body>\n</html>\n",
+  "starterCss": "/* Write your CSS rules here. One rule looks like:\n\n   h1 {\n     color: red;\n   }\n*/\n\nbody {\n  font-family: Arial, sans-serif;\n  padding: 1rem;\n}\n",
+  "checks": [
+    {
+      "label": "The body has a background colour (not white)",
+      "kind": "style",
+      "selector": "body",
+      "property": "background-color",
+      "notIn": [
+        "rgba(0, 0, 0, 0)",
+        "rgb(255, 255, 255)"
+      ]
+    },
+    {
+      "label": "The h1 has a colour that is not the default black",
+      "kind": "style",
+      "selector": "h1",
+      "property": "color",
+      "notIn": [
+        "rgb(0, 0, 0)"
+      ]
+    },
+    {
+      "label": "Paragraph text is at least 18px",
+      "kind": "style",
+      "selector": "p",
+      "property": "font-size",
+      "min": 18
+    },
+    {
+      "label": "Paragraphs have line-height of at least 1.5 (about 27px for 18px text)",
+      "kind": "style",
+      "selector": "p",
+      "property": "line-height",
+      "min": 26
+    }
+  ],
+  "hints": [
+    "Add background-color: #f5f7fa; inside the body rule that is already there.",
+    "Add a new rule for h1 with color, for example h1 { color: #C8102E; }",
+    "Add a rule for p with two properties: p { font-size: 18px; line-height: 1.6; }"
+  ],
+  "solutionCss": "body {\n  font-family: Arial, sans-serif;\n  padding: 1rem;\n  background-color: #f5f7fa;\n}\n\nh1 {\n  color: #C8102E;\n}\n\np {\n  font-size: 18px;\n  line-height: 1.6;\n}\n"
+}

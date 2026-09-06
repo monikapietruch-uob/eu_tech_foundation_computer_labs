@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<!--
+  samples/cafe-site.html — a deliberately flawed page for the "Inspect this page"
+  task. It contains five problems for students to find (marked with
+  data-flaw so samples/reveal.js can highlight them with ?reveal=1):
+  an image with no alt text, a heading that jumps from h1 to h4, grey text
+  on grey, a "button" made from a div, and an input with no label.
+  Do not "fix" this file — the flaws are the point.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Corner Cafe</title>
+  <style>
+    body { font-family: Arial, sans-serif; margin: 0; color: #222; background: #fff; }
+    header { background: #1a1a2e; color: #fff; padding: 1.2rem 1.5rem; }
+    header h1 { margin: 0; font-size: 1.6rem; }
+    main { padding: 1.2rem 1.5rem; max-width: 700px; }
+    img { display: block; margin: 0.5rem 0 1rem; border-radius: 6px; }
+    h4 { margin: 1rem 0 0.4rem; font-size: 1.2rem; }
+    ul { padding-left: 1.2rem; }
+    .info { background: #d9d9d9; color: #9a9a9a; padding: 0.8rem 1rem; border-radius: 6px; margin: 1rem 0; }
+    .btn { display: inline-block; background: #C8102E; color: #fff; padding: 0.55rem 1.1rem; border-radius: 6px; cursor: pointer; margin: 0.5rem 0 1rem; }
+    form { margin-top: 1rem; }
+    input { padding: 0.45rem 0.6rem; border: 1px solid #aaa; border-radius: 4px; width: 60%; }
+    button { padding: 0.45rem 0.9rem; border: none; background: #1a1a2e; color: #fff; border-radius: 4px; }
+    footer { padding: 1rem 1.5rem; font-size: 0.85rem; color: #666; border-top: 1px solid #ddd; margin-top: 1.5rem; }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>The Corner Cafe</h1>
+  </header>
+  <main>
+    <p>Fresh coffee, home-made cakes and a quiet place to sit. Open every day from 7 am.</p>
+
+    <img src="img/coffee.svg" width="160" height="120" data-flaw="alt" />
+
+    <h4 data-flaw="heading">Today's specials</h4>
+    <ul>
+      <li>Flat white — £2.80</li>
+      <li>Carrot cake — £3.20</li>
+      <li>Soup of the day — £4.50</li>
+    </ul>
+
+    <p class="info" data-flaw="contrast">Our cafe is on the corner of Mill Road and Park Street, next to the library. There is bike parking outside and we are fully wheelchair accessible.</p>
+
+    <div class="btn" onclick="this.textContent='Thanks!'" data-flaw="divbutton">Order now</div>
+
+    <form onsubmit="return false">
+      <input type="text" placeholder="Your email for our newsletter" data-flaw="label" />
+      <button type="submit">Send</button>
+    </form>
+  </main>
+  <footer>The Corner Cafe · Luton</footer>
+  <script src="reveal.js"></script>
+</body>
+</html>

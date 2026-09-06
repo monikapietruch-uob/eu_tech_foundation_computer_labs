@@ -1,11 +1,12 @@
 /*
-  js/task-screen.js — drives the task page (practice-python.html).
+  js/task-screen.js — the Python side of the task page (practice-python.html).
 
-  It reads the task id from ?task= in the URL, loads the task list and the
-  task with js/tasks.js, fills in the brief / vocabulary / hints, manages
-  the code editor (Tab inserts spaces, line numbers in the gutter), and on
-  Run sends the program through every test case, showing the expected
-  output beside what the program actually printed.
+  The task list, brief, hints, verdict banner, reflections and Next link
+  are handled by js/task-shell.js; this file provides what is specific to
+  console and karel tasks: the code editor (Tab inserts spaces, line
+  numbers in the gutter), Run/Stop/Reset, and — on Run — either every test
+  case with expected output beside actual output (console), or Karel's
+  world with playback (karel).
 
   For "karel" tasks the right-hand column shows Karel's world instead of
   test results: Run sends the program to js/karel-api.py (inside the
@@ -16,137 +17,33 @@
 
   Code the student types is saved in this browser by js/progress.js (a
   moment after they stop typing) and restored when the task is reopened.
-  Passing a task records it there too, and shows two reflection questions
-  whose answers are saved the same way.
 */
 (function () {
   "use strict";
 
   var el = {};
-  ["taskNav", "taskWeek", "taskTitle", "taskConcepts", "taskText", "taskVocab",
-   "hintButton", "hintList", "code", "gutter", "runButton", "stopButton", "resetButton",
-   "statusDot", "statusText", "verdict", "stdout", "outputNote", "error", "explanation",
-   "details", "traceback", "tests", "next", "nextLink", "testsTitle", "testsIntro",
+  ["code", "gutter", "runButton", "stopButton", "resetButton",
+   "statusDot", "statusText", "stdout", "outputNote", "error", "explanation",
+   "details", "traceback", "tests", "testsTitle", "testsIntro",
    "karelPanel", "karelCanvas", "karelWorldName", "karelGoal", "karelSpeed",
-   "karelPlayPause", "karelStep", "karelReplay", "karelCounter",
-   "reflect", "reflectTried", "reflectWord", "reflectSaved", "copyReflections", "savedNote"]
+   "karelPlayPause", "karelStep", "karelReplay", "karelCounter"]
     .forEach(function (id) { el[id] = document.getElementById(id); });
 
-  var index = null;
-  var task = null;
-  var hintsShown = 0;
+  var task = null;             // the open task (also TaskShell.task)
   var codeThisVisit = {};      // taskId -> code, so switching tasks does not lose work
-  var doneThisVisit = {};      // taskId -> true when all tests passed
 
   // Karel: created the first time a karel task opens
   var karel = { renderer: null, player: null, runs: [], playing: -1 };
 
   // ------------------------------------------------------------ helpers
-  function text(node, value) { node.textContent = value; }
-
-  function clear(node) { while (node.firstChild) { node.removeChild(node.firstChild); } }
-
-  function make(tag, className, content) {
-    var node = document.createElement(tag);
-    if (className) { node.className = className; }
-    if (content != null) { node.textContent = content; }
-    return node;
-  }
-
-  function taskIdFromUrl() {
-    var params = new URLSearchParams(window.location.search);
-    return params.get("task");
-  }
-
-  function urlFor(id) {
-    return "practice-python.html?task=" + encodeURIComponent(id);
-  }
+  var text = TaskShell.text, clear = TaskShell.clear, make = TaskShell.make;
+  var showVerdict = TaskShell.showVerdict;
 
   // Show text such as "4 + 5 = 9\n" with the invisible characters visible,
   // so a missing newline or extra space is something the student can see.
   function visible(s) {
     if (s === "" || s == null) { return "(nothing)"; }
     return String(s).replace(/\r/g, "").replace(/\n/g, "↵\n");
-  }
-
-  // ------------------------------------------------------------ nav
-  function renderNav() {
-    clear(el.taskNav);
-    (index.weeks || []).forEach(function (week) {
-      var group = make("div", "task-week");
-      group.appendChild(make("h3", null, "Week " + week.week + " · " + week.title));
-      var list = make("ol", "task-list");
-      (week.tasks || []).forEach(function (entry) {
-        var item = make("li");
-        var link = make("a", null, entry.title);
-        link.href = urlFor(entry.id);
-        if (task && entry.id === task.id) { link.setAttribute("aria-current", "page"); }
-        var saved = Progress.get(entry.id);
-        if (doneThisVisit[entry.id] || (saved && saved.status === "passed")) { item.className = "done"; }
-        item.appendChild(link);
-        list.appendChild(item);
-      });
-      group.appendChild(list);
-      el.taskNav.appendChild(group);
-    });
-  }
-
-  // ------------------------------------------------------------ brief
-  function renderBrief() {
-    text(el.taskWeek, "Week " + task.week);
-    text(el.taskTitle, task.title);
-    document.title = task.title + " — Python practice";
-
-    clear(el.taskConcepts);
-    (task.concepts || []).forEach(function (c) {
-      el.taskConcepts.appendChild(make("span", "chip", c));
-    });
-
-    clear(el.taskText);
-    // The brief is plain text. Paragraphs are separated by a blank line, and
-    // a paragraph wrapped in ``` fences is shown as code (for sample output).
-    String(task.brief || "").split(/\n\n+/).forEach(function (para) {
-      var fenced = /^```\n?([\s\S]*?)\n?```$/.exec(para.trim());
-      if (fenced) {
-        el.taskText.appendChild(make("pre", "sample", fenced[1]));
-      } else {
-        el.taskText.appendChild(make("p", null, para));
-      }
-    });
-
-    clear(el.taskVocab);
-    if (task.vocabulary && task.vocabulary.length) {
-      el.taskVocab.appendChild(make("h3", null, "Words to know"));
-      var dl = make("dl");
-      task.vocabulary.forEach(function (v) {
-        dl.appendChild(make("dt", null, v.term));
-        dl.appendChild(make("dd", null, v.gloss));
-      });
-      el.taskVocab.appendChild(dl);
-    }
-
-    hintsShown = 0;
-    clear(el.hintList);
-    updateHintButton();
-  }
-
-  function updateHintButton() {
-    var total = (task.hints || []).length;
-    if (hintsShown >= total) {
-      text(el.hintButton, "No more hints");
-      el.hintButton.disabled = true;
-    } else {
-      text(el.hintButton, hintsShown === 0 ? "Show a hint (" + total + " available)" : "Show another hint (" + (total - hintsShown) + " left)");
-      el.hintButton.disabled = false;
-    }
-  }
-
-  function showHint() {
-    var hints = task.hints || [];
-    if (hintsShown >= hints.length) { return; }
-    el.hintList.appendChild(make("li", null, hints[hintsShown]));
-    hintsShown++;
-    updateHintButton();
   }
 
   // ------------------------------------------------------------ editor
@@ -190,13 +87,10 @@
 
   // ------------------------------------------------------------ results
   function clearResults() {
-    el.reflect.hidden = true;
-    el.verdict.hidden = true;
-    el.verdict.className = "verdict";
+    TaskShell.clearVerdict();
     text(el.stdout, "");
     text(el.outputNote, "");
     el.error.hidden = true;
-    el.next.hidden = true;
     clear(el.tests);
   }
 
@@ -207,12 +101,6 @@
   }
   // While Karel is being played back, the program has finished but Stop
   // still makes sense (it pauses playback), so keep it enabled then.
-
-  function showVerdict(kind, message) {
-    el.verdict.hidden = false;
-    el.verdict.className = "verdict " + kind;
-    text(el.verdict, message);
-  }
 
   function describeStdin(stdin) {
     if (!stdin || stdin.length === 0) { return "no input"; }
@@ -319,9 +207,8 @@
         el.details.open = false;
       }
       if (summary.passed === summary.total) {
-        taskPassed();
         showVerdict("good", "All " + summary.total + " tests passed. Well done!");
-        showNext();
+        taskPassed();
       } else {
         var failed = summary.total - summary.passed;
         showVerdict("bad", summary.passed + " of " + summary.total + " tests passed. Look at the " +
@@ -350,43 +237,7 @@
   }
 
   function taskPassed() {
-    doneThisVisit[task.id] = true;
-    Progress.markPassed(task.id, task);
-    renderNav();
-    showReflections();
-  }
-
-  function showReflections() {
-    var saved = Progress.get(task.id);
-    var r = (saved && saved.reflections) || {};
-    el.reflectTried.value = r.tried || "";
-    el.reflectWord.value = r.word || "";
-    text(el.reflectSaved, "");
-    el.reflect.hidden = false;
-  }
-
-  var reflectTimer = null;
-  function reflectionChanged() {
-    clearTimeout(reflectTimer);
-    text(el.reflectSaved, "Saving…");
-    reflectTimer = setTimeout(function () {
-      // Save both boxes every time, so a quick edit to one never loses the other.
-      Progress.saveReflection(task.id, task, "tried", el.reflectTried.value);
-      Progress.saveReflection(task.id, task, "word", el.reflectWord.value);
-      text(el.reflectSaved, Progress.available() ? "Saved in this browser." : "Could not save — this browser does not allow it.");
-    }, 400);
-  }
-
-  function showNext() {
-    var n = Tasks.neighbours(index, task.id);
-    el.next.hidden = false;
-    if (n.next) {
-      el.nextLink.href = urlFor(n.next.id);
-      text(el.nextLink, "Next task: " + n.next.title + " →");
-    } else {
-      el.nextLink.href = "index.html";
-      text(el.nextLink, "That was the last task. Back to the hub →");
-    }
+    TaskShell.taskPassed();
   }
 
   // ------------------------------------------------------------ status
@@ -398,37 +249,23 @@
     else { text(el.statusText, "Starting Python…"); }
   });
 
-  // ------------------------------------------------------------ load
-  function showLoadError(message) {
-    text(el.taskTitle, "Could not load this task");
-    clear(el.taskText);
-    el.taskText.appendChild(make("p", null, message));
-    var back = make("a", "btn outline", "Back to the task list");
-    back.href = "practice-python.html";
-    el.taskText.appendChild(back);
-    el.runButton.disabled = true;
-  }
-
-  function openTask(id) {
-    return Tasks.loadTask(id).then(function (t) {
-      task = t;
-      renderNav();
-      renderBrief();
-      var saved = Progress.get(task.id);
-      var restored = codeThisVisit[task.id] != null ? codeThisVisit[task.id]
-                   : (saved && saved.lastCode != null) ? saved.lastCode
-                   : (task.starterCode || "");
-      setCode(restored);
-      clearResults();
-      if (isKarel()) { setupKarel(); }
-      else {
-        el.karelPanel.hidden = true;
-        text(el.testsTitle, "Tests");
-        text(el.testsIntro, "Each test runs your whole program once. The task is complete when every test passes.");
-        text(el.stdout, "Press Run to see what your program prints.");
-        renderPendingTests();
-      }
-    });
+  // ------------------------------------------------------------ open a task
+  function renderTask(t) {
+    task = t;
+    var saved = Progress.get(task.id);
+    var restored = codeThisVisit[task.id] != null ? codeThisVisit[task.id]
+                 : (saved && saved.lastCode != null) ? saved.lastCode
+                 : (task.starterCode || "");
+    setCode(restored);
+    clearResults();
+    if (isKarel()) { setupKarel(); }
+    else {
+      el.karelPanel.hidden = true;
+      text(el.testsTitle, "Tests");
+      text(el.testsIntro, "Each test runs your whole program once. The task is complete when every test passes.");
+      text(el.stdout, "Press Run to see what your program prints.");
+      renderPendingTests();
+    }
   }
 
   // ------------------------------------------------------------ karel
@@ -634,10 +471,9 @@
     }
 
     if (allPassed) {
-      taskPassed();
       showVerdict("good", worlds.length > 2 ? "Karel did the job in all " + worlds.length + " worlds. Well done!"
         : worlds.length === 2 ? "Karel did the job in both worlds. Well done!" : "Karel did the job. Well done!");
-      showNext();
+      taskPassed();
     } else if (run.passed) {
       showVerdict("bad", "This world is fine, but another one is not. See the list below.");
     } else {
@@ -646,19 +482,6 @@
     }
   }
 
-  Tasks.loadIndex().then(function (idx) {
-    index = idx;
-    var wanted = taskIdFromUrl();
-    var list = Tasks.flatList(index);
-    var exists = list.some(function (e) { return e.id === wanted; });
-    if (!exists) { wanted = list.length ? list[0].id : null; }
-    if (!wanted) { showLoadError("There are no tasks in the list yet."); return; }
-    return openTask(wanted);
-  }).catch(function (err) {
-    showLoadError(err.message + " Check that the site is running from a web server (python3 -m http.server), not opened as a file.");
-  });
-
-  el.hintButton.addEventListener("click", showHint);
   el.runButton.addEventListener("click", run);
   el.stopButton.addEventListener("click", function () {
     if (Runner.isRunning) { Runner.stop(); }
@@ -673,15 +496,8 @@
       Progress.saveCode(task.id, task, el.code.value);
     }
   });
-  el.reflectTried.addEventListener("input", reflectionChanged);
-  el.reflectWord.addEventListener("input", reflectionChanged);
-  el.copyReflections.addEventListener("click", function () {
-    Reflections.copy(index, el.copyReflections);
-  });
-  if (!Progress.available()) {
-    text(el.savedNote, "This browser does not allow saving, so your work will be lost when you close the page. Copy your code somewhere safe.");
-  }
   el.code.addEventListener("scroll", function () { el.gutter.scrollTop = el.code.scrollTop; });
 
+  TaskShell.init({ types: ["console", "karel"], render: renderTask });
   Runner.warmUp();
 })();

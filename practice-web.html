@@ -1,9 +1,15 @@
 <!DOCTYPE html>
 <!--
-  practice-web.html — weeks 6 to 8. This is where the live HTML/CSS editor,
-  the "inspect this page" tasks and the request/response walkthrough will
-  live (stage 6). For now it links to the existing DevTools exercise in
-  exercises/html-css-1/. Header, nav and footer come from js/layout.js.
+  practice-web.html — weeks 6 to 8: how the web works. The same task shell
+  as the Python page (task list, brief, hints, verdict, reflections; see
+  js/task-shell.js) with the right-hand column filled by js/web-tasks.js
+  according to the task type:
+    html-editor  — HTML + CSS boxes with a live preview and a checklist
+    inspect      — a flawed sample page beside a checklist, with Reveal
+    walkthrough  — the request/response step-through, matching, writing
+    summary      — a text, a note-taking frame, a 30-word summary box
+  Progress and reflections are saved in this browser by js/progress.js.
+  Header, nav and footer come from js/layout.js.
 -->
 <html lang="en">
 <head>
@@ -22,31 +28,71 @@
     <h1>How the web works</h1>
     <p class="page-intro">Weeks 6 to 8. Look inside real web pages, then learn what happens between your browser and a server.</p>
 
-    <section id="tasks">
-      <h2>Tasks</h2>
-      <p>More tasks will appear here each week. Start with the DevTools makeover.</p>
+    <div class="task-layout" id="taskLayout">
 
-      <div class="card-grid">
-        <div class="card small">
-          <p class="week-label">Week 6</p>
-          <h3>DevTools Website Makeover</h3>
-          <p>Open a website and change its text, colours and spacing using the browser's developer tools.</p>
-          <a class="btn" href="exercises/html-css-1/html-css-1-devtools.html">Open exercise</a>
+      <!-- LEFT: task list and the task itself (owned by js/task-shell.js) -->
+      <aside class="task-side">
+        <nav class="task-nav" aria-label="Tasks">
+          <h2 class="task-nav-title">Tasks</h2>
+          <div id="taskNav">
+            <p class="muted">Loading the task list…</p>
+          </div>
+          <div class="task-nav-extra">
+            <h3>Also try</h3>
+            <a href="exercises/html-css-1/html-css-1-devtools.html">DevTools Website Makeover</a>
+          </div>
+        </nav>
+
+        <section class="task-brief" id="taskBrief" aria-live="polite">
+          <p class="week-label" id="taskWeek"></p>
+          <h2 id="taskTitle">Loading…</h2>
+          <div class="concepts" id="taskConcepts"></div>
+          <div class="brief-text" id="taskText"></div>
+          <div class="vocab" id="taskVocab"></div>
+          <div class="hints">
+            <button type="button" class="btn outline" id="hintButton">Show a hint</button>
+            <ol class="hint-list" id="hintList"></ol>
+          </div>
+        </section>
+      </aside>
+
+      <!-- RIGHT: the task area (filled by js/web-tasks.js) -->
+      <section class="task-work">
+        <div id="webArea" class="web-area">
+          <p class="muted">Loading…</p>
         </div>
-      </div>
-    </section>
 
-    <section>
-      <div class="editor-placeholder">
-        <h4>More coming soon</h4>
-        <p>The live HTML editor and the other web tasks are not ready yet. Your teacher will tell you when to use them.</p>
-        <a class="btn outline" href="index.html">Back to the hub</a>
-      </div>
-    </section>
+        <p class="saved-note" id="savedNote">Your work is saved only in this browser, on this computer.</p>
+
+        <div class="verdict" id="verdict" hidden></div>
+
+        <section class="reflect" id="reflect" hidden>
+          <h3>Two questions about your learning</h3>
+          <p class="muted small">Your answers are saved in this browser. Later, use “Copy my reflections” to paste them into Padlet.</p>
+          <label for="reflectTried">What did you try first, and what happened?</label>
+          <textarea id="reflectTried" rows="3"></textarea>
+          <label for="reflectWord">What is one word from this task you could now explain to a classmate?</label>
+          <textarea id="reflectWord" rows="2"></textarea>
+          <div class="reflect-foot">
+            <span class="muted small" id="reflectSaved"></span>
+            <button type="button" class="btn outline small-btn" id="copyReflections">Copy my reflections</button>
+          </div>
+        </section>
+
+        <div class="next" id="next" hidden>
+          <a class="btn" id="nextLink" href="#">Next task</a>
+        </div>
+      </section>
+    </div>
   </main>
 
   <div data-layout="footer"></div>
 
   <script src="js/layout.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/reflections.js"></script>
+  <script src="js/task-shell.js"></script>
+  <script src="js/web-tasks.js"></script>
 </body>
 </html>
