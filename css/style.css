@@ -56,6 +56,14 @@ h1, h2, h3, h4 {
   padding: 0 2rem;
 }
 
+/* ── Skip link (first Tab stop on every page) ── */
+.skip-link {
+  position: absolute; left: 1rem; top: -4rem; z-index: 20;
+  background: #1a1a2e; color: #fff; padding: 0.6rem 1rem; border-radius: 0 0 6px 6px;
+  text-decoration: none; font-weight: 700;
+}
+.skip-link:focus { top: 0; outline: 3px solid #C8102E; }
+
 /* ── Keyboard focus ── */
 a:focus-visible,
 button:focus-visible {
@@ -64,13 +72,18 @@ button:focus-visible {
 }
 
 /* ── Header ── */
+/* The banner image is 861 x 128 px. It is shown at that height and never
+   scaled up, which is what made it look pixelated. A sharper (2x) export
+   of the same image, at least 1722 x 256, can replace assets/banner.png
+   with no CSS change: it will be drawn at 128 px tall and look crisp on
+   retina screens too. */
 header {
   background-image: url("../assets/banner.png");
-  background-size: contain;
+  background-size: auto 128px;
   background-repeat: no-repeat;
   background-position: center;
   background-color: #000;
-  height: 254px;
+  height: 160px;
   padding: 0;
 }
 
@@ -177,7 +190,7 @@ section > p {
 
 .hint {
   font-size: 0.85rem !important;
-  color: #888 !important;
+  color: #6b6b78 !important;
   margin-bottom: 0 !important;
 }
 
@@ -316,16 +329,16 @@ section > p {
   align-self: flex-start;
 }
 
-.btn:hover { background: #64A70B; }
+.btn:hover { background: #4a7c08; }
 
 .btn.outline {
   background: transparent;
-  border: 2px solid #64A70B;
+  border: 2px solid #4a7c08;
   color: #00594F;
 }
 
 .btn.outline:hover {
-  background: #64A70B;
+  background: #4a7c08;
   color: #fff;
 }
 
@@ -369,7 +382,8 @@ footer {
 }
 .task-list a:hover { background: #eef1f8; }
 .task-list a[aria-current="page"] { background: #1a1a2e; color: #fff; }
-.task-list li.done a::after { content: " ✓"; color: #64A70B; font-weight: 700; }
+.task-list a[aria-current="page"]:focus-visible { outline-color: #C8102E; }
+.task-list li.done a::after { content: " ✓"; color: #4a7c08; font-weight: 700; }
 .task-list li.done a[aria-current="page"]::after { color: #b6e07a; }
 .task-nav-extra { border-top: 1px solid #e0e4ef; margin-top: 0.9rem; padding-top: 0.6rem; }
 .task-nav-extra h3 { font-size: 0.95rem; letter-spacing: 1px; color: #555; margin-bottom: 0.25rem; }
@@ -410,7 +424,7 @@ footer {
 }
 .editor-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.4rem; }
 .editor-head label { font-weight: 700; font-size: 0.95rem; }
-.editor-hint { font-size: 0.8rem; color: #777; }
+.editor-hint { font-size: 0.8rem; color: #6b6b78; }
 
 .editor {
   display: grid; grid-template-columns: auto 1fr;
@@ -419,9 +433,10 @@ footer {
 .editor:focus-within { outline: 3px solid #1a1a2e; outline-offset: 1px; }
 .editor .gutter {
   margin: 0; padding: 0.6rem 0.5rem 0.6rem 0.75rem; text-align: right;
-  font: 0.95rem/1.5 "Menlo", "Consolas", monospace; color: #9aa0b4; background: #eef1f8;
+  font: 0.95rem/1.5 "Menlo", "Consolas", monospace; color: #5f6680; background: #eef1f8;
   user-select: none; overflow: hidden; min-width: 2.5rem;
 }
+.task-work.with-karel .editor textarea { min-height: 11rem; height: 12rem; }
 .editor textarea {
   width: 100%; min-height: 20rem; margin: 0; padding: 0.6rem 0.75rem; border: none; outline: none;
   font: 0.95rem/1.5 "Menlo", "Consolas", monospace; color: #1a1a2e; background: transparent;
@@ -430,14 +445,14 @@ footer {
 
 .controls { display: flex; align-items: center; gap: 0.6rem; margin-top: 0.9rem; flex-wrap: wrap; }
 .controls .btn { font: inherit; font-size: 0.95rem; border: none; cursor: pointer; }
-.controls .btn.outline { border: 2px solid #64A70B; }
+.controls .btn.outline { border: 2px solid #4a7c08; }
 .controls .btn:disabled { opacity: 0.45; cursor: not-allowed; }
 .controls .btn.stop { background: #1a1a2e; }
 .controls .btn.stop:hover:not(:disabled) { background: #000; }
 .runner-status { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; color: #555; margin-left: auto; }
 .runner-status .dot { width: 10px; height: 10px; border-radius: 50%; background: #aaa; flex: none; }
 .runner-status .dot.loading { background: #e0a100; animation: pulse 1s infinite alternate; }
-.runner-status .dot.ready { background: #64A70B; }
+.runner-status .dot.ready { background: #4a7c08; }
 .runner-status .dot.failed { background: #C8102E; }
 @keyframes pulse { from { opacity: 1; } to { opacity: 0.35; } }
 @media (prefers-reduced-motion: reduce) { .runner-status .dot { animation: none !important; } }
@@ -472,10 +487,10 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
   display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem;
   background: #eef1f8; color: #555; align-self: center;
 }
-.test.pass .test-status { background: #64A70B; color: #fff; }
+.test.pass .test-status { background: #4a7c08; color: #fff; }
 .test.fail .test-status { background: #C8102E; color: #fff; }
 .test-name { font-weight: 700; font-size: 0.95rem; }
-.test-stdin { font-family: "Menlo", "Consolas", monospace; font-size: 0.8rem; color: #777; }
+.test-stdin { font-family: "Menlo", "Consolas", monospace; font-size: 0.8rem; color: #6b6b78; }
 .test.pass { border-color: #9fcf62; }
 .test.fail { border-color: #e8a0a0; }
 .test.skipped { opacity: 0.6; }
@@ -487,7 +502,7 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
   font: 0.9rem/1.5 "Menlo", "Consolas", monospace; white-space: pre-wrap; word-break: break-word;
   background: #f3f4f8; padding: 0.5rem 0.7rem; border-radius: 6px; margin: 0; min-height: 2.5rem;
 }
-.diff-col:first-child pre { border-left: 4px solid #64A70B; }
+.diff-col:first-child pre { border-left: 4px solid #4a7c08; }
 .diff-col:last-child pre { border-left: 4px solid #C8102E; }
 
 .next { margin-top: 1.25rem; text-align: right; }
@@ -506,7 +521,7 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .progress-week { font-family: "Bebas Neue", Impact, sans-serif; letter-spacing: 1px; color: #C8102E; font-size: 0.95rem; }
 .progress-title { font-size: 0.85rem; color: #555; }
 .progress-bar { height: 10px; background: #e6e9f2; border-radius: 999px; overflow: hidden; }
-.progress-fill { height: 100%; background: #64A70B; border-radius: 999px; transition: width 0.3s; }
+.progress-fill { height: 100%; background: #4a7c08; border-radius: 999px; transition: width 0.3s; }
 .progress-row.complete .progress-fill { background: #00594F; }
 .progress-count { font-size: 0.9rem; font-variant-numeric: tabular-nums; white-space: nowrap; color: #1a1a2e; }
 @media (prefers-reduced-motion: reduce) { .progress-fill { transition: none; } }
@@ -516,11 +531,11 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .saved-action h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
 .saved-action p { font-size: 0.9rem; color: #555; margin-bottom: 0.75rem; }
 .saved-action .btn { font: inherit; font-size: 0.9rem; cursor: pointer; }
-.saved-action .btn.outline { border: 2px solid #64A70B; }
+.saved-action .btn.outline { border: 2px solid #4a7c08; }
 .confirm { margin-top: 0.75rem; padding: 0.75rem; background: #fdecec; border: 1px solid #e8a0a0; border-radius: 8px; }
 .confirm p { color: #8a1c1c; margin-bottom: 0.5rem; font-weight: 700; }
 .confirm .btn { margin-right: 0.4rem; }
-.btn.flash-good { background: #64A70B !important; color: #fff !important; border-color: #64A70B !important; }
+.btn.flash-good { background: #4a7c08 !important; color: #fff !important; border-color: #4a7c08 !important; }
 .btn.flash-bad { background: #C8102E !important; color: #fff !important; }
 .btn.flash-neutral { background: #1a1a2e !important; color: #fff !important; }
 
@@ -555,7 +570,7 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .checklist, .problems, .selfchecks { list-style: none; margin-top: 0.5rem; }
 .check { display: flex; align-items: baseline; gap: 0.6rem; padding: 0.45rem 0.7rem; border: 1px solid #e0e4ef; border-radius: 6px; margin-bottom: 0.4rem; font-size: 0.95rem; }
 .check-status { font-weight: 700; width: 1.4rem; height: 1.4rem; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 0.85rem; background: #eef1f8; color: #555; flex: none; align-self: center; }
-.check.pass { border-color: #9fcf62; } .check.pass .check-status { background: #64A70B; color: #fff; }
+.check.pass { border-color: #9fcf62; } .check.pass .check-status { background: #4a7c08; color: #fff; }
 .check.fail { border-color: #e8a0a0; } .check.fail .check-status { background: #C8102E; color: #fff; }
 
 /* inspect */
@@ -579,9 +594,9 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .url-row .btn { font: inherit; border: none; cursor: pointer; }
 .walk-diagram { list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 0.35rem; margin: 1rem 0; }
 .walk-node { background: #fff; border: 2px solid #e0e4ef; border-radius: 8px; padding: 0.4rem 0.3rem; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 0.15rem; font-size: 0.8rem; color: #555; transition: border-color 0.2s, background 0.2s; }
-.walk-node-num { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.1rem; color: #aaa; }
+.walk-node-num { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.1rem; color: #6b6b78; }
 .walk-node-term { font-family: "Menlo", "Consolas", monospace; font-size: 0.78rem; }
-.walk-node.done { border-color: #9fcf62; color: #2e5a06; } .walk-node.done .walk-node-num { color: #64A70B; }
+.walk-node.done { border-color: #9fcf62; color: #2e5a06; } .walk-node.done .walk-node-num { color: #4a7c08; }
 .walk-node.current { border-color: #C8102E; background: #1a1a2e; color: #fff; transform: scale(1.04); } .walk-node.current .walk-node-num { color: #ff8496; }
 @media (prefers-reduced-motion: reduce) { .walk-node { transition: none; transform: none !important; } }
 .walk-card { background: #fff; border: 1px solid #c8d0e8; border-left: 5px solid #C8102E; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
@@ -596,7 +611,7 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .walk-writing label, .summary-write label, .note-frame label { display: block; font-weight: 700; font-size: 0.92rem; margin: 0.6rem 0 0.3rem; }
 .walk-writing textarea, .summary-write textarea { width: 100%; font: inherit; font-size: 0.95rem; padding: 0.5rem 0.7rem; border: 1px solid #c8d0e8; border-radius: 6px; resize: vertical; }
 .walk-matching .btn, .walk-writing .btn, .summary-write .btn, .web-inspect .controls .btn { font: inherit; border: none; cursor: pointer; }
-.web-inspect .controls .btn.outline, .walk-card .btn.outline { border: 2px solid #64A70B; }
+.web-inspect .controls .btn.outline, .walk-card .btn.outline { border: 2px solid #4a7c08; }
 .walk-writing, .walk-matching { margin-top: 1.2rem; }
 
 /* summary */
@@ -626,12 +641,18 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .ai-log-wrap { margin-top: 0.6rem; }
 .ai-log-wrap summary { font-weight: 700; font-size: 0.95rem; cursor: pointer; }
 .ai-log { list-style: none; margin: 0.6rem 0; max-height: 22rem; overflow: auto; display: flex; flex-direction: column; gap: 0.5rem; }
-.ai-call { border: 1px solid #e0e4ef; border-left: 4px solid #64A70B; border-radius: 6px; padding: 0.5rem 0.8rem; font-size: 0.92rem; }
+.ai-call { border: 1px solid #e0e4ef; border-left: 4px solid #4a7c08; border-radius: 6px; padding: 0.5rem 0.8rem; font-size: 0.92rem; }
 .ai-call.failed { border-left-color: #C8102E; }
-.ai-call-head { font-size: 0.78rem; color: #777; font-variant-numeric: tabular-nums; margin-bottom: 0.2rem; }
+.ai-call-head { font-size: 0.78rem; color: #6b6b78; font-variant-numeric: tabular-nums; margin-bottom: 0.2rem; }
 .ai-q, .ai-a { margin: 0.15rem 0; white-space: pre-wrap; }
 .ai-a strong { color: #0f3460; }
 .ai-log-wrap .small-btn { margin-top: 0.2rem; }
+
+/* ── Python could not load ── */
+.py-fallback { background: #fdecec; border: 1px solid #e8a0a0; border-left: 5px solid #C8102E; border-radius: 6px; padding: 0.9rem 1.1rem; margin-top: 0.9rem; }
+.py-fallback h3 { font-size: 1.2rem; margin-bottom: 0.3rem; }
+.py-fallback p { margin-bottom: 0.5rem; font-size: 0.95rem; }
+.py-fallback .btn { font: inherit; cursor: pointer; margin-right: 0.5rem; }
 
 /* ── Karel's world ── */
 .karel-panel { margin-bottom: 1.1rem; }
@@ -662,7 +683,7 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 
 @media (max-width: 600px) {
   .container { padding: 0 1rem; }
-  header { height: 140px; }
+  header { height: 110px; background-size: auto 80px; }
   nav a { padding: 0.75rem 0.9rem; font-size: 0.82rem; }
   .card-grid,
   .card-grid.sections { grid-template-columns: 1fr; }

@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<!--
+  teachers.html — for the teacher, not linked from the nav. Lists every
+  task in tasks/index.json with its week, type, concepts, brief, tests or
+  worlds, hints and solution, so a session can be prepared quickly. Built
+  by js/teachers.js from the same JSON files the students use. Prints
+  cleanly (File > Print) — one week per page.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>For teachers — Tech Practice Hub</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="css/style.css" />
+  <style>
+    /* Page-only styles: a reading layout with solutions in code blocks. */
+    .teach { max-width: 960px; margin: 0 auto; padding-bottom: 3rem; }
+    .teach h1 { text-align: left; }
+    .teach .page-intro { text-align: left; margin: 0.25rem 0 1rem; }
+    .teach-controls { display: flex; gap: 0.6rem; flex-wrap: wrap; align-items: center; margin-bottom: 1.5rem; }
+    .teach-controls .btn { font: inherit; cursor: pointer; font-size: 0.9rem; }
+    .teach-week { margin: 2rem 0; break-before: page; }
+    .teach-week:first-of-type { break-before: auto; }
+    .teach-week h2 { font-size: 1.8rem; border-bottom: 2px solid #C8102E; padding-bottom: 0.2rem; }
+    .teach-task { background: #fff; border-radius: 10px; padding: 1rem 1.25rem; margin: 1rem 0; box-shadow: 0 2px 8px rgba(0,0,0,0.07); break-inside: avoid; }
+    .teach-task h3 { font-size: 1.35rem; margin-bottom: 0.2rem; }
+    .teach-meta { font-size: 0.85rem; color: #555; margin-bottom: 0.5rem; }
+    .teach-meta code { font-size: 0.8rem; }
+    .teach-task h4 { font-size: 0.95rem; letter-spacing: 1px; color: #555; margin: 0.9rem 0 0.3rem; }
+    .teach-task pre { font: 0.85rem/1.5 "Menlo", "Consolas", monospace; background: #f3f4f8; padding: 0.6rem 0.8rem; border-radius: 6px; white-space: pre-wrap; margin: 0; }
+    .teach-task pre.sol { background: #1a1a2e; color: #f5f7fa; }
+    .teach-task ol, .teach-task ul { padding-left: 1.3rem; font-size: 0.92rem; }
+    .teach-task .brief p { font-size: 0.92rem; margin-bottom: 0.4rem; }
+    .teach-task .decoy { color: #8a1c1c; }
+    .teach-link { font-size: 0.85rem; }
+    @media print {
+      nav, footer, header, .skip-link, .teach-controls { display: none !important; }
+      body { background: #fff; }
+      .teach-task { box-shadow: none; border: 1px solid #ccc; }
+      details { display: block; }
+    }
+  </style>
+</head>
+<body>
+
+  <div data-layout="header"></div>
+  <div data-layout="nav"></div>
+
+  <main class="container teach">
+    <h1>For teachers</h1>
+    <p class="page-intro">Every task on the site, with its brief, checks, hints and solution. This page is not linked from the menu. Print it for a session (one week per page).</p>
+    <div class="teach-controls">
+      <button type="button" class="btn outline" id="expandAll">Show all solutions</button>
+      <button type="button" class="btn outline" id="collapseAll">Hide all solutions</button>
+      <a class="btn" href="javascript:window.print()">Print</a>
+      <span class="muted small" id="teachCount"></span>
+    </div>
+    <div id="teachList"><p class="muted">Loading tasks…</p></div>
+  </main>
+
+  <div data-layout="footer"></div>
+
+  <script src="js/layout.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/teachers.js"></script>
+</body>
+</html>

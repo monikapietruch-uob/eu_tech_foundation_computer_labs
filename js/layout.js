@@ -28,7 +28,10 @@
   }
 
   function buildHeader() {
-    return '<header><div class="container"></div></header>';
+    // The skip link is the first Tab stop on every page: keyboard users
+    // jump straight past the banner and nav to the content.
+    return '<a class="skip-link" href="#main">Skip to the content</a>' +
+           '<header><div class="container"></div></header>';
   }
 
   function buildNav() {
@@ -62,4 +65,7 @@
   inject("header", buildHeader());
   inject("nav", buildNav());
   inject("footer", buildFooter());
+
+  var main = document.querySelector("main");
+  if (main && !main.id) { main.id = "main"; main.setAttribute("tabindex", "-1"); }
 })();

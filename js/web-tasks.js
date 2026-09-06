@@ -75,6 +75,8 @@
     boxes.appendChild(cssBox.wrap);
     wrap.appendChild(boxes);
 
+    wrap.appendChild(el("p", "editor-hint", "Tab inserts 2 spaces. To leave a code box with the keyboard, press Escape, then Tab."));
+
     var previewHead = el("div", "web-preview-head");
     previewHead.appendChild(el("span", null, "Preview"));
     var reset = el("button", "btn outline small-btn", "Reset");

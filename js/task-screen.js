@@ -164,6 +164,7 @@
   var transcript = [];
 
   function isKarel() { return task && task.type === "karel"; }
+  var taskWork = document.querySelector(".task-work");
   // "ai" tasks are console tasks that may call call_gpt(); same screen.
 
   function run() {
@@ -242,13 +243,38 @@
   }
 
   // ------------------------------------------------------------ status
+  // If Python cannot load — a network filter blocking the files, an old
+  // browser, or a very slow connection — say so plainly and offer a way on.
+  var fallback = document.getElementById("pyFallback");
+  var slowTimer = null;
+  function showFallback(reason) {
+    if (!fallback) { return; }
+    fallback.hidden = false;
+    text(document.getElementById("pyFallbackWhy"), reason);
+    el.runButton.disabled = true;
+  }
   Runner.onStatus(function (s) {
     el.statusDot.className = "dot " + s.phase;
-    if (s.phase === "loading") { text(el.statusText, "Loading Python… the first time takes a few seconds."); }
-    else if (s.phase === "ready") { text(el.statusText, "Python is ready."); }
-    else if (s.phase === "failed") { text(el.statusText, "Python could not load. Reload the page, or tell your teacher."); }
-    else { text(el.statusText, "Starting Python…"); }
+    clearTimeout(slowTimer);
+    if (s.phase === "loading") {
+      text(el.statusText, "Loading Python… the first time takes a few seconds.");
+      slowTimer = setTimeout(function () {
+        if (Runner.status.phase === "loading") {
+          showFallback("Python is taking much longer than usual to load (more than 30 seconds). The network may be slow, or it may be blocking part of this site.");
+        }
+      }, 30000);
+    } else if (s.phase === "ready") {
+      text(el.statusText, "Python is ready.");
+      if (fallback) { fallback.hidden = true; el.runButton.disabled = false; }
+    } else if (s.phase === "failed") {
+      text(el.statusText, "Python could not load.");
+      showFallback("Python could not load in this browser. This usually means the network is blocking part of the site, or the browser is very old. " + (s.message ? "(Details: " + s.message + ")" : ""));
+    } else {
+      text(el.statusText, "Starting Python…");
+    }
   });
+  var retry = document.getElementById("pyFallbackRetry");
+  if (retry) { retry.addEventListener("click", function () { window.location.reload(); }); }
 
   // ------------------------------------------------------------ open a task
   function renderTask(t) {
@@ -259,6 +285,7 @@
                  : (task.starterCode || "");
     setCode(restored);
     clearResults();
+    if (taskWork) { taskWork.classList.toggle("with-karel", isKarel()); }
     if (isKarel()) { setupKarel(); }
     else {
       el.karelPanel.hidden = true;

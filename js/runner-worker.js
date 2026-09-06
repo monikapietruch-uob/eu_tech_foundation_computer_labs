@@ -170,9 +170,26 @@ function sendOutput(type, decoder, buffer) {
   return buffer.length;
 }
 
+async function probe(url, timeoutMs) {
+  var controller = new AbortController();
+  var timer = setTimeout(function () { controller.abort(); }, timeoutMs);
+  try {
+    // HEAD: checks the file is reachable without downloading 10 MB twice.
+    var res = await fetch(url, { method: "HEAD", signal: controller.signal });
+    if (!res.ok) { throw new Error("Python's files could not be downloaded (" + res.status + ")."); }
+  } catch (e) {
+    throw new Error("Python's files could not be downloaded from this site. The network may be blocking them.");
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
 async function boot() {
   try {
     post({ type: "status", phase: "loading", detail: "Loading Python " + PYODIDE_VERSION });
+    // Pyodide hangs quietly if one of its files cannot be downloaded, so
+    // fetch a small one first with a short timeout to fail fast and clearly.
+    await probe(PYODIDE_BASE + "pyodide.asm.wasm", 15000);
     var mod = await import(PYODIDE_BASE + "pyodide.mjs");
     pyodide = await mod.loadPyodide({ indexURL: PYODIDE_BASE });
     pyodide.setStdout({ write: function (buf) { return sendOutput("stdout", stdoutDecoder, buf); } });

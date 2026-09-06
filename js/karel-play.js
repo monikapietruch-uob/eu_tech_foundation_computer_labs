@@ -84,10 +84,17 @@ var KarelPlayer = (function () {
     return true;
   };
 
+  // People who ask their system for reduced motion get no animation: play
+  // jumps straight to the end state. The Step button still works.
+  function reducedMotion() {
+    try { return window.matchMedia("(prefers-reduced-motion: reduce)").matches; }
+    catch (e) { return false; }
+  }
+
   KarelPlayer.prototype.play = function () {
     var self = this;
     if (this.position >= this.trace.length) { this.emitDone(); return; }
-    if (this.speed === "instant") {
+    if (this.speed === "instant" || reducedMotion()) {
       while (this.position < this.trace.length - 1) {
         this.applyStep(this.trace[this.position]);
         this.position++;

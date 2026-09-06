@@ -104,6 +104,15 @@
           </span>
         </div>
         <p class="saved-note" id="savedNote">Your work is saved only in this browser, on this computer.</p>
+        <!-- Shown by js/task-screen.js only if Python cannot load -->
+        <div class="py-fallback" id="pyFallback" hidden role="alert">
+          <h3>Python could not start</h3>
+          <p id="pyFallbackWhy"></p>
+          <p>You can still do the task: copy your code into Trinket, a free Python editor in the browser, and run it there. Come back here when the network is working.</p>
+          <button type="button" class="btn" id="pyFallbackRetry">Try again</button>
+          <a class="btn outline" href="https://trinket.io/python3" target="_blank" rel="noopener">Open Trinket ↗</a>
+        </div>
+
 
         <div class="verdict" id="verdict" hidden></div>
 

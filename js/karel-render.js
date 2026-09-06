@@ -86,7 +86,10 @@ var KarelRenderer = (function () {
     }
     width = Math.max(200, width - 4);                   // 4 = the border drawn around the world
     var cols = this.world.cols, rows = this.world.rows;
-    var cell = Math.floor(Math.min(width / cols, MAX_HEIGHT / rows));
+    // On a small laptop keep the world to under half the window height so
+    // the editor below it stays in view.
+    var maxHeight = Math.min(MAX_HEIGHT, Math.max(180, Math.floor(window.innerHeight * 0.42)));
+    var cell = Math.floor(Math.min(width / cols, maxHeight / rows));
     cell = Math.max(cell, 22);
     this.cell = cell;
     var dpr = window.devicePixelRatio || 1;
