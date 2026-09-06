@@ -492,6 +492,53 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 
 .next { margin-top: 1.25rem; text-align: right; }
 
+/* ── Saved work, progress, reflections ── */
+.saved-note { font-size: 0.85rem; color: #666; margin: 0.6rem 0 0; }
+.saved-note::before { content: "🔒 "; }
+
+.progress-section h2, .saved-section h2 { margin-bottom: 0.25rem; }
+.progress-strip { display: flex; flex-direction: column; gap: 0.5rem; max-width: 720px; }
+.progress-row {
+  display: grid; grid-template-columns: minmax(180px, 260px) 1fr auto; gap: 1rem; align-items: center;
+  background: #fff; border-radius: 8px; padding: 0.6rem 0.9rem; box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.progress-label { display: flex; flex-direction: column; line-height: 1.3; }
+.progress-week { font-family: "Bebas Neue", Impact, sans-serif; letter-spacing: 1px; color: #C8102E; font-size: 0.95rem; }
+.progress-title { font-size: 0.85rem; color: #555; }
+.progress-bar { height: 10px; background: #e6e9f2; border-radius: 999px; overflow: hidden; }
+.progress-fill { height: 100%; background: #64A70B; border-radius: 999px; transition: width 0.3s; }
+.progress-row.complete .progress-fill { background: #00594F; }
+.progress-count { font-size: 0.9rem; font-variant-numeric: tabular-nums; white-space: nowrap; color: #1a1a2e; }
+@media (prefers-reduced-motion: reduce) { .progress-fill { transition: none; } }
+
+.saved-actions { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 1rem; max-width: 900px; }
+.saved-action { background: #fff; border-radius: 10px; padding: 1.1rem 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.07); }
+.saved-action h3 { font-size: 1.1rem; margin-bottom: 0.3rem; }
+.saved-action p { font-size: 0.9rem; color: #555; margin-bottom: 0.75rem; }
+.saved-action .btn { font: inherit; font-size: 0.9rem; cursor: pointer; }
+.saved-action .btn.outline { border: 2px solid #64A70B; }
+.confirm { margin-top: 0.75rem; padding: 0.75rem; background: #fdecec; border: 1px solid #e8a0a0; border-radius: 8px; }
+.confirm p { color: #8a1c1c; margin-bottom: 0.5rem; font-weight: 700; }
+.confirm .btn { margin-right: 0.4rem; }
+.btn.flash-good { background: #64A70B !important; color: #fff !important; border-color: #64A70B !important; }
+.btn.flash-bad { background: #C8102E !important; color: #fff !important; }
+.btn.flash-neutral { background: #1a1a2e !important; color: #fff !important; }
+
+.reflect { margin-top: 0.9rem; background: #fbfcff; border: 1px solid #c8d0e8; border-radius: 8px; padding: 0.9rem 1.1rem 1rem; }
+.reflect h3 { font-size: 1.15rem; margin-bottom: 0.2rem; }
+.reflect label { display: block; font-weight: 700; font-size: 0.92rem; margin: 0.7rem 0 0.3rem; }
+.reflect textarea {
+  width: 100%; font: inherit; font-size: 0.95rem; padding: 0.5rem 0.7rem; border: 1px solid #c8d0e8;
+  border-radius: 6px; background: #fff; color: #1a1a2e; resize: vertical;
+}
+.reflect textarea:focus-visible { outline: 3px solid #1a1a2e; outline-offset: 1px; }
+.reflect-foot { display: flex; justify-content: space-between; align-items: center; gap: 1rem; margin-top: 0.6rem; flex-wrap: wrap; }
+
+@media (max-width: 700px) {
+  .progress-row { grid-template-columns: 1fr; gap: 0.35rem; }
+  .saved-actions { grid-template-columns: 1fr; }
+}
+
 /* ── Karel's world ── */
 .karel-panel { margin-bottom: 1.1rem; }
 .karel-head { display: flex; justify-content: space-between; align-items: baseline; gap: 1rem; flex-wrap: wrap; margin-bottom: 0.4rem; }

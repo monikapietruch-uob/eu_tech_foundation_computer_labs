@@ -14,8 +14,10 @@
   js/karel-check.js. Tasks with several worlds are treated like tests:
   every world must pass.
 
-  Code the student types is kept in memory for this page visit only;
-  saving it between visits comes in stage 5 (progress).
+  Code the student types is saved in this browser by js/progress.js (a
+  moment after they stop typing) and restored when the task is reopened.
+  Passing a task records it there too, and shows two reflection questions
+  whose answers are saved the same way.
 */
 (function () {
   "use strict";
@@ -26,7 +28,8 @@
    "statusDot", "statusText", "verdict", "stdout", "outputNote", "error", "explanation",
    "details", "traceback", "tests", "next", "nextLink", "testsTitle", "testsIntro",
    "karelPanel", "karelCanvas", "karelWorldName", "karelGoal", "karelSpeed",
-   "karelPlayPause", "karelStep", "karelReplay", "karelCounter"]
+   "karelPlayPause", "karelStep", "karelReplay", "karelCounter",
+   "reflect", "reflectTried", "reflectWord", "reflectSaved", "copyReflections", "savedNote"]
     .forEach(function (id) { el[id] = document.getElementById(id); });
 
   var index = null;
@@ -78,7 +81,8 @@
         var link = make("a", null, entry.title);
         link.href = urlFor(entry.id);
         if (task && entry.id === task.id) { link.setAttribute("aria-current", "page"); }
-        if (doneThisVisit[entry.id]) { item.className = "done"; }
+        var saved = Progress.get(entry.id);
+        if (doneThisVisit[entry.id] || (saved && saved.status === "passed")) { item.className = "done"; }
         item.appendChild(link);
         list.appendChild(item);
       });
@@ -177,12 +181,16 @@
     if (el.code.value === task.starterCode) { return; }
     if (window.confirm("Put the starter code back? Your changes in this task will be lost.")) {
       setCode(task.starterCode || "");
+      codeThisVisit[task.id] = task.starterCode || "";
+      Progress.saveCode(task.id, task, task.starterCode || "");
+      Progress.flushCode();
       clearResults();
     }
   }
 
   // ------------------------------------------------------------ results
   function clearResults() {
+    el.reflect.hidden = true;
     el.verdict.hidden = true;
     el.verdict.className = "verdict";
     text(el.stdout, "");
@@ -281,6 +289,7 @@
     }
     var code = el.code.value;
     codeThisVisit[task.id] = code;
+    Progress.recordAttempt(task.id, task);
     var firstError = null;
 
     Tasks.runTests(task, code, {
@@ -310,8 +319,7 @@
         el.details.open = false;
       }
       if (summary.passed === summary.total) {
-        doneThisVisit[task.id] = true;
-        renderNav();
+        taskPassed();
         showVerdict("good", "All " + summary.total + " tests passed. Well done!");
         showNext();
       } else {
@@ -339,6 +347,34 @@
     }
     text(el.stdout, parts.join(""));
     text(el.outputNote, tests.length > 1 ? "one section for each test" : "");
+  }
+
+  function taskPassed() {
+    doneThisVisit[task.id] = true;
+    Progress.markPassed(task.id, task);
+    renderNav();
+    showReflections();
+  }
+
+  function showReflections() {
+    var saved = Progress.get(task.id);
+    var r = (saved && saved.reflections) || {};
+    el.reflectTried.value = r.tried || "";
+    el.reflectWord.value = r.word || "";
+    text(el.reflectSaved, "");
+    el.reflect.hidden = false;
+  }
+
+  var reflectTimer = null;
+  function reflectionChanged() {
+    clearTimeout(reflectTimer);
+    text(el.reflectSaved, "Saving…");
+    reflectTimer = setTimeout(function () {
+      // Save both boxes every time, so a quick edit to one never loses the other.
+      Progress.saveReflection(task.id, task, "tried", el.reflectTried.value);
+      Progress.saveReflection(task.id, task, "word", el.reflectWord.value);
+      text(el.reflectSaved, Progress.available() ? "Saved in this browser." : "Could not save — this browser does not allow it.");
+    }, 400);
   }
 
   function showNext() {
@@ -378,7 +414,11 @@
       task = t;
       renderNav();
       renderBrief();
-      setCode(codeThisVisit[task.id] != null ? codeThisVisit[task.id] : (task.starterCode || ""));
+      var saved = Progress.get(task.id);
+      var restored = codeThisVisit[task.id] != null ? codeThisVisit[task.id]
+                   : (saved && saved.lastCode != null) ? saved.lastCode
+                   : (task.starterCode || "");
+      setCode(restored);
       clearResults();
       if (isKarel()) { setupKarel(); }
       else {
@@ -515,6 +555,7 @@
     }
     var code = el.code.value;
     codeThisVisit[task.id] = code;
+    Progress.recordAttempt(task.id, task);
 
     function runWorld(i) {
       if (i >= worlds.length) { return Promise.resolve(); }
@@ -593,8 +634,7 @@
     }
 
     if (allPassed) {
-      doneThisVisit[task.id] = true;
-      renderNav();
+      taskPassed();
       showVerdict("good", worlds.length > 2 ? "Karel did the job in all " + worlds.length + " worlds. Well done!"
         : worlds.length === 2 ? "Karel did the job in both worlds. Well done!" : "Karel did the job. Well done!");
       showNext();
@@ -626,7 +666,21 @@
   });
   el.resetButton.addEventListener("click", resetCode);
   el.code.addEventListener("keydown", editorKeydown);
-  el.code.addEventListener("input", function () { updateGutter(); if (task) { codeThisVisit[task.id] = el.code.value; } });
+  el.code.addEventListener("input", function () {
+    updateGutter();
+    if (task) {
+      codeThisVisit[task.id] = el.code.value;
+      Progress.saveCode(task.id, task, el.code.value);
+    }
+  });
+  el.reflectTried.addEventListener("input", reflectionChanged);
+  el.reflectWord.addEventListener("input", reflectionChanged);
+  el.copyReflections.addEventListener("click", function () {
+    Reflections.copy(index, el.copyReflections);
+  });
+  if (!Progress.available()) {
+    text(el.savedNote, "This browser does not allow saving, so your work will be lost when you close the page. Copy your code somewhere safe.");
+  }
   el.code.addEventListener("scroll", function () { el.gutter.scrollTop = el.code.scrollTop; });
 
   Runner.warmUp();

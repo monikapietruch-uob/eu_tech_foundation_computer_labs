@@ -103,8 +103,23 @@
             <span id="statusText">Starting Python…</span>
           </span>
         </div>
+        <p class="saved-note" id="savedNote">Your work is saved only in this browser, on this computer.</p>
 
         <div class="verdict" id="verdict" hidden></div>
+
+        <!-- Reflection questions: shown after a task is passed -->
+        <section class="reflect" id="reflect" hidden>
+          <h3>Two questions about your learning</h3>
+          <p class="muted small">Your answers are saved in this browser. Later, use “Copy my reflections” to paste them into Padlet.</p>
+          <label for="reflectTried">What did you try first, and what happened?</label>
+          <textarea id="reflectTried" rows="3"></textarea>
+          <label for="reflectWord">What is one word from this task you could now explain to a classmate?</label>
+          <textarea id="reflectWord" rows="2"></textarea>
+          <div class="reflect-foot">
+            <span class="muted small" id="reflectSaved"></span>
+            <button type="button" class="btn outline small-btn" id="copyReflections">Copy my reflections</button>
+          </div>
+        </section>
 
         <div class="output-head">
           <span>Output</span>
@@ -136,6 +151,8 @@
   <script src="js/layout.js"></script>
   <script src="js/runner.js"></script>
   <script src="js/tasks.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/reflections.js"></script>
   <script src="js/karel-render.js"></script>
   <script src="js/karel-play.js"></script>
   <script src="js/karel-check.js"></script>

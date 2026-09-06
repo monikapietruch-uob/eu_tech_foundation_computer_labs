@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <!--
   index.html — the hub page. Students start here. It has one card for each
-  practice area (Python, the web, AI, extra games) plus the Resources list.
-  The header, nav and footer are added by js/layout.js.
+  practice area (Python, the web, AI, extra games), a "Your progress" strip
+  and a "Your saved work" area (js/hub.js, reading js/progress.js), plus the
+  Resources list. The header, nav and footer are added by js/layout.js.
 -->
 <html lang="en">
 <head>
@@ -20,6 +21,13 @@
   <main class="container">
     <h1>EU Foundation - Tech Practice Hub</h1>
     <p class="page-intro">Practise the words and ideas from class by writing real code. Choose a section to start.</p>
+
+    <!-- PROGRESS: filled in by js/hub.js from what is saved in this browser -->
+    <section id="progress" class="progress-section">
+      <h2>Your progress</h2>
+      <p id="progressIntro">Loading…</p>
+      <div class="progress-strip" id="progressStrip"></div>
+    </section>
 
     <!-- PRACTICE AREAS -->
     <section id="practice">
@@ -98,6 +106,30 @@
       </div>
     </section>
 
+    <!-- SAVED WORK: reflections export and clearing -->
+    <section id="saved" class="saved-section">
+      <h2>Your saved work</h2>
+      <p class="saved-note">Your work is saved only in this browser, on this computer. Nothing is sent anywhere.</p>
+      <div class="saved-actions">
+        <div class="saved-action">
+          <h3>Reflections for Padlet</h3>
+          <p>Copies the answers you wrote after each task, as plain text with the task titles as headings.</p>
+          <button type="button" class="btn" id="copyReflections">Copy my reflections</button>
+        </div>
+        <div class="saved-action">
+          <h3>Leaving a shared computer?</h3>
+          <p>This deletes your code, progress and reflections from this browser. Copy your reflections first.</p>
+          <button type="button" class="btn outline" id="clearWork">Clear my saved work</button>
+          <div class="confirm" id="clearConfirm" hidden>
+            <p>Are you sure? This cannot be undone.</p>
+            <button type="button" class="btn" id="clearYes">Yes, clear everything</button>
+            <button type="button" class="btn outline" id="clearNo">Cancel</button>
+          </div>
+          <p class="muted small" id="clearDone" role="status" aria-live="polite"></p>
+        </div>
+      </div>
+    </section>
+
     <!-- RESOURCES -->
     <section id="resources">
       <h2>Resources</h2>
@@ -126,5 +158,9 @@
   <div data-layout="footer"></div>
 
   <script src="js/layout.js"></script>
+  <script src="js/tasks.js"></script>
+  <script src="js/progress.js"></script>
+  <script src="js/reflections.js"></script>
+  <script src="js/hub.js"></script>
 </body>
 </html>
