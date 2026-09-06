@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+<!--
+  dev/runner-test.html — a test bench for the Python runner (stage 2).
+  This page is for the teacher, not for students, and is not linked from
+  the nav. It loads js/runner.js and lets you run code, supply input()
+  lines, press Stop, and see how errors are explained. If the presets on
+  this page behave correctly, the engine is working.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Runner test bench — Tech Practice Hub</title>
+  <link rel="icon" href="../assets/favicon.svg" type="image/svg+xml" />
+  <link rel="stylesheet" href="../css/style.css" />
+  <link rel="stylesheet" href="runner-test.css" />
+</head>
+<body>
+
+  <main class="container bench">
+    <h1>Python runner — test bench</h1>
+    <p class="page-intro">Dev page. Not linked from the site. Use it to prove the runner works before building on it.</p>
+
+    <div class="status" id="status" role="status" aria-live="polite">
+      <span class="dot" id="statusDot"></span>
+      <span id="statusText">Starting…</span>
+      <span class="status-note" id="statusNote"></span>
+    </div>
+
+    <div class="presets" aria-label="Presets">
+      <span class="presets-label">Presets:</span>
+      <button type="button" class="preset" data-preset="print">1 · Print</button>
+      <button type="button" class="preset" data-preset="input">2 · input()</button>
+      <button type="button" class="preset" data-preset="loop">3 · Infinite loop</button>
+      <span class="presets-sep" aria-hidden="true">|</span>
+      <span class="presets-label">Errors:</span>
+      <button type="button" class="preset" data-preset="nameerror">NameError</button>
+      <button type="button" class="preset" data-preset="forgotint">Forgot int()</button>
+      <button type="button" class="preset" data-preset="syntax">SyntaxError</button>
+      <button type="button" class="preset" data-preset="indent">Indentation</button>
+      <button type="button" class="preset" data-preset="noinput">Not enough input</button>
+      <button type="button" class="preset" data-preset="zero">Divide by 0</button>
+    </div>
+
+    <div class="bench-grid">
+      <section class="bench-panel">
+        <label for="code">Program</label>
+        <textarea id="code" spellcheck="false" rows="16"></textarea>
+
+        <label for="stdin">Lines for input(), one per line</label>
+        <textarea id="stdin" spellcheck="false" rows="3"></textarea>
+
+        <div class="controls">
+          <button type="button" class="btn" id="run">Run</button>
+          <button type="button" class="btn stop" id="stop" disabled>Stop</button>
+          <span class="control-hint">Ctrl/⌘ + Enter runs. Tab inserts 4 spaces.</span>
+        </div>
+      </section>
+
+      <section class="bench-panel">
+        <div class="output-head">
+          <span>Output</span>
+          <span class="timing" id="timing"></span>
+        </div>
+        <pre class="stdout" id="stdout" aria-live="polite"></pre>
+        <pre class="stderr" id="stderr" hidden></pre>
+
+        <div class="verdict" id="verdict" hidden></div>
+
+        <div class="error" id="error" hidden>
+          <p class="explanation" id="explanation"></p>
+          <details id="details">
+            <summary>Show the full Python error</summary>
+            <pre id="traceback"></pre>
+          </details>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <script src="../js/runner.js"></script>
+  <script>
+    (function () {
+      "use strict";
+
+      var PRESETS = {
+        print: {
+          code: [
+            "# Preset 1: printing",
+            "name = \"Karel\"",
+            "print(\"Hello,\", name)",
+            "for i in range(3):",
+            "    print(\"Line\", i + 1)",
+            "total = 2 + 3",
+            "print(f\"2 + 3 = {total}\")",
+            "print(\"No newline at the end\", end=\"\")"
+          ].join("\n"),
+          stdin: ""
+        },
+        input: {
+          code: [
+            "# Preset 2: input() reads the lines on the right, in order",
+            "name = input(\"What is your name? \")",
+            "a = int(input(\"First number: \"))",
+            "b = int(input(\"Second number: \"))",
+            "print(\"Hi\", name + \"!\", a, \"+\", b, \"=\", a + b)"
+          ].join("\n"),
+          stdin: "Monika\n4\n5"
+        },
+        loop: {
+          code: [
+            "# Preset 3: a loop that never ends.",
+            "# Press Stop, or wait 10 seconds for the time limit.",
+            "count = 0",
+            "while True:",
+            "    count = count + 1"
+          ].join("\n"),
+          stdin: ""
+        },
+        nameerror: {
+          code: [
+            "name = \"Karel\"",
+            "print(\"Hello\")",
+            "print(nmae)"
+          ].join("\n"),
+          stdin: ""
+        },
+        forgotint: {
+          code: [
+            "age = input(\"How old are you? \")",
+            "print(\"Next year you will be\", age + 1)"
+          ].join("\n"),
+          stdin: "20"
+        },
+        syntax: {
+          code: [
+            "print(\"Hello\")",
+            "print(\"Goodbye\"",
+            "print(\"Never printed\")"
+          ].join("\n"),
+          stdin: ""
+        },
+        indent: {
+          code: [
+            "for i in range(3):",
+            "print(i)"
+          ].join("\n"),
+          stdin: ""
+        },
+        noinput: {
+          code: [
+            "first = input(\"First: \")",
+            "second = input(\"Second: \")",
+            "print(first, second)"
+          ].join("\n"),
+          stdin: "only one line"
+        },
+        zero: {
+          code: [
+            "marks = 0",
+            "students = 0",
+            "average = marks / students",
+            "print(average)"
+          ].join("\n"),
+          stdin: ""
+        }
+      };
+
+      var el = {};
+      ["status", "statusDot", "statusText", "statusNote", "code", "stdin", "run", "stop",
+       "stdout", "stderr", "verdict", "error", "explanation", "details", "traceback", "timing"]
+        .forEach(function (id) { el[id] = document.getElementById(id); });
+
+      function loadPreset(name) {
+        var p = PRESETS[name];
+        el.code.value = p.code;
+        el.stdin.value = p.stdin;
+        clearOutput();
+      }
+
+      function clearOutput() {
+        el.stdout.textContent = "";
+        el.stderr.textContent = "";
+        el.stderr.hidden = true;
+        el.verdict.hidden = true;
+        el.verdict.className = "verdict";
+        el.error.hidden = true;
+        el.timing.textContent = "";
+      }
+
+      function showVerdict(kind, text) {
+        el.verdict.hidden = false;
+        el.verdict.className = "verdict " + kind;
+        el.verdict.textContent = text;
+      }
+
+      function setRunning(running) {
+        el.run.disabled = running;
+        el.stop.disabled = !running;
+        el.status.classList.toggle("running", running);
+      }
+
+      Runner.onStatus(function (s) {
+        el.statusDot.className = "dot " + s.phase;
+        if (s.phase === "loading") {
+          el.statusText.textContent = "Loading Python… " + (s.detail ? "(" + s.detail + ")" : "");
+          el.statusNote.textContent = "The first load takes a few seconds. It is faster after that.";
+        } else if (s.phase === "ready") {
+          el.statusText.textContent = "Python is ready. " + s.detail;
+          el.statusNote.textContent = "";
+        } else if (s.phase === "failed") {
+          el.statusText.textContent = "Python could not load.";
+          el.statusNote.textContent = s.message;
+        } else {
+          el.statusText.textContent = "Starting…";
+        }
+      });
+
+      function run() {
+        if (Runner.isRunning) { return; }
+        clearOutput();
+        setRunning(true);
+        var stdinLines = el.stdin.value === "" ? [] : el.stdin.value.split("\n");
+        if (Runner.status.phase !== "ready") {
+          showVerdict("wait", "Waiting for Python to finish loading…");
+        }
+        Runner.runPython({
+          code: el.code.value,
+          stdin: stdinLines,
+          onStdout: function (text) { el.stdout.textContent += text; },
+          onStderr: function (text) { el.stderr.hidden = false; el.stderr.textContent += text; }
+        }).then(function (result) {
+          setRunning(false);
+          el.timing.textContent = (result.durationMs / 1000).toFixed(2) + " s";
+          if (result.timedOut) {
+            showVerdict("bad", Runner.timeoutMessage(result.timeoutMs));
+          } else if (result.stopped) {
+            showVerdict("neutral", "Stopped. Python is restarting so it is ready for the next run.");
+          } else if (result.error) {
+            showVerdict("bad", "The program stopped with an error.");
+            el.error.hidden = false;
+            el.explanation.textContent = result.error.explanation;
+            el.traceback.textContent = result.error.traceback || (result.error.type + ": " + result.error.message);
+            el.details.open = false;
+          } else {
+            showVerdict("good", "Finished with no errors.");
+          }
+          if (result.truncated) {
+            el.stderr.hidden = false;
+          }
+        }, function (err) {
+          setRunning(false);
+          showVerdict("bad", err.message);
+        });
+      }
+
+      el.run.addEventListener("click", run);
+      el.stop.addEventListener("click", function () { Runner.stop(); });
+
+      document.querySelectorAll(".preset").forEach(function (button) {
+        button.addEventListener("click", function () { loadPreset(button.dataset.preset); });
+      });
+
+      // Tab inserts four spaces; Escape then Tab leaves the box (for keyboard users).
+      var escapePressed = false;
+      el.code.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") { escapePressed = true; return; }
+        if (e.key === "Tab" && !escapePressed) {
+          e.preventDefault();
+          var s = el.code.selectionStart, t = el.code.selectionEnd;
+          el.code.value = el.code.value.substring(0, s) + "    " + el.code.value.substring(t);
+          el.code.selectionStart = el.code.selectionEnd = s + 4;
+        }
+        if (e.key !== "Escape") { escapePressed = false; }
+        if ((e.ctrlKey || e.metaKey) && e.key === "Enter") { e.preventDefault(); run(); }
+      });
+
+      loadPreset("print");
+      Runner.warmUp();
+    })();
+  </script>
+</body>
+</html>
