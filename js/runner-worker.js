@@ -198,11 +198,11 @@ async function boot() {
     pyodide.runPython(PRELUDE);
     hubRun = pyodide.globals.get("_hub_run");
     // Karel lives in its own Python file so it stays readable.
-    var karelSource = await (await fetch(new URL("karel-api.py?v=3", self.location.href))).text();
+    var karelSource = await (await fetch(new URL("karel-api.py?v=4", self.location.href))).text();
     pyodide.runPython(karelSource);
     karelRun = pyodide.globals.get("_hub_run_karel");
     // call_gpt() for the AI task (week 9).
-    var aiSource = await (await fetch(new URL("ai-api.py?v=3", self.location.href))).text();
+    var aiSource = await (await fetch(new URL("ai-api.py?v=4", self.location.href))).text();
     pyodide.runPython(aiSource);
     if (pyodide.version !== PYODIDE_VERSION) {
       console.warn("Pyodide version mismatch: vendor/pyodide is " + pyodide.version + ", runner expects " + PYODIDE_VERSION);

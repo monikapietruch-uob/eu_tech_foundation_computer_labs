@@ -40,6 +40,10 @@ var TaskShell = (function () {
     console: "Python", karel: "Karel", ai: "AI",
     "html-editor": "HTML & CSS", inspect: "Inspect", walkthrough: "Web", summary: "Summary"
   };
+  var TYPE_ICON = {
+    console: "🐍", karel: "🤖", ai: "✨",
+    "html-editor": "🧱", inspect: "🔍", walkthrough: "🌐", summary: "✍️"
+  };
 
   var el = {};
   ["taskNav", "taskPicker", "taskPickerTitle", "taskPickerNote", "taskLayout", "taskWeek", "taskTitle", "taskConcepts", "taskText", "taskVocab",
@@ -95,13 +99,20 @@ var TaskShell = (function () {
         var done = doneThisVisit[entry.id] || (saved && saved.status === "passed");
         var started = !done && saved && saved.status === "started";
         if (task && entry.id === task.id) { link.setAttribute("aria-current", "page"); }
-        link.className = "tile" + (done ? " done" : started ? " started" : "");
+        var type = typeOf(entry);
+        link.className = "tile type-" + type + (done ? " done" : started ? " started" : "");
         var top = make("div", "tile-top");
         top.appendChild(make("span", "tile-num", String(i + 1)));
-        top.appendChild(make("span", "tile-type type-" + typeOf(entry), TYPE_LABEL[typeOf(entry)] || typeOf(entry)));
-        if (done) { var tick = make("span", "tile-tick", "✓"); tick.setAttribute("aria-label", "done"); top.appendChild(tick); }
+        top.appendChild(make("span", "tile-type", TYPE_LABEL[type] || type));
+        if (done) { var tick = make("span", "tile-tick", "✓ done"); tick.setAttribute("aria-label", "done"); top.appendChild(tick); }
+        else if (started) { var dot = make("span", "tile-tick started", "started"); top.appendChild(dot); }
         link.appendChild(top);
-        link.appendChild(make("span", "tile-title", entry.title));
+        var body = make("div", "tile-body");
+        var icon = make("span", "tile-icon", TYPE_ICON[type] || "");
+        icon.setAttribute("aria-hidden", "true");
+        body.appendChild(icon);
+        body.appendChild(make("span", "tile-title", entry.title));
+        link.appendChild(body);
         item.appendChild(link);
         grid.appendChild(item);
       });

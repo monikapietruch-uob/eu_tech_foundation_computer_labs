@@ -70,7 +70,7 @@ h1, h2, h3, h4 {
 /* ── Skip link (first Tab stop on every page) ── */
 .skip-link {
   position: absolute; left: 1rem; top: -4rem; z-index: 20;
-  background: #1a1a2e; color: #fff; padding: 0.6rem 1rem; border-radius: 0 0 6px 6px;
+  background: #4A7729; color: #fff; padding: 0.6rem 1rem; border-radius: 0 0 6px 6px;
   text-decoration: none; font-weight: 700;
 }
 .skip-link:focus { top: 0; outline: 3px solid #C8102E; }
@@ -143,9 +143,9 @@ nav a:hover {
 
 /* The page the student is on now */
 nav a[aria-current="page"] {
-  background: #1a1a2e;
+  background: #4A7729;
   color: #fff;
-  box-shadow: inset 0 -4px 0 #fff;
+  box-shadow: inset 0 -4px 0 #97D700;
 }
 
 nav a:focus-visible {
@@ -459,8 +459,8 @@ footer {
 .controls .btn { font: inherit; font-size: 0.95rem; border: none; cursor: pointer; }
 .controls .btn.outline { border: 2px solid #00594F; }
 .controls .btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.controls .btn.stop { background: #1a1a2e; }
-.controls .btn.stop:hover:not(:disabled) { background: #000; }
+.controls .btn.stop { background: #244C5A; }
+.controls .btn.stop:hover:not(:disabled) { background: #1a1a2e; color: #fff; }
 .runner-status { display: inline-flex; align-items: center; gap: 0.45rem; font-size: 0.85rem; color: #555; margin-left: auto; }
 .runner-status .dot { width: 10px; height: 10px; border-radius: 50%; background: #aaa; flex: none; }
 .runner-status .dot.loading { background: #FFB81C; animation: pulse 1s infinite alternate; }
@@ -528,8 +528,8 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 }
 .block-band { background: #C8102E; color: #fff; padding: 1.25rem 1.25rem; align-self: stretch; display: flex; flex-direction: column; justify-content: center; }
 .block-row:nth-child(2) .block-band { background: #00594F; }
-.block-row:nth-child(3) .block-band { background: #244C5A; }
-.block-row-extra .block-band { background: #1a1a2e; }
+.block-row:nth-child(3) .block-band { background: #004C97; }
+.block-row-extra .block-band { background: #4A7729; }
 .block-weeks { font-family: "Bebas Neue", Impact, sans-serif; letter-spacing: 1.5px; font-size: 0.95rem; opacity: 0.9; }
 .block-band h3 { font-size: 1.6rem; color: #fff; line-height: 1.1; }
 .block-body { padding: 1rem 0; }
@@ -553,36 +553,51 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .tile-week { margin: 1rem 0 0.5rem; }
 .tile-week h3 { font-size: 1.05rem; letter-spacing: 1.5px; color: #C8102E; margin-bottom: 0.5rem; }
 .tile-week-title { font-family: "Ite Body", Arial, sans-serif; letter-spacing: 0; font-size: 0.85rem; color: #244C5A; margin-left: 0.6rem; }
-.tile-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(190px, 1fr)); gap: 0.7rem; }
+.tile-grid { list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(176px, 1fr)); gap: 0.8rem; }
+
+/* Each type has a colour from the UoB palette: Karel teal, Python blue,
+   web green, AI red. The colour is the tile's top band and its icon disc. */
 .tile {
-  display: flex; flex-direction: column; gap: 0.35rem; min-height: 5.6rem;
-  background: #fff; border: 2px solid #e0e4ef; border-radius: 10px; padding: 0.7rem 0.85rem;
+  --tile: #244C5A; --tile-soft: #e6eef1;
+  display: flex; flex-direction: column; min-height: 6.4rem;
+  background: #fff; border: 2px solid var(--tile-soft); border-radius: 12px; overflow: hidden;
   text-decoration: none; color: #1a1a2e; box-shadow: 0 2px 8px rgba(0,0,0,0.06);
-  transition: border-color 0.15s, transform 0.15s;
+  transition: transform 0.15s, box-shadow 0.15s;
 }
-.tile:hover { border-color: #64A70B; transform: translateY(-2px); }
+.tile.type-karel       { --tile: #00594F; --tile-soft: #d9efeb; }
+.tile.type-console     { --tile: #004C97; --tile-soft: #dfe9f6; }
+.tile.type-ai          { --tile: #C8102E; --tile-soft: #f9e1e5; }
+.tile.type-html-editor, .tile.type-inspect, .tile.type-walkthrough, .tile.type-summary { --tile: #4A7729; --tile-soft: #e4f0da; }
+.tile:hover { transform: translateY(-3px); box-shadow: 0 8px 18px rgba(0,0,0,0.12); }
 .tile:focus-visible { outline: 3px solid #1a1a2e; outline-offset: 2px; }
-.tile[aria-current="page"] { border-color: #C8102E; background: #1a1a2e; color: #fff; }
-.tile.done { border-color: #4A7729; }
-.tile.started { border-color: #FFB81C; }
-.tile-top { display: flex; align-items: center; gap: 0.4rem; }
-.tile-num { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.15rem; color: #C8102E; }
-.tile[aria-current="page"] .tile-num { color: #FFB81C; }
-.tile-type { font-family: "Menlo", "Consolas", monospace; font-size: 0.68rem; letter-spacing: 0.3px; padding: 0.1rem 0.45rem; border-radius: 999px; background: #eef1f8; color: #244C5A; }
-.tile-type.type-karel { background: #d9f0ec; color: #00594F; }
-.tile-type.type-console { background: #e6f1f8; color: #004C97; }
-.tile-type.type-ai { background: #fbeced; color: #800029; }
-.tile-type.type-html-editor, .tile-type.type-inspect, .tile-type.type-walkthrough, .tile-type.type-summary { background: #eef7e4; color: #4A7729; }
-.tile[aria-current="page"] .tile-type { background: rgba(255,255,255,0.15); color: #fff; }
-.tile-tick { margin-left: auto; width: 1.25rem; height: 1.25rem; border-radius: 50%; background: #4A7729; color: #fff; font-size: 0.8rem; font-weight: 700; display: inline-flex; align-items: center; justify-content: center; }
+.tile-top {
+  display: flex; align-items: center; gap: 0.5rem;
+  background: var(--tile); color: #fff; padding: 0.35rem 0.7rem;
+}
+.tile-num { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.15rem; line-height: 1; }
+.tile-type { font-family: "Menlo", "Consolas", monospace; font-size: 0.68rem; letter-spacing: 0.3px; opacity: 0.95; }
+.tile-tick { margin-left: auto; font-size: 0.7rem; font-weight: 700; padding: 0.1rem 0.5rem; border-radius: 999px; background: #97D700; color: #1a1a2e; }
+.tile-tick.started { background: #FFB81C; }
+.tile-body { display: flex; align-items: center; gap: 0.6rem; padding: 0.6rem 0.7rem 0.7rem; flex: 1; }
+.tile-icon {
+  flex: none; width: 2.2rem; height: 2.2rem; border-radius: 50%;
+  background: var(--tile-soft); display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem;
+}
 .tile-title { font-size: 0.95rem; line-height: 1.3; }
+.tile[aria-current="page"] { border-color: var(--tile); background: var(--tile-soft); box-shadow: inset 0 0 0 1px var(--tile); }
+.tile.done { border-color: #97D700; }
+.tile.done .tile-body { background: #f3fbe6; }
 .task-picker.compact .tile-week { margin: 0.5rem 0 0.25rem; }
-.task-picker.compact .tile-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 0.45rem; }
-.task-picker.compact .tile { min-height: 0; padding: 0.45rem 0.65rem; gap: 0.15rem; }
+.task-picker.compact .tile-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 0.5rem; }
+.task-picker.compact .tile { min-height: 0; border-radius: 9px; }
+.task-picker.compact .tile-top { padding: 0.2rem 0.55rem; }
+.task-picker.compact .tile-body { padding: 0.4rem 0.55rem; gap: 0.45rem; }
+.task-picker.compact .tile-icon { width: 1.6rem; height: 1.6rem; font-size: 0.9rem; }
 .task-picker.compact .tile-title { font-size: 0.85rem; }
 .task-picker.compact .tile-week h3 { font-size: 0.95rem; }
 .task-picker .task-nav-extra { margin-top: 1rem; }
 .task-layout { margin-top: 1.5rem; }
+@media (prefers-reduced-motion: reduce) { .tile { transition: none; } .tile:hover { transform: none; } }
 
 /* ── Saved work, progress, reflections ── */
 .saved-note { font-size: 0.85rem; color: #666; margin: 0.6rem 0 0; }
@@ -614,7 +629,7 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .confirm .btn { margin-right: 0.4rem; }
 .btn.flash-good { background: #4A7729 !important; color: #fff !important; border-color: #4A7729 !important; }
 .btn.flash-bad { background: #C8102E !important; color: #fff !important; }
-.btn.flash-neutral { background: #1a1a2e !important; color: #fff !important; }
+.btn.flash-neutral { background: #4A7729 !important; color: #fff !important; }
 
 .reflect { margin-top: 0.9rem; background: #fbfcff; border: 1px solid #c8d0e8; border-radius: 8px; padding: 0.9rem 1.1rem 1rem; }
 .reflect h3 { font-size: 1.15rem; margin-bottom: 0.2rem; }
@@ -674,7 +689,7 @@ details summary { cursor: pointer; font-size: 0.9rem; color: #555; margin-bottom
 .walk-node-num { font-family: "Bebas Neue", Impact, sans-serif; font-size: 1.1rem; color: #244C5A; }
 .walk-node-term { font-family: "Menlo", "Consolas", monospace; font-size: 0.78rem; }
 .walk-node.done { border-color: #4A7729; color: #4A7729; } .walk-node.done .walk-node-num { color: #4A7729; }
-.walk-node.current { border-color: #C8102E; background: #1a1a2e; color: #fff; transform: scale(1.04); } .walk-node.current .walk-node-num { color: #FFB81C; }
+.walk-node.current { border-color: #4A7729; background: #4A7729; color: #fff; transform: scale(1.04); } .walk-node.current .walk-node-num { color: #FFB81C; }
 @media (prefers-reduced-motion: reduce) { .walk-node { transition: none; transform: none !important; } }
 .walk-card { background: #fff; border: 1px solid #c8d0e8; border-left: 5px solid #C8102E; border-radius: 8px; padding: 1rem 1.2rem; margin-bottom: 1rem; }
 .walk-card h3 { font-size: 1.3rem; margin-bottom: 0.4rem; }
