@@ -42,11 +42,11 @@ p code, li code, .brief code { background: var(--paper); padding: 0 .3em; border
 
 /* ---------- top bars ---------- */
 .topbar { background: var(--black); color: var(--white); }
-.topbar .wrap { display: flex; justify-content: space-between; align-items: center; min-height: 74px; gap: 16px; }
-.logo { display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--white); }
-.logo img { height: 52px; width: auto; display: block; }
-.logo .unit { font-size: 11px; letter-spacing: .12em; line-height: 1.4; color: #ddd; border-left: 1px solid #555; padding-left: 16px; }
-.accred { font-size: 12px; text-align: right; line-height: 1.35; }
+.topbar .wrap { display: flex; justify-content: space-between; align-items: center; min-height: 84px; gap: 16px; }
+.logo { display: flex; align-items: center; gap: 18px; text-decoration: none; color: var(--white); }
+.logo img { height: 50px; width: auto; display: block; }
+.logo .unit { display: flex; flex-direction: column; justify-content: center; height: 34px; margin-top: 16px; font-size: 11px; letter-spacing: .14em; line-height: 1.55; color: #ddd; border-left: 2px solid #666; padding-left: 18px; }
+.accred { font-size: 12px; text-align: right; line-height: 1.5; letter-spacing: .01em; }
 .nav { background: var(--red); color: var(--white); }
 .nav .wrap { display: flex; gap: 0; overflow-x: auto; }
 .nav a { padding: 15px 20px; text-decoration: none; font-size: 15px; white-space: nowrap; }
@@ -65,7 +65,8 @@ p code, li code, .brief code { background: var(--paper); padding: 0 .3em; border
 .chip { font-family: var(--display); text-transform: uppercase; font-size: 24px; letter-spacing: .02em; padding: 8px 22px; border: 2px solid var(--white); color: var(--white); background: transparent; text-decoration: none; line-height: 1.2; }
 .chip.on { background: var(--white); color: var(--red); }
 .hero-note { font-size: 13px; text-align: right; line-height: 1.5; }
-@media (max-width: 720px) { .eyebrow { margin-bottom: 40px; } .hero .lede { margin-bottom: 48px; } .hero-note { text-align: left; } .hero::after { min-width: 300px; min-height: 300px; top: -40vw; } }
+@media (max-width: 1100px) { .hero::after { width: 52vw; height: 56vw; min-width: 360px; min-height: 380px; top: -30vw; right: -10vw; } }
+@media (max-width: 720px) { .eyebrow { margin-bottom: 40px; } .hero .lede { margin-bottom: 48px; } .hero-note { text-align: left; } .hero::after { width: 60vw; height: 60vw; min-width: 240px; min-height: 240px; max-height: 300px; top: -34vw; right: -16vw; } }
 
 /* ---------- sections ---------- */
 section.block { padding: 48px 0 8px; }
