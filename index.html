@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="color-scheme" content="light">
-<title>Tech Practice Hub — EU Foundation, University of Bedfordshire</title>
+<title>Tech Practice Hub - EU Foundation, University of Bedfordshire</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
@@ -19,6 +19,7 @@
   --line: #D6D6D6;
   --paper: #F4F4F4;
   --green: #0E7A3E;
+  --uob-green: #78BE20; /* UoB secondary green - replace with the hex from the brand guide if it differs */
   --display: "Bebas Neue", "Oswald", "Arial Narrow", Impact, sans-serif;
   --body: "Univers", "Univers LT Std", "Helvetica Neue", Helvetica, Arial, sans-serif;
   --mono: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
@@ -42,21 +43,23 @@ p code, li code, .brief code { background: var(--paper); padding: 0 .3em; border
 /* ---------- top bars ---------- */
 .topbar { background: var(--black); color: var(--white); }
 .topbar .wrap { display: flex; justify-content: space-between; align-items: center; min-height: 74px; gap: 16px; }
-.logo { display: inline-flex; align-items: center; border: 1px dashed #777; padding: 12px 34px; font-size: 11px; letter-spacing: .12em; color: #ddd; text-decoration: none; }
+.logo { display: flex; align-items: center; gap: 16px; text-decoration: none; color: var(--white); }
+.logo img { height: 52px; width: auto; display: block; }
+.logo .unit { font-size: 11px; letter-spacing: .12em; line-height: 1.4; color: #ddd; border-left: 1px solid #555; padding-left: 16px; }
 .accred { font-size: 12px; text-align: right; line-height: 1.35; }
 .nav { background: var(--red); color: var(--white); }
 .nav .wrap { display: flex; gap: 0; overflow-x: auto; }
 .nav a { padding: 15px 20px; text-decoration: none; font-size: 15px; white-space: nowrap; }
 .nav a[aria-current="page"] { background: var(--maroon); }
-.nav a:hover { background: #B50E25; }
+.nav a:hover, .nav a:focus-visible { background: var(--uob-green); color: var(--black); }
 
 /* ---------- hero ---------- */
 .hero { background: var(--red); color: var(--white); position: relative; overflow: hidden; }
-.hero::after { content: ""; position: absolute; right: -8vw; top: -32vw; width: 60vw; height: 60vw; max-width: 760px; max-height: 760px; min-width: 420px; min-height: 420px; border-radius: 50%; background: var(--maroon); pointer-events: none; }
+.hero::after { content: ""; position: absolute; right: -8vw; top: -32vw; width: 60vw; height: 70vw; max-width: 760px; max-height: 880px; min-width: 420px; min-height: 500px; border-radius: 50%; background: var(--maroon); pointer-events: none; }
 .hero .wrap { position: relative; z-index: 1; padding-top: 44px; padding-bottom: 42px; }
 .eyebrow { font-size: 13px; letter-spacing: .16em; margin: 0 0 84px; }
 .hero h1 { font-size: clamp(72px, 12vw, 150px); }
-.hero .lede { max-width: 30ch; font-size: clamp(18px, 2.3vw, 24px); margin: 12px 0 96px; line-height: 1.3; }
+.hero .lede { max-width: 34ch; font-size: clamp(18px, 2.3vw, 24px); margin: 12px 0 96px; line-height: 1.3; }
 .hero-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
 .chips { display: flex; gap: 14px; flex-wrap: wrap; }
 .chip { font-family: var(--display); text-transform: uppercase; font-size: 24px; letter-spacing: .02em; padding: 8px 22px; border: 2px solid var(--white); color: var(--white); background: transparent; text-decoration: none; line-height: 1.2; }
@@ -111,8 +114,11 @@ section.block > .wrap > p.intro { color: var(--grey); margin: 6px 0 22px; max-wi
 .footer { background: var(--black); color: var(--white); padding: 40px 0 34px; margin-top: 40px; }
 .footer h2 { font-size: 46px; line-height: .95; }
 .footer h2 span { display: block; color: var(--red); }
+.footer .credit { font-size: 13px; font-weight: 500; color: #cfcfcf; max-width: 70ch; margin: 18px 0 0; line-height: 1.5; }
+.pagehead .credit { font-size: 14px; font-weight: 500; opacity: .9; }
 .footer .row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-top: 22px; font-size: 13px; }
 .footer .row a { text-decoration: none; margin-left: 22px; }
+.footer .row > div:first-child { line-height: 1.6; }
 
 /* ---------- task list page ---------- */
 .pagehead { background: var(--red); color: var(--white); }
@@ -208,6 +214,16 @@ textarea.code:focus { outline: none; box-shadow: inset 0 0 0 3px var(--red); }
 .result h3 { font-size: 26px; margin-bottom: 4px; }
 .result p { margin: 0; font-weight: 500; }
 .result pre { background: var(--white); border: 1px solid var(--line); padding: 8px; margin: 8px 0 0; font-size: 13px; overflow-x: auto; }
+.quick { margin-top: 28px; border-top: 4px solid var(--black); padding-top: 16px; }
+.quick h3 { font-size: 30px; margin-bottom: 2px; }
+.quick > p { font-weight: 500; margin: 0 0 14px; font-size: 14px; color: var(--grey); }
+.qitem { border: 2px solid var(--black); padding: 14px 16px; margin-bottom: 12px; }
+.qitem .q { font-weight: 700; margin: 0 0 10px; font-size: 15px; }
+.qitem label { display: block; font-weight: 500; padding: 4px 0; font-size: 15px; cursor: pointer; }
+.qitem input[type=text] { font: inherit; font-weight: 500; border: 2px solid var(--black); padding: 6px 8px; width: 220px; max-width: 100%; }
+.qitem .qrow { display: flex; gap: 10px; align-items: center; margin-top: 10px; flex-wrap: wrap; }
+.qitem .fb { font-weight: 500; font-size: 14px; padding: 8px 10px; margin-top: 10px; display: none; border-left: 6px solid var(--red); background: var(--paper); }
+.qitem .fb.ok { border-left-color: var(--green); display: block; } .qitem .fb.bad { display: block; }
 .reflect { margin-top: 28px; border-top: 4px solid var(--black); padding-top: 16px; }
 .reflect h3 { font-size: 30px; margin-bottom: 4px; }
 .reflect p { font-weight: 500; margin: 0 0 10px; font-size: 15px; }
@@ -226,7 +242,7 @@ textarea.code:focus { outline: none; box-shadow: inset 0 0 0 3px var(--red); }
 <body>
 <div id="app"></div>
 <script>
-/* MiniPy — a small Python subset interpreter for teaching tasks.
+/* MiniPy - a small Python subset interpreter for teaching tasks.
    Supports: def/return, if/elif/else, while, for..in range(), assignment (+= -= *=),
    int/float/str/bool, + - * / // % comparisons and/or/not, print/input/int/str/float/len,
    `import`/`from .. import ..` (ignored), `if __name__ == '__main__':`.
@@ -469,7 +485,7 @@ var MiniPy = (function () {
       if (typeof a === 'string' && typeof b === 'string') return a + b;
       if (typeof a === 'string' || typeof b === 'string') {
         var other = typeof a === 'string' ? b : a;
-        throw new PyError('TypeError', 'can only concatenate str (not "' + typeName(other) + '") to str. Python cannot add text and a number together — wrap the number in str( ) first.', line);
+        throw new PyError('TypeError', 'can only concatenate str (not "' + typeName(other) + '") to str. Python cannot add text and a number together - wrap the number in str( ) first.', line);
       }
     }
     if (op === '*' && (typeof a === 'string' || typeof b === 'string')) {
@@ -559,7 +575,7 @@ var MiniPy = (function () {
   }
   Runner.prototype.write = function (t, isInput) { this.out += t; if (this.onPrint) this.onPrint(t, !!isInput); };
   Runner.prototype.tick = function (line) {
-    if (++this.stepCount > this.maxSteps) throw new PyError('RuntimeError', 'the program has run more than ' + this.maxSteps + ' steps and was stopped. This usually means a loop never ends — check the condition of your while loop.', line);
+    if (++this.stepCount > this.maxSteps) throw new PyError('RuntimeError', 'the program has run more than ' + this.maxSteps + ' steps and was stopped. This usually means a loop never ends - check the condition of your while loop.', line);
   };
   Runner.prototype.run = function* () {
     var self = this;
@@ -716,7 +732,7 @@ var WORLDS = {
     cmds: { pick: 'pick_bottle', put: 'put_bottle', present: 'bottle_present', absent: 'no_bottle_present' },
     importLine: 'from ocean.drone import *',
     bg: '#D7E8F0', grid: '#B4CFDC', wall: '#20363F', robotFill: '#8A0A2E', itemFill: '#3E8FB0',
-    intro: 'An underwater drone cleans plastic out of a bay. The bay is divided into a grid. Dark blocks are reef — solid rock that the drone cannot swim through. The drone does not know in advance where the bottles are, so it has to check its sensors as it goes.'
+    intro: 'An underwater drone cleans plastic out of a bay. The bay is divided into a grid. Dark blocks are reef - solid rock that the drone cannot swim through. The drone does not know in advance where the bottles are, so it has to check its sensors as it goes.'
   }
 };
 
@@ -732,14 +748,14 @@ var COMMON_VOCAB = {
   'colon': 'the <code>:</code> symbol at the end of <code>def</code>, <code>for</code>, <code>while</code> and <code>if</code> lines. It says “an indented block follows”.',
   'parenthesis': 'a round bracket <code>( )</code>. A function is always called with a pair of them, even when it needs no information: <code>move()</code>.',
   'control flow': 'the order in which the statements of a program are executed.',
-  'decomposition': 'breaking a large problem into smaller, more manageable sub-problems — in code, into several short functions.',
+  'decomposition': 'breaking a large problem into smaller, more manageable sub-problems - in code, into several short functions.',
   'top-down design': 'starting with the most general step of the problem (what <code>main()</code> should do) and then working out the details of each step.',
   'for loop': 'a loop that repeats a block of code a specific number of times: <code>for i in range(4):</code>',
   'while loop': 'a loop that keeps repeating as long as a condition is true: <code>while front_is_clear():</code>',
-  'body of the loop': 'the indented lines inside the loop — the code that runs every time the loop repeats.',
+  'body of the loop': 'the indented lines inside the loop - the code that runs every time the loop repeats.',
   'iterate': 'to repeat a process. One repetition is called an <b>iteration</b>.',
   'definite loop': 'a loop where you know in advance how many times it will run (a for loop).',
-  'indefinite loop': 'a loop where you do not know how many times it will run — it stops when a condition changes (a while loop).',
+  'indefinite loop': 'a loop where you do not know how many times it will run - it stops when a condition changes (a while loop).',
   'condition': 'a test that is either <code>True</code> or <code>False</code>, for example <code>front_is_clear()</code>.',
   'if-statement': 'a decision: the indented block runs only if the condition is true.',
   'if-else statement': 'a decision with two paths: one block runs if the condition is true, the <code>else</code> block runs if it is false.',
@@ -766,13 +782,13 @@ var COMMON_VOCAB = {
 
 /* ---------- Tasks ---------- */
 var TASKS = [
-  /* ================= WEEK 2 — MARS: functions ================= */
+  /* ================= WEEK 2 - MARS: functions ================= */
   {
     id: 'mars-1', week: 2, world: 'mars', title: 'First drive', concept: 'Calling functions',
     brief: [
       'The rover has just woken up on the surface of Mars. It is standing on the left-hand square of the top row, <b>facing east</b>. Three squares ahead of it, mission control has spotted an interesting rock sample.',
-      'Write a program that drives the rover east until it reaches the rock, and then collects the rock. The rover understands only four <b>commands</b>: <code>move()</code>, <code>turn_left()</code>, <code>pick_rock()</code> and <code>put_rock()</code>. Each command is a <b>function call</b> — the name of the function followed by a pair of <b>parentheses</b>.',
-      'All of your commands must go inside the <b>main function</b>, and every line inside <code>main()</code> must be <b>indented</b> by four spaces. The last two lines of the file start the program — leave them exactly as they are.'
+      'Write a program that drives the rover east until it reaches the rock, and then collects the rock. The rover understands only four <b>commands</b>: <code>move()</code>, <code>turn_left()</code>, <code>pick_rock()</code> and <code>put_rock()</code>. Each command is a <b>function call</b> - the name of the function followed by a pair of <b>parentheses</b>.',
+      'All of your commands must go inside the <b>main function</b>, and every line inside <code>main()</code> must be <b>indented</b> by four spaces. The last two lines of the file start the program - leave them exactly as they are.'
     ],
     starter: 'from rover.marsrover import *\n\n# File: first_drive.py\n# --------------------\n# Drive the rover to the rock sample and collect it.\n\ndef main():\n    pass  # replace this line with your commands\n\n\nif __name__ == \'__main__\':\n    main()\n',
     map: { cols: 6, rows: 3, robot: { x: 1, y: 3, dir: 'E' }, items: { '4,3': 1 } },
@@ -799,7 +815,7 @@ var TASKS = [
   {
     id: 'mars-3', week: 2, world: 'mars', title: 'Around the crater', concept: 'Decomposition',
     brief: [
-      'The rover is in the middle of the top row, facing east, and a rock sample lies two squares ahead. The base station is on the far left of the same row — but between the rover and the base there is a small crater. The rover cannot drive into the crater; it must go round it through the row below.',
+      'The rover is in the middle of the top row, facing east, and a rock sample lies two squares ahead. The base station is on the far left of the same row - but between the rover and the base there is a small crater. The rover cannot drive into the crater; it must go round it through the row below.',
       'This journey has several clearly separate steps: collect the rock, turn around, go round the crater, and deliver the rock. Good programmers use <b>decomposition</b>: instead of writing one long list of commands in <code>main()</code>, they break the problem into smaller sub-problems and write one short <b>helper function</b> for each. Then <code>main()</code> simply calls those functions in order, so it reads almost like English.',
       'Write at least these two helpers: <code>turn_right()</code> and <code>turn_around()</code>. You may add more, for example <code>go_around_crater()</code>. Remember that Python needs a function to be defined before the program reaches the line that calls it, so put your helpers above the <code>if __name__</code> lines.'
     ],
@@ -807,17 +823,17 @@ var TASKS = [
     map: { cols: 6, rows: 2, robot: { x: 3, y: 2, dir: 'E' }, items: { '5,2': 1 }, walls: [[2, 2, 'W'], [2, 2, 'E'], [2, 2, 'S']] },
     goal: { items: { '1,2': 1 }, robot: { x: 1, y: 2 } },
     requires: [{ re: /def\s+turn_around\s*\(/, msg: 'Define a helper function called <code>turn_around</code>.' }, { re: /def\s+turn_right\s*\(/, msg: 'Define a helper function called <code>turn_right</code>.' }],
-    hints: ['A <code>turn_around()</code> is two left turns.', 'The dark lines around the crater are walls. To go round: turn left (facing south), move, turn right (facing west), move twice, turn right (north), move, turn left (west) — but check the rover ends on the base square.'],
+    hints: ['A <code>turn_around()</code> is two left turns.', 'The dark lines around the crater are walls. To go round: turn left (facing south), move, turn right (facing west), move twice, turn right (north), move, turn left (west) - but check the rover ends on the base square.'],
     vocab: ['decomposition', 'top-down design', 'helper function', 'control flow', 'source code'],
     reflect: 'Explain the principle of decomposition using this task as your example. Which helper functions did you write and why?'
   },
 
-  /* ================= WEEK 2 — WAREHOUSE: for loops ================= */
+  /* ================= WEEK 2 - WAREHOUSE: for loops ================= */
   {
     id: 'wh-1', week: 2, world: 'warehouse', title: 'Fill the shelf', concept: 'The for loop',
     brief: [
       'The robot is at the start of an aisle, facing east. The packers need a parcel on each of the first four squares of the aisle. You could write <code>put_parcel()</code> and <code>move()</code> four times each, but programmers avoid repeating themselves.',
-      'Use a <b>for loop</b>. The line <code>for i in range(4):</code> tells Python to <b>iterate</b> — to repeat the indented lines below it, called the <b>body of the loop</b>, exactly four times. A loop like this, where you know in advance how many repetitions you need, is called a <b>definite loop</b>.',
+      'Use a <b>for loop</b>. The line <code>for i in range(4):</code> tells Python to <b>iterate</b> - to repeat the indented lines below it, called the <b>body of the loop</b>, exactly four times. A loop like this, where you know in advance how many repetitions you need, is called a <b>definite loop</b>.',
       'Inside the body, put a parcel down and then move one square forward. Look carefully at the goal picture to see where the robot should finish.'
     ],
     starter: 'from warehouse.robot import *\n\n# File: fill_shelf.py\n# -------------------\n# Put a parcel on each of the first four squares of the aisle.\n\n\ndef main():\n    pass  # replace this line with a for loop\n\n\nif __name__ == \'__main__\':\n    main()\n',
@@ -848,13 +864,13 @@ var TASKS = [
     brief: [
       'Same storage area, but now each corner needs a stack of five parcels. The robot can put several parcels on the same square, one on top of the other.',
       'Combine what you have learnt: write a helper function <code>put_five_parcels()</code> that uses a for loop to put down five parcels, and a helper function <code>move_to_next_corner()</code> that drives to the next corner and turns left. Then <code>main()</code> repeats those two calls four times.',
-      'When you write a helper, think about its <b>pre-condition</b> (what must be true before it is called — for example, the robot is standing on a corner) and its <b>post-condition</b> (what is true afterwards — the robot is on the next corner, facing along the next side). If every helper keeps its promise, the loop in <code>main()</code> works.'
+      'When you write a helper, think about its <b>pre-condition</b> (what must be true before it is called - for example, the robot is standing on a corner) and its <b>post-condition</b> (what is true afterwards - the robot is on the next corner, facing along the next side). If every helper keeps its promise, the loop in <code>main()</code> works.'
     ],
     starter: 'from warehouse.robot import *\n\n# File: five_per_corner.py\n# ------------------------\n# Place five parcels in each corner of the storage area.\n\n\n# Pre-condition:  robot is on a corner, facing along the next side\n# Post-condition: five parcels are on this corner\ndef put_five_parcels():\n    pass\n\n\n# Pre-condition:  robot is on a corner\n# Post-condition: robot is on the next corner, facing along the next side\ndef move_to_next_corner():\n    pass\n\n\ndef main():\n    for i in range(4):\n        put_five_parcels()\n        move_to_next_corner()\n\n\nif __name__ == \'__main__\':\n    main()\n',
     map: { cols: 4, rows: 4, robot: { x: 1, y: 1, dir: 'E' }, items: {} },
     goal: { items: { '1,1': 5, '4,1': 5, '4,4': 5, '1,4': 5 }, robot: { x: 1, y: 1, dir: 'E' } },
     requires: [{ re: /def\s+put_five_parcels/, msg: 'Keep the helper function <code>put_five_parcels()</code>.' }, { re: /def\s+move_to_next_corner/, msg: 'Keep the helper function <code>move_to_next_corner()</code>.' }],
-    hints: ['<code>put_five_parcels()</code> is a for loop with <code>range(5)</code> and one <code>put_parcel()</code> inside.', 'A function that calls another function, which contains a loop, which is called from a loop — this is decomposition in action.'],
+    hints: ['<code>put_five_parcels()</code> is a for loop with <code>range(5)</code> and one <code>put_parcel()</code> inside.', 'A function that calls another function, which contains a loop, which is called from a loop - this is decomposition in action.'],
     vocab: ['pre-condition', 'post-condition', 'helper function', 'decomposition', 'for loop'],
     reflect: 'Write the pre-condition and post-condition of move_to_next_corner() in your own words. Why do these help when you use the function inside a loop?'
   },
@@ -862,30 +878,30 @@ var TASKS = [
     id: 'wh-4', week: 2, world: 'warehouse', title: 'Fix the fence post', concept: 'The while loop and off-by-one errors',
     brief: [
       'A colleague has written a program to lay a parcel on every square of an aisle, using a <b>while loop</b>. A while loop is an <b>indefinite loop</b>: it does not count; it keeps repeating its body as long as a <b>condition</b> stays true. Here the condition is <code>front_is_clear()</code>, which is true while there is no wall directly in front of the robot.',
-      'Run the program and compare the result with the goal. One square is missed. This is a classic <b>fence post problem</b>, also called an <b>off-by-one error</b>: imagine building a fence — you need one more post than the number of rails between them. In the loop, every iteration does one <i>put</i> and one <i>move</i>, but the last square needs a <i>put</i> without a <i>move</i>.',
+      'Run the program and compare the result with the goal. One square is missed. This is a classic <b>fence post problem</b>, also called an <b>off-by-one error</b>: imagine building a fence - you need one more post than the number of rails between them. In the loop, every iteration does one <i>put</i> and one <i>move</i>, but the last square needs a <i>put</i> without a <i>move</i>.',
       'Fix the <b>bug</b> without changing the loop into a for loop. Think about what happens after the loop finishes.'
     ],
     starter: 'from warehouse.robot import *\n\n# File: parcel_line_bug.py\n# ------------------------\n# Lay a parcel on every square of the aisle.\n# Something is wrong. Run it and find the bug.\n\n\ndef main():\n    while front_is_clear():\n        put_parcel()\n        move()\n\n\nif __name__ == \'__main__\':\n    main()\n',
     map: { cols: 6, rows: 1, robot: { x: 1, y: 1, dir: 'E' }, items: {} },
     goal: { items: { '1,1': 1, '2,1': 1, '3,1': 1, '4,1': 1, '5,1': 1, '6,1': 1 }, robot: { x: 6, y: 1 } },
-    requires: [{ re: /\bwhile\b/, msg: 'Keep the <code>while</code> loop — fix the bug instead of replacing the loop.' }],
-    hints: ['The loop stops as soon as the robot is against the wall — before it puts down the last parcel.', 'Add one more <code>put_parcel()</code> <i>after</i> the loop, at the same indentation as the <code>while</code> line.'],
+    requires: [{ re: /\bwhile\b/, msg: 'Keep the <code>while</code> loop - fix the bug instead of replacing the loop.' }],
+    hints: ['The loop stops as soon as the robot is against the wall - before it puts down the last parcel.', 'Add one more <code>put_parcel()</code> <i>after</i> the loop, at the same indentation as the <code>while</code> line.'],
     vocab: ['while loop', 'indefinite loop', 'condition', 'fence post problem', 'bug'],
     reflect: 'Explain the fence post problem to a friend who has never programmed. Why did the while loop leave one square empty?'
   },
 
-  /* ================= WEEK 2 — OCEAN: while and if ================= */
+  /* ================= WEEK 2 - OCEAN: while and if ================= */
   {
     id: 'sea-1', week: 2, world: 'ocean', title: 'Swim to the reef', concept: 'while with a sensor',
     brief: [
-      'The drone is at the left end of the bay, facing east. Somewhere ahead there is a wall of reef, but the drone does not know how far away it is — the maps of this bay are out of date. So counting moves with a for loop is not an option.',
+      'The drone is at the left end of the bay, facing east. Somewhere ahead there is a wall of reef, but the drone does not know how far away it is - the maps of this bay are out of date. So counting moves with a for loop is not an option.',
       'Instead, use a <b>while loop</b> with a <b>sensor</b>. The drone can ask <code>front_is_clear()</code>, which returns <code>True</code> when nothing blocks the square ahead. As long as that condition is true, the drone should keep moving. The moment it becomes false, the loop stops and the drone is safely next to the reef.',
       'Write this as a helper function <code>move_to_reef()</code> and call it from <code>main()</code>.'
     ],
     starter: 'from ocean.drone import *\n\n# File: to_the_reef.py\n# --------------------\n# Swim east until the drone reaches the reef.\n\n\ndef move_to_reef():\n    pass\n\n\ndef main():\n    move_to_reef()\n\n\nif __name__ == \'__main__\':\n    main()\n',
     map: { cols: 8, rows: 3, robot: { x: 1, y: 2, dir: 'E' }, items: {}, walls: [[5, 2, 'E'], [5, 1, 'E'], [5, 3, 'E']] },
     goal: { items: {}, robot: { x: 5, y: 2 } },
-    requires: [{ re: /\bwhile\b/, msg: 'Use a <code>while</code> loop with <code>front_is_clear()</code> — the drone does not know the distance.' }],
+    requires: [{ re: /\bwhile\b/, msg: 'Use a <code>while</code> loop with <code>front_is_clear()</code> - the drone does not know the distance.' }],
     hints: ['<pre>while front_is_clear():\n    move()</pre>', 'If the drone crashes into the reef, check that the <code>move()</code> is <i>inside</i> the loop, not after it.'],
     vocab: ['while loop', 'condition', 'indefinite loop', 'boolean'],
     reflect: 'When is a while loop a better choice than a for loop? Use the words “definite” and “indefinite” in your answer.'
@@ -900,7 +916,7 @@ var TASKS = [
     starter: 'from ocean.drone import *\n\n# File: find_bottle.py\n# --------------------\n# Swim east until the drone is on the bottle, then pick it up.\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
     map: { cols: 8, rows: 2, robot: { x: 1, y: 1, dir: 'E' }, items: { '6,1': 1 } },
     goal: { items: {}, robot: { x: 6, y: 1 } },
-    requires: [{ re: /\bwhile\b/, msg: 'Use a <code>while</code> loop — the distance to the bottle is unknown.' }],
+    requires: [{ re: /\bwhile\b/, msg: 'Use a <code>while</code> loop - the distance to the bottle is unknown.' }],
     hints: ['<pre>while no_bottle_present():\n    move()\npick_bottle()</pre>', 'The <code>pick_bottle()</code> goes <i>after</i> the loop, because the loop ends exactly when the drone reaches the bottle.'],
     vocab: ['condition', 'while loop', 'boolean', 'iterate'],
     reflect: 'Read your while line aloud as an English sentence. Why is the pick_bottle() call outside the loop?'
@@ -908,7 +924,7 @@ var TASKS = [
   {
     id: 'sea-3', week: 2, world: 'ocean', title: 'Only where needed', concept: 'The if-statement',
     brief: [
-      'Now the whole lane needs cleaning. The drone must swim from the left end of the lane to the right end and pick up every bottle it finds on the way. Some squares have a bottle, some do not, and the drone must not try to pick up a bottle from an empty square — that causes an error.',
+      'Now the whole lane needs cleaning. The drone must swim from the left end of the lane to the right end and pick up every bottle it finds on the way. Some squares have a bottle, some do not, and the drone must not try to pick up a bottle from an empty square - that causes an error.',
       'This calls for an <b>if-statement</b>: a decision inside the loop. On every square, check the condition <code>bottle_present()</code>; only if it is true, call <code>pick_bottle()</code>. Then move on. The block under <code>if</code> is indented one level deeper than the <code>while</code> body, so this program has two <b>levels of indentation</b>.',
       'Watch out for the fence post: the last square of the lane also needs to be checked.'
     ],
@@ -925,13 +941,13 @@ var TASKS = [
     brief: [
       'The drone must cross the bay from the left side to the right side along the bottom row, but reef walls of different heights stick up from the seabed. When the way ahead is clear, the drone simply moves. When a reef blocks the way, the drone has to climb: go up until it can pass, swim over the top, and come back down on the other side.',
       'This is the classic steeplechase problem. Use an <b>if-else statement</b> inside a loop that crosses the bay: <code>if front_is_clear():</code> move, <code>else:</code> jump the reef. Write <code>jump_reef()</code> as a helper, and decompose it further into <code>climb_up()</code>, <code>swim_over()</code> and <code>climb_down()</code> if that helps.',
-      'The reefs have different heights, so climbing must use a while loop with the sensor <code>right_is_blocked()</code>, not a fixed number of moves. Take it step by step — this is the hardest task of the week.'
+      'The reefs have different heights, so climbing must use a while loop with the sensor <code>right_is_blocked()</code>, not a fixed number of moves. Take it step by step - this is the hardest task of the week.'
     ],
     starter: 'from ocean.drone import *\n\n# File: reef_hurdles.py\n# ---------------------\n# Cross the bay from left to right, climbing over each reef.\n# The bay is 9 squares wide, so the drone crosses 8 gaps.\n\n\ndef turn_right():\n    turn_left()\n    turn_left()\n    turn_left()\n\n\n# Pre-condition:  facing east, at the bottom of a reef\n# Post-condition: facing east, at the bottom, on the other side\ndef jump_reef():\n    pass\n\n\ndef main():\n    for i in range(8):\n        if front_is_clear():\n            move()\n        else:\n            jump_reef()\n\n\nif __name__ == \'__main__\':\n    main()\n',
     map: { cols: 9, rows: 4, robot: { x: 1, y: 1, dir: 'E' }, items: {},
       walls: [[2, 1, 'E'], [4, 1, 'E'], [4, 2, 'E'], [6, 1, 'E'], [7, 1, 'E'], [7, 2, 'E'], [7, 3, 'E']] },
     goal: { items: {}, robot: { x: 9, y: 1 } },
-    requires: [{ re: /\belse\b/, msg: 'Keep the <code>if-else</code> decision in the loop.' }, { re: /\bwhile\b/, msg: 'Use a <code>while</code> loop when climbing — the reefs have different heights.' }],
+    requires: [{ re: /\belse\b/, msg: 'Keep the <code>if-else</code> decision in the loop.' }, { re: /\bwhile\b/, msg: 'Use a <code>while</code> loop when climbing - the reefs have different heights.' }],
     hints: ['<code>climb_up()</code>: turn left, then <code>while right_is_blocked(): move()</code>, then turn right.', '<code>swim_over()</code> is one <code>move()</code>. <code>climb_down()</code>: turn right, <code>while front_is_clear(): move()</code>, turn left.'],
     vocab: ['if-else statement', 'decomposition', 'pre-condition', 'post-condition', 'while loop'],
     reflect: 'Describe how you decomposed jump_reef(). Which sensor did you use to climb and why was a while loop necessary?'
@@ -941,7 +957,7 @@ var TASKS = [
     brief: [
       'A challenge for anyone who has finished the other tasks. Bottles are scattered across the whole bay, four rows deep. The drone starts in the bottom-left corner facing east and must pick up every bottle. Where it finishes does not matter.',
       'Plan before you type. A good approach is a zigzag: clean one row from left to right, move up one row, clean the next row from right to left, and so on. Decompose the problem into helpers such as <code>clean_row()</code> and <code>go_up_and_turn()</code>, and think about the pre- and post-conditions of each one.',
-      'Nothing here is new — it is loops, if-statements and helper functions, combined. That is what programming is.'
+      'Nothing here is new - it is loops, if-statements and helper functions, combined. That is what programming is.'
     ],
     starter: 'from ocean.drone import *\n\n# File: sweep_bay.py\n# ------------------\n# Pick up every bottle in the bay.\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
     map: { cols: 6, rows: 4, robot: { x: 1, y: 1, dir: 'E' }, items: { '2,1': 1, '5,1': 1, '6,1': 1, '1,2': 1, '3,2': 1, '4,3': 1, '6,3': 1, '2,4': 1, '5,4': 1 } },
@@ -951,13 +967,13 @@ var TASKS = [
     reflect: 'Which part of this challenge was hardest, and how did decomposition help you? What would you do differently next time?'
   },
 
-  /* ================= WEEK 3 — CONSOLE: Python basics ================= */
+  /* ================= WEEK 3 - CONSOLE: Python basics ================= */
   {
     id: 'py-1', week: 3, kind: 'console', title: 'Hello, world', concept: 'The print function',
     brief: [
       'Goodbye rover, hello Python. Now you will write ordinary Python programs that run in a <b>terminal</b>: a text window where a program can show its results and where a person can type answers.',
       'It is a tradition that a programmer’s first program writes the words <i>hello, world!</i> on the screen. The <b>print function</b> does exactly that: it takes some text between the parentheses and displays it. Text in a program is called a <b>string</b> and is always written between quotes.',
-      'Make this program print exactly <code>hello, world!</code> — lower case, with a comma and an exclamation mark. Python compares text character by character, so spelling and punctuation matter.'
+      'Make this program print exactly <code>hello, world!</code> - lower case, with a comma and an exclamation mark. Python compares text character by character, so spelling and punctuation matter.'
     ],
     starter: '"""\nFile: helloworld.py\n-------------------\nThis is our first Python program.\n"""\n\n\ndef main():\n    pass\n\n\n# This provided line is required at the end of a Python\n# file to call the main() function.\nif __name__ == \'__main__\':\n    main()\n',
     tests: [{ inputs: [], expect: 'hello, world!\n' }],
@@ -981,9 +997,9 @@ var TASKS = [
   {
     id: 'py-3', week: 3, kind: 'console', title: 'Absent students', concept: 'Variables and assignment',
     brief: [
-      'A <b>variable</b> is a place to store information in a program: it gives a <b>name</b> to a <b>value</b>. You create a variable by <b>assigning</b> a value to it with the equals sign: <code>num_students = 700</code>. The name should be descriptive and written in <b>snake case</b> — lowercase words joined by underscores.',
+      'A <b>variable</b> is a place to store information in a program: it gives a <b>name</b> to a <b>value</b>. You create a variable by <b>assigning</b> a value to it with the equals sign: <code>num_students = 700</code>. The name should be descriptive and written in <b>snake case</b> - lowercase words joined by underscores.',
       'Assignment is not the same as “equals” in maths. Python first works out whatever is on the right-hand side and then stores the result in the variable on the left. That is why <code>total = total + 1</code> makes sense in a program: it takes the current value, adds one, and stores the new value back.',
-      'A lecture has 700 registered students, and 550 are in the room. Store both numbers in well-named variables, calculate how many are absent in a third variable, and print <code>150 students are absent.</code> Then imagine 3 more students arrive late: increase the number in the room by 3, recalculate, and print the line again. Do not type the answers directly — let Python calculate them.'
+      'A lecture has 700 registered students, and 550 are in the room. Store both numbers in well-named variables, calculate how many are absent in a third variable, and print <code>150 students are absent.</code> Then imagine 3 more students arrive late: increase the number in the room by 3, recalculate, and print the line again. Do not type the answers directly - let Python calculate them.'
     ],
     starter: '"""\nFile: absent.py\n---------------\nUse variables to count absent students.\n"""\n\n\ndef main():\n    num_students = 700\n    # create num_in_class and num_absent here\n\n\nif __name__ == \'__main__\':\n    main()\n',
     tests: [{ inputs: [], expect: '150 students are absent.\n147 students are absent.\n' }],
@@ -1003,19 +1019,19 @@ var TASKS = [
     tests: [{ inputs: ['9', '17'], expect: 'This program adds two numbers.\nEnter first number: 9\nEnter second number: 17\nThe total is 26.\n' }, { inputs: ['100', '-1'], expect: 'This program adds two numbers.\nEnter first number: 100\nEnter second number: -1\nThe total is 99.\n' }],
     hints: ['<code>num1 = int(num1)</code> creates an integer version and stores it back in the same variable.', '<code>print("The total is " + str(total) + ".")</code>'],
     vocab: ['input', 'convert', 'integer', 'string', 'concatenate'],
-    reflect: 'Why does the program need int() and str()? What would happen if you removed the int() lines — try it and describe the result.'
+    reflect: 'Why does the program need int() and str()? What would happen if you removed the int() lines - try it and describe the result.'
   },
   {
     id: 'py-5', week: 3, kind: 'console', title: 'Average of two', concept: 'int and float',
     brief: [
       'Python stores every value with a <b>type</b>. Whole numbers are <code>int</code>; numbers with a decimal point are <code>float</code>. The type decides how the value behaves: <code>7 // 2</code> (whole-number division) gives the int <code>3</code>, while <code>7 / 2</code> gives the float <code>3.5</code>. Even when a division comes out exactly, the result is still a float, so <code>26 / 2</code> is <code>13.0</code>, not <code>13</code>.',
-      'Extend the adding program. After printing the total, also calculate the average of the two numbers with <code>/</code> and print it. Notice how Python displays the average — the <code>.0</code> at the end tells you it is a float.',
+      'Extend the adding program. After printing the total, also calculate the average of the two numbers with <code>/</code> and print it. Notice how Python displays the average - the <code>.0</code> at the end tells you it is a float.',
       'You can print a number on its own without <code>str()</code>, or you can print several items separated by commas and Python puts a space between them: <code>print("The average is", average)</code>.'
     ],
     starter: '"""\nFile: average.py\n----------------\nAsk for two numbers, then print their total and their average.\n"""\n\n\ndef main():\n    print("This program finds the average of two numbers.")\n    num1 = int(input("Enter first number: "))\n    num2 = int(input("Enter second number: "))\n    total = num1 + num2\n    print("The total is", total)\n    # calculate and print the average\n\n\nif __name__ == \'__main__\':\n    main()\n',
     tests: [{ inputs: ['9', '17'], expect: 'This program finds the average of two numbers.\nEnter first number: 9\nEnter second number: 17\nThe total is 26\nThe average is 13.0\n' }, { inputs: ['3', '4'], expect: 'This program finds the average of two numbers.\nEnter first number: 3\nEnter second number: 4\nThe total is 7\nThe average is 3.5\n' }],
     requires: [{ re: /\baverage\s*=/, msg: 'Store the result in a variable called <code>average</code>.' }],
-    hints: ['<code>average = total / 2</code>', 'Look at the starter code: <code>int(input(...))</code> does two steps in one line — it asks for input and converts it straight away.'],
+    hints: ['<code>average = total / 2</code>', 'Look at the starter code: <code>int(input(...))</code> does two steps in one line - it asks for input and converts it straight away.'],
     vocab: ['type', 'integer', 'float', 'variable', 'print'],
     reflect: 'What is the difference between an int and a float? Give an example of a real-world quantity for each, as in the lecture.'
   },
@@ -1028,11 +1044,47 @@ var TASKS = [
     ],
     starter: '"""\nFile: next_year.py\n------------------\nAsk for a name and an age, then say how old the user will be next year.\n"""\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
     tests: [{ inputs: ['Ada', '20'], expect: 'What is your name? Ada\nHow old are you? 20\nHello, Ada. Next year you will be 21.\n' }, { inputs: ['Sami', '34'], expect: 'What is your name? Sami\nHow old are you? 34\nHello, Sami. Next year you will be 35.\n' }],
-    hints: ['The prompts must match exactly: <code>input("What is your name? ")</code> and <code>input("How old are you? ")</code> — note the space after the question mark.', '<code>print("Hello, " + name + ". Next year you will be " + str(age + 1) + ".")</code>'],
+    hints: ['The prompts must match exactly: <code>input("What is your name? ")</code> and <code>input("How old are you? ")</code> - note the space after the question mark.', '<code>print("Hello, " + name + ". Next year you will be " + str(age + 1) + ".")</code>'],
     vocab: ['input', 'convert', 'concatenate', 'variable', 'string'],
     reflect: 'List the types of every variable in your program (str, int or float). Where did a conversion happen, and why was it needed?'
   }
 ];
+
+/* ---------- Quick vocabulary practice, per section ---------- */
+var QUIZ = {
+  mars: [
+    { type: 'mc', q: 'In the command <code>move()</code>, what are the round brackets called?', options: ['a colon', 'a parenthesis', 'an indentation', 'a code block'], answer: 1, why: 'The round brackets are a pair of parentheses. Every function call needs them, even when nothing goes inside.' },
+    { type: 'gap', q: 'When you write <code>def turn_right():</code> you ______ a function. (one word)', accept: ['define', 'defined', 'defining'], why: '<code>def</code> defines the function: it gives a name to a set of actions. Writing <code>turn_right()</code> later on calls it.' },
+    { type: 'mc', q: 'Your program calls <code>turn_around()</code> but the function was never defined. Which error does Python show?', options: ['SyntaxError', 'IndentationError', 'NameError', 'TypeError'], answer: 2, why: 'An undefined function gives <i>NameError: name \'turn_around\' is not defined</i>. Python does not know what that name means.' },
+    { type: 'gap', q: 'Breaking a large problem into smaller, more manageable sub-problems is called ______.', accept: ['decomposition', 'decomposing'], why: 'Decomposition: each small problem becomes one short helper function, and <code>main()</code> calls them in order.' },
+    { type: 'mc', q: 'Which of these is the function where the program starts?', options: ['the helper function', 'the main function', 'the import package', 'the source code'], answer: 1, why: 'The main function is the starting point. The last two lines of every file call it.' },
+    { type: 'mc', q: 'Which line correctly begins a function definition?', options: ['<code>def turn_right()</code>', '<code>def turn_right():</code>', '<code>define turn_right():</code>', '<code>def turn_right;</code>'], answer: 1, why: 'The keyword is <code>def</code>, the name is followed by parentheses, and the line ends with a colon before the indented body.' }
+  ],
+  warehouse: [
+    { type: 'mc', q: 'A loop that repeats a block of code a specific number of times is called a ...', options: ['definite loop', 'indefinite loop', 'condition', 'helper function'], answer: 0, why: 'A for loop with <code>range(4)</code> is a definite loop: you know in advance it runs four times.' },
+    { type: 'gap', q: 'Complete the line: <code>for i in ______(5):</code>', accept: ['range'], why: '<code>range(5)</code> produces the numbers 0, 1, 2, 3, 4 - five iterations.' },
+    { type: 'mc', q: 'The indented lines inside a loop, which run every time the loop repeats, are called ...', options: ['the condition', 'the body of the loop', 'the post-condition', 'the fence post'], answer: 1, why: 'The body of the loop is everything indented under the <code>for</code> or <code>while</code> line.' },
+    { type: 'gap', q: 'One repetition of a loop is called one ______.', accept: ['iteration'], why: 'To iterate is to repeat; each repetition is an iteration.' },
+    { type: 'mc', q: 'What is a pre-condition?', options: ['what a function prints', 'what must be true before a function is called', 'what is true after a function has finished', 'the number of iterations'], answer: 1, why: 'The pre-condition is the starting situation the function expects, e.g. "the robot is on a corner, facing east". The post-condition describes the situation afterwards.' },
+    { type: 'mc', q: 'A loop runs one time too few, so the last square is missed. This mistake is known as ...', options: ['a syntax error', 'an infinite loop', 'an off-by-one error (fence post problem)', 'a type error'], answer: 2, why: 'Fence post problem: a fence with 5 rails needs 6 posts. Loops that pair a <i>put</i> with a <i>move</i> often miss the last post.' }
+  ],
+  ocean: [
+    { type: 'mc', q: 'A while loop is ...', options: ['a definite loop - it always runs a fixed number of times', 'an indefinite loop - it runs as long as a condition is true', 'a function', 'a variable'], answer: 1, why: 'A while loop does not count. It checks its condition before every iteration and stops when the condition becomes false.' },
+    { type: 'gap', q: 'A test that is either True or False, such as <code>front_is_clear()</code>, is called a ______.', accept: ['condition', 'boolean', 'bool', 'boolean expression'], why: 'A condition. Its value is a boolean: <code>True</code> or <code>False</code>.' },
+    { type: 'mc', q: 'In <code>if front_is_clear():</code> ... <code>else:</code> ..., when does the <code>else</code> block run?', options: ['always', 'when the condition is True', 'when the condition is False', 'never'], answer: 2, why: 'The if-else statement has two paths: the <code>if</code> block runs when the condition is true, the <code>else</code> block when it is false.' },
+    { type: 'mc', q: 'What kind of value does <code>bottle_present()</code> give back?', options: ['an integer', 'a string', 'a boolean', 'a float'], answer: 2, why: 'Sensors return a boolean (<code>True</code> or <code>False</code>), which is why they can be used directly as a condition.' },
+    { type: 'gap', q: 'A mistake in a program that makes it behave unexpectedly is called a ______.', accept: ['bug'], why: 'A bug. Finding and fixing bugs is called debugging.' },
+    { type: 'mc', q: 'An <code>if</code> inside the body of a <code>while</code> loop means the program has ...', options: ['one level of indentation', 'two levels of indentation', 'no indentation', 'a fence post problem'], answer: 1, why: 'Each block is indented one level deeper than the line that opens it, so the code inside the <code>if</code> is two levels in.' }
+  ],
+  console: [
+    { type: 'mc', q: 'The user types <code>9</code> when asked by <code>input()</code>. What type of value does the program receive?', options: ['an int', 'a float', 'a string', 'a boolean'], answer: 2, why: '<code>input()</code> always gives back a string, even when the user types digits. Use <code>int()</code> to convert it.' },
+    { type: 'gap', q: '<code>int("9")</code> ______ the string into a whole number. (one verb)', accept: ['converts', 'convert', 'changes', 'turns', 'transforms'], why: 'It converts (changes) the value from one type to another. <code>str()</code> converts the other way.' },
+    { type: 'mc', q: 'Joining strings together with <code>+</code>, as in <code>"hi" + " there"</code>, is called ...', options: ['assignment', 'concatenation', 'conversion', 'iteration'], answer: 1, why: 'Concatenation. The <code>+</code> operator adds numbers but concatenates strings.' },
+    { type: 'mc', q: 'What is the type of the result of <code>7 / 2</code>?', options: ['int', 'float', 'string', 'boolean'], answer: 1, why: 'Division with <code>/</code> always gives a float (<code>3.5</code>). Whole-number division uses <code>//</code>.' },
+    { type: 'gap', q: 'The naming style <code>num_students</code>, lowercase words joined by underscores, is called ______ case.', accept: ['snake'], why: 'Snake case is the Python convention for variable and function names.' },
+    { type: 'mc', q: 'What does the line <code>total = total + 1</code> do?', options: ['checks whether total equals total + 1', 'creates an error', 'works out total + 1, then stores the result back in total', 'prints total'], answer: 2, why: 'Assignment: Python first evaluates the right-hand side, then stores the result in the variable on the left. It is not the same as "equals" in maths.' }
+  ]
+};
 
 /* Robot world engine (shared by the page and the test harness) */
 /* ---------- robot world ---------- */
@@ -1098,10 +1150,12 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
 
   /* ---------- storage (per browser, per computer) ---------- */
   var KEY = 'tph.v2';
+  var LOGO = 'data:image/png;base64,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';
+  var PADLET = '#padlet'; // TODO: replace with the class Padlet link, e.g. https://padlet.com/...
   function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
   function save(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { /* storage unavailable: work in memory */ } }
   var state = load();
-  state.done = state.done || {}; state.code = state.code || {}; state.reflect = state.reflect || {};
+  state.done = state.done || {}; state.code = state.code || {}; 
 
   function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
   function taskIndex(id) { for (var i = 0; i < TASKS.length; i++) if (TASKS[i].id === id) return i; return -1; }
@@ -1110,20 +1164,20 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
   /* ---------- chrome ---------- */
   function chrome(current, inner) {
     var links = [['home', 'Home', '#/'], ['python', 'Python practice', '#/python'], ['web', 'Web practice', '#/web'], ['ai', 'AI task', '#/ai'], ['res', 'Resources', '#/resources']];
-    return '<header class="topbar"><div class="wrap"><a class="logo" href="#/">[ UB LOGO ARTWORK ]</a><div class="accred">Accredited by the British Council<br>for the teaching of English in the UK</div></div></header>' +
+    return '<header class="topbar"><div class="wrap"><a class="logo" href="#/"><img src="' + LOGO + '" alt="University of Bedfordshire"><span class="unit">CEFL<br>TECH GROUP</span></a><div class="accred">Accredited by the British Council<br>for the teaching of English in the UK</div></div></header>' +
       '<nav class="nav" aria-label="Main"><div class="wrap">' + links.map(function (l) { return '<a href="' + l[2] + '"' + (l[0] === current ? ' aria-current="page"' : '') + '>' + l[1] + '</a>'; }).join('') + '</div></nav>' +
       inner +
-      '<footer class="footer"><div class="wrap"><h2>Practise today.<span>Build tomorrow.</span></h2><div class="row"><div>University of Bedfordshire — EU Foundation, Tech Practice Hub</div><div><a href="#/resources">Accessibility</a><a href="#/resources">Privacy</a><a href="mailto:">Contact</a></div></div></div></footer>';
+      '<footer class="footer"><div class="wrap"><h2>Learn it in class.<span>Build it here.</span></h2><p class="credit">The robot tasks on this site are inspired by Karel the Robot and its diamonds, created at Stanford University to teach the first steps of programming.</p><div class="row"><div>&copy; Monika Pietruch, 2026<br>University of Bedfordshire - CEFL</div><div><a href="#/resources">Accessibility</a><a href="#/resources">Privacy</a><a href="mailto:">Contact</a></div></div></div></footer>';
   }
 
   /* ---------- home ---------- */
   function homePage() {
     var w2 = countDone(function (t) { return t.week === 2; }), w3 = countDone(function (t) { return t.week === 3; }), all = countDone();
-    var inner = '<section class="hero"><div class="wrap"><p class="eyebrow">EU FOUNDATION · ACADEMIC SKILLS</p><h1>Code it.</h1><p class="lede">Every word from class, turned into a program you actually write.</p>' +
+    var inner = '<section class="hero"><div class="wrap"><p class="eyebrow">EU FOUNDATION · ACADEMIC SKILLS FOUNDATION</p><h1>Code it.</h1><p class="lede">The Tech Group\'s home for practice - code, web, AI and more.</p>' +
       '<div class="hero-foot"><div class="chips"><a class="chip on" href="#/python">Python practice</a><a class="chip" href="#/web">How the web works</a><a class="chip" href="#/ai">Working with AI</a><a class="chip" href="#extra">Games</a></div>' +
       '<div class="hero-note">' + all.total + ' tasks.<br>Saved in this browser.<br>Nothing sent anywhere.</div></div></div></section>' +
       '<section class="block"><div class="wrap"><h2>Practice</h2><p class="intro">Each block matches a few weeks of the unit. Your progress appears here as you finish tasks on this computer.</p><div class="cards">' +
-      card('maroon', 'Weeks 2–3', 'Python practice', 'Program a rover on Mars, a warehouse robot and an ocean drone. Functions, loops and if-statements — then your first real Python programs with variables, input and print.', all.done + ' of ' + all.total + ' done', 'Open', '#/python') +
+      card('maroon', 'Weeks 2–3', 'Python practice', 'Program a rover on Mars, a warehouse robot and an ocean drone. Functions, loops and if-statements - then your first real Python programs with variables, input and print.', all.done + ' of ' + all.total + ' done', 'Open', '#/python') +
       card('red', 'Weeks 6–8', 'How the web works', 'Build a small page, look inside real websites for problems, follow a request from your browser to a server and back.', 'Opens in week 6', 'Open', '#/web') +
       card('black', 'Week 9', 'Working with AI', 'Write a Python program that asks an AI a question with call_gpt() and prints the answer. Then check whether the answer is true.', 'Opens in week 9', 'Open', '#/ai') +
       card('outline', 'Any time', 'Extra practice and games', 'Coding games made by other people, and the official guides, for when you want more.', 'Opens in a new tab', 'See the games', '#extra') +
@@ -1136,11 +1190,10 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
       game('CheckiO', 'Python puzzles, from beginner to advanced.', 'Go to CheckiO', 'https://py.checkio.org/') +
       game('Grid Garden', 'Learn CSS Grid by growing carrots.', 'Play Grid Garden', 'https://cssgridgarden.com/') +
       '</div></div></section>' +
-      '<section class="block"><div class="wrap two"><div><h2>Your saved work</h2><p>Saved only in this browser, on this computer. Nothing is sent anywhere. Copy your reflections into Padlet before you log out.</p><div class="btnrow"><button class="button primary" id="copyRef">Copy my reflections</button><button class="button" id="clearAll">Clear my saved work</button></div><p id="copyMsg" style="margin-top:10px;font-size:13px;color:var(--grey)"></p></div>' +
-      '<div><h2>Resources</h2><ul class="reslist">' + res('Python docs — the official Python tutorial', 'https://docs.python.org/3/tutorial/') + res('MDN web docs — a guide to HTML and CSS', 'https://developer.mozilla.org/en-US/docs/Learn') + res('W3Schools — quick examples you can copy', 'https://www.w3schools.com/python/') + '</ul></div></div></section>';
+      '<section class="block"><div class="wrap two"><div><h2>Your saved work</h2><p>Your code and progress are saved only in this browser, on this computer. Nothing is sent anywhere. Reflections are posted on Padlet - use the button at the end of each task.</p><div class="btnrow"><a class="button primary" href="' + PADLET + '" target="_blank" rel="noopener">Open the class Padlet</a><button class="button" id="clearAll">Clear my saved work</button></div></div>' +
+      '<div><h2>Resources</h2><ul class="reslist">' + res('Python docs - the official Python tutorial', 'https://docs.python.org/3/tutorial/') + res('MDN web docs - a guide to HTML and CSS', 'https://developer.mozilla.org/en-US/docs/Learn') + res('W3Schools - quick examples you can copy', 'https://www.w3schools.com/python/') + '</ul></div></div></section>';
     $app.innerHTML = chrome('home', inner);
-    document.getElementById('copyRef').onclick = copyReflections;
-    document.getElementById('clearAll').onclick = function () { if (confirm('Clear all saved code, progress and reflections on this computer?')) { state = { done: {}, code: {}, reflect: {} }; save(state); homePage(); } };
+    document.getElementById('clearAll').onclick = function () { if (confirm('Clear all saved code, progress and reflections on this computer?')) { state = { done: {}, code: {} }; save(state); homePage(); } };
     void w2; void w3;
   }
   function card(cls, when, title, text, count, btn, href) {
@@ -1148,15 +1201,6 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
   }
   function game(t, d, l, h) { return '<div class="game"><h3>' + t + '</h3><p>' + d + '</p><a href="' + h + '" target="_blank" rel="noopener">' + l + ' →</a></div>'; }
   function res(t, h) { return '<li><a href="' + h + '" target="_blank" rel="noopener"><span>' + t + '</span><span>→</span></a></li>'; }
-
-  function copyReflections() {
-    var lines = [];
-    TASKS.forEach(function (t, i) { var r = state.reflect[t.id]; if (r && r.trim()) lines.push('Task ' + (i + 1) + ' — ' + t.title + '\nQ: ' + t.reflect + '\nA: ' + r.trim() + '\n'); });
-    var text = lines.length ? lines.join('\n') : '(no reflections written yet)';
-    var msg = document.getElementById('copyMsg');
-    function fallback() { var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); msg.textContent = 'Copied ' + lines.length + ' reflection(s). Paste them into Padlet.'; } catch (e) { msg.textContent = 'Could not copy automatically — select the text in a task page instead.'; } document.body.removeChild(ta); }
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { msg.textContent = 'Copied ' + lines.length + ' reflection(s). Paste them into Padlet.'; }, fallback); else fallback();
-  }
 
   /* ---------- placeholder pages ---------- */
   function noticePage(key, title, text) {
@@ -1169,10 +1213,10 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
       { week: 2, world: 'mars', sub: 'Week 2 · Functions', title: 'Mars rover', text: WORLDS.mars.intro },
       { week: 2, world: 'warehouse', sub: 'Week 2 · For loops', title: 'Warehouse robot', text: WORLDS.warehouse.intro },
       { week: 2, world: 'ocean', sub: 'Week 2 · While loops and if', title: 'Ocean drone', text: WORLDS.ocean.intro },
-      { week: 3, kind: 'console', sub: 'Week 3 · Python basics', title: 'Your first programs', text: 'No robot this time. These programs run in a terminal: they print text, ask the user to type something, store it in variables and do arithmetic with it — exactly the programs from the lecture.' }
+      { week: 3, kind: 'console', sub: 'Week 3 · Python basics', title: 'Your first programs', text: 'No robot this time. These programs run in a terminal: they print text, ask the user to type something, store it in variables and do arithmetic with it - exactly the programs from the lecture.' }
     ];
     var all = countDone();
-    var html = '<section class="pagehead"><div class="wrap"><h1>Python practice</h1><p>Eighteen short programs for weeks 2 and 3. Each brief is written in the language of the lectures, so read it slowly: the words in <b>bold</b> are the terms you need to know, and every task has a word bank to check them. Finish a task, then answer its reflection question — you will need those answers for your Padlet posts and your presentation.</p>' +
+    var html = '<section class="pagehead"><div class="wrap"><h1>Python practice</h1><p>Eighteen short programs for weeks 2 and 3. Each brief is written in the language of the lectures, so read it slowly: the words in <b>bold</b> are the terms you need to know, and every task has a word bank to check them. Finish a task, then answer its reflection question - you will need those answers for your Padlet posts and your presentation.</p><p class="credit">Our rover, warehouse robot and drone are cousins of Karel the Robot from Stanford University - the same commands, sensors and diamonds, just a different job to do.</p>' +
       '<div class="weeknav"><span class="chip on">' + all.done + ' of ' + all.total + ' done</span><a class="chip" href="#/python/' + TASKS[0].id + '">Start at task 1</a></div></div></section><section class="tasklist"><div class="wrap">';
     groups.forEach(function (g) {
       html += '<div class="group"><div class="group-head"><div><div class="sub">' + g.sub.toUpperCase() + '</div><h2>' + g.title + '</h2></div><p>' + g.text + '</p></div>';
@@ -1261,10 +1305,11 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     html += '</div><div class="work">';
     if (theme) html += '<div class="worlds"><div class="worldbox"><div class="lab"><span>Now</span><small id="posLabel"></small></div><div id="worldNow"></div></div><div class="worldbox goal"><div class="lab"><span>Goal</span><small>' + (t.goal.robot ? 'finish here' : 'finish anywhere') + '</small></div>' + renderWorld(goalWorld(t), theme, { hideRobot: !t.goal.robot, label: 'goal' }) + '</div></div>';
     html += '<div class="editor"><div class="lab"><span>' + (theme ? t.id.replace('-', '_') + '.py' : (t.starter.match(/File: (\S+)/) || [0, 'program.py'])[1]) + '</span><div class="tools"><button type="button" id="resetCode">Reset to starter code</button></div></div><div class="edwrap"><div class="gutter" id="gutter"></div><textarea class="code" id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code">' + esc(code) + '</textarea></div></div>';
-    if (isConsole) html += '<div class="inputs" style="margin-top:14px"><label for="inputs">Keyboard input — what the user types, one answer per line (the test uses its own values)</label><textarea id="inputs">' + esc((t.tests[0].inputs || []).join('\n')) + '</textarea></div>';
+    if (isConsole) html += '<div class="inputs" style="margin-top:14px"><label for="inputs">Keyboard input - what the user types, one answer per line (the test uses its own values)</label><textarea id="inputs">' + esc((t.tests[0].inputs || []).join('\n')) + '</textarea></div>';
     html += '<div class="runrow"><button class="button primary" id="run">Run</button>' + (theme ? '<button class="button black" id="check">Run and check</button>' : '<button class="button black" id="check">Run the tests</button>') + '<button class="button" id="stop" disabled>Stop</button>' + (theme ? '<div class="speed"><label for="speed">Speed</label><input type="range" id="speed" min="0" max="4" value="2"></div>' : '') + '</div>';
     html += '<div class="console" id="console"><div class="lab">Terminal</div><div id="out"></div></div><div class="result" id="result"></div>';
-    html += '<div class="reflect"><h3>Reflection</h3><p>' + t.reflect + '</p><textarea id="reflect" placeholder="Write two or three sentences. This is saved on this computer for your Padlet post.">' + esc(state.reflect[t.id] || '') + '</textarea><div class="saved" id="refSaved"></div></div>';
+    html += quickPracticeHtml(t, i);
+    html += '<div class="reflect"><h3>Reflection</h3><p>' + t.reflect + '</p><div class="btnrow"><a class="button primary" href="' + PADLET + '" target="_blank" rel="noopener">Post your reflection on Padlet</a></div></div>';
     html += '<div class="pager">' + (i > 0 ? '<a class="button" href="#/python/' + TASKS[i - 1].id + '">← Task ' + i + ': ' + TASKS[i - 1].title + '</a>' : '<a class="button" href="#/python">← All tasks</a>') + (i < TASKS.length - 1 ? '<a class="button black" href="#/python/' + TASKS[i + 1].id + '">Task ' + (i + 2) + ': ' + TASKS[i + 1].title + ' →</a>' : '<a class="button black" href="#/python">All tasks →</a>') + '</div>';
     html += '</div></div>';
     $app.innerHTML = chrome('python', html);
@@ -1294,8 +1339,7 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     function insert(txt) { var s = $code.selectionStart, e = $code.selectionEnd; $code.value = $code.value.slice(0, s) + txt + $code.value.slice(e); $code.selectionStart = $code.selectionEnd = s + txt.length; $code.dispatchEvent(new Event('input')); }
     document.getElementById('resetCode').onclick = function () { if (confirm('Replace your code with the starter code?')) { $code.value = t.starter; $code.dispatchEvent(new Event('input')); world = theme ? makeWorld(t.map) : null; drawNow(); clearOut(); } };
     Array.prototype.forEach.call(document.querySelectorAll('[data-hint]'), function (b) { b.onclick = function () { var h = document.getElementById('hint' + b.getAttribute('data-hint')); h.classList.toggle('show'); b.textContent = (h.classList.contains('show') ? 'Hide' : 'Show') + ' hint ' + (+b.getAttribute('data-hint') + 1); }; });
-    var $ref = document.getElementById('reflect'), refTimer;
-    $ref.addEventListener('input', function () { clearTimeout(refTimer); refTimer = setTimeout(function () { state.reflect[t.id] = $ref.value; save(state); document.getElementById('refSaved').textContent = 'Saved on this computer.'; }, 400); });
+    wireQuickPractice();
 
     function clearOut() { $out.innerHTML = ''; $res.className = 'result'; $res.innerHTML = ''; }
     function writeOut(txt, isInput, cls) { var sp = document.createElement('span'); if (isInput) sp.className = 'in'; if (cls) sp.className = cls; sp.textContent = txt; $out.appendChild(sp); }
@@ -1324,12 +1368,12 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
         if (token !== runToken) return;
         setRunning(false); drawNow();
         if (err) { if (err.line) updateGutter(err.line); if (err.kind === 'RuntimeError') world.crashed = true; drawNow(); writeOut('\n' + (err.kind || 'Error') + ': ' + err.msg, false, 'errline'); showResult('bad', 'The program stopped with an error', errHtml(err)); return; }
-        if (!runner.out.trim()) writeOut('(program finished — no text printed)', false);
+        if (!runner.out.trim()) writeOut('(program finished - no text printed)', false);
         if (!check) { showResult('warn', 'Finished', '<p>The program ran to the end. Use <b>Run and check</b> to compare the result with the goal.</p>'); return; }
         var fail = checkGoal(world, t);
         if (fail) { showResult('bad', 'Not there yet', '<p>' + fail + '</p>'); return; }
         var miss = requirementsMissing();
-        if (miss.length) { showResult('warn', 'The goal is reached — but read the brief again', miss.map(function (m) { return '<p>' + m + '</p>'; }).join('') + '<p>Change your program so it does what the brief asks, then check again.</p>'); return; }
+        if (miss.length) { showResult('warn', 'The goal is reached - but read the brief again', miss.map(function (m) { return '<p>' + m + '</p>'; }).join('') + '<p>Change your program so it does what the brief asks, then check again.</p>'); return; }
         markDone(); showResult('ok', 'Task complete', '<p>' + theme.robotName + ' did exactly what the brief asked. Answer the reflection question below, then move on to the next task.</p>');
       }
       function step() {
@@ -1360,21 +1404,21 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
       if (!check) {
         var res = exec(inputs, true);
         if (res.err) { updateGutter(res.err.line); writeOut('\n' + (res.err.kind || 'Error') + ': ' + res.err.msg, false, 'errline'); showResult('bad', 'The program stopped with an error', errHtml(res.err)); return; }
-        if (!res.out) writeOut('(program finished — nothing was printed)');
+        if (!res.out) writeOut('(program finished - nothing was printed)');
         showResult('warn', 'Finished', '<p>The program ran. Use <b>Run the tests</b> to check the output against what the brief asks for.</p>');
         return;
       }
       var report = '', allOk = true;
       for (var k = 0; k < t.tests.length; k++) {
         var tc = t.tests[k], rr = exec(tc.inputs.slice(), k === 0);
-        if (rr.err) { allOk = false; if (k === 0) { updateGutter(rr.err.line); writeOut('\n' + (rr.err.kind || 'Error') + ': ' + rr.err.msg, false, 'errline'); } report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') — the program stopped with an error.</p>' + errHtml(rr.err); continue; }
+        if (rr.err) { allOk = false; if (k === 0) { updateGutter(rr.err.line); writeOut('\n' + (rr.err.kind || 'Error') + ': ' + rr.err.msg, false, 'errline'); } report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') - the program stopped with an error.</p>' + errHtml(rr.err); continue; }
         var got = normalise(rr.out), want = normalise(tc.expect);
-        if (got === want) report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') — correct.</p>';
-        else { allOk = false; report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') — the output is different.</p><pre>Expected:\n' + esc(tc.expect) + '\nYour program printed:\n' + esc(rr.out || '(nothing)') + '</pre>' + diffHint(rr.out, tc.expect); }
+        if (got === want) report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') - correct.</p>';
+        else { allOk = false; report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') - the output is different.</p><pre>Expected:\n' + esc(tc.expect) + '\nYour program printed:\n' + esc(rr.out || '(nothing)') + '</pre>' + diffHint(rr.out, tc.expect); }
       }
       if (!allOk) { showResult('bad', 'Not there yet', report); return; }
       var miss = requirementsMissing();
-      if (miss.length) { showResult('warn', 'The output is right — but read the brief again', miss.map(function (m) { return '<p>' + m + '</p>'; }).join('') + report); return; }
+      if (miss.length) { showResult('warn', 'The output is right - but read the brief again', miss.map(function (m) { return '<p>' + m + '</p>'; }).join('') + report); return; }
       markDone(); showResult('ok', 'Task complete', report + '<p>Answer the reflection question below, then move on to the next task.</p>');
     }
     function normalise(s) { return s.replace(/\r/g, '').split('\n').map(function (l) { return l.replace(/\s+$/, ''); }).join('\n').replace(/\n+$/, ''); }
@@ -1384,7 +1428,7 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
         if (g[k] !== w[k]) {
           if (g[k] === undefined) return '<p>Line ' + (k + 1) + ' is missing from your output.</p>';
           if (w[k] === undefined) return '<p>Your program printed an extra line ' + (k + 1) + '.</p>';
-          if (g[k].toLowerCase() === w[k].toLowerCase()) return '<p>Line ' + (k + 1) + ' differs only in capital letters — Python compares text exactly.</p>';
+          if (g[k].toLowerCase() === w[k].toLowerCase()) return '<p>Line ' + (k + 1) + ' differs only in capital letters - Python compares text exactly.</p>';
           if (g[k].replace(/\s/g, '') === w[k].replace(/\s/g, '')) return '<p>Line ' + (k + 1) + ' differs only in spaces. Check the spaces inside your strings, and remember that commas in print() add a space.</p>';
           return '<p>The first difference is on line ' + (k + 1) + '. Compare the two versions character by character.</p>';
         }
@@ -1397,6 +1441,38 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     window.addEventListener('keydown', function onKey(e) { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); document.getElementById('check').click(); } });
   }
 
+
+  /* ---------- quick vocabulary practice ---------- */
+  function groupOf(t) { return t.kind === 'console' ? 'console' : t.world; }
+  function quickPracticeHtml(t, idx) {
+    var items = QUIZ[groupOf(t)]; if (!items) return '';
+    var n = 0; for (var k = 0; k < TASKS.length; k++) { if (TASKS[k].id === t.id) break; if (groupOf(TASKS[k]) === groupOf(t)) n++; }
+    var pick = [items[(n * 2) % items.length], items[(n * 2 + 1) % items.length]];
+    var html = '<div class="quick"><h3>Quick practice</h3><p>Two questions on the vocabulary of this section. They are not saved.</p>';
+    pick.forEach(function (q, j) {
+      html += '<div class="qitem" data-q="' + j + '"><p class="q">' + q.q + '</p>';
+      if (q.type === 'mc') html += q.options.map(function (o, oi) { return '<label><input type="radio" name="q' + j + '" value="' + oi + '"> ' + o + '</label>'; }).join('');
+      else html += '<input type="text" aria-label="Your answer" autocomplete="off" placeholder="type one word">';
+      html += '<div class="qrow"><button type="button" class="button black qcheck">Check</button></div><div class="fb"></div></div>';
+    });
+    return html + '</div>';
+  }
+  function wireQuickPractice() {
+    var t = TASKS[taskIndex(location.hash.split('/')[2] || '')]; if (!t) return;
+    var items = QUIZ[groupOf(t)]; if (!items) return;
+    var n = 0; for (var k = 0; k < TASKS.length; k++) { if (TASKS[k].id === t.id) break; if (groupOf(TASKS[k]) === groupOf(t)) n++; }
+    Array.prototype.forEach.call(document.querySelectorAll('.qitem'), function (box, j) {
+      var q = items[(n * 2 + j) % items.length], fb = box.querySelector('.fb');
+      box.querySelector('.qcheck').onclick = function () {
+        var ok = false, given;
+        if (q.type === 'mc') { var sel = box.querySelector('input:checked'); if (!sel) { fb.className = 'fb bad'; fb.textContent = 'Choose an answer first.'; return; } ok = +sel.value === q.answer; }
+        else { given = box.querySelector('input[type=text]').value.trim().toLowerCase().replace(/[^a-z0-9 _-]/g, ''); ok = q.accept.some(function (x) { return x === given; }); if (!given) { fb.className = 'fb bad'; fb.textContent = 'Type an answer first.'; return; } }
+        fb.className = 'fb ' + (ok ? 'ok' : 'bad');
+        fb.innerHTML = (ok ? '<b>Correct.</b> ' : '<b>Not quite.</b> ') + q.why;
+      };
+    });
+  }
+
   /* ---------- router ---------- */
   function route() {
     runToken++;
@@ -1406,7 +1482,7 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     if (h === 'python') return listPage();
     if (h.indexOf('python/') === 0) return taskPage(h.slice(7));
     if (h === 'web') return noticePage('web', 'How the web works', 'This block opens in week 6. You will build a small page, look inside real websites for problems, and follow a request from your browser to a server and back.');
-    if (h === 'ai') return noticePage('ai', 'Working with AI', 'This block opens in week 9. You will write a Python program that asks an AI a question with call_gpt() and prints the answer — and then check whether the answer is true.');
+    if (h === 'ai') return noticePage('ai', 'Working with AI', 'This block opens in week 9. You will write a Python program that asks an AI a question with call_gpt() and prints the answer - and then check whether the answer is true.');
     if (h === 'resources') return noticePage('res', 'Resources', 'The official Python tutorial, MDN web docs and W3Schools are linked at the bottom of the home page. Your code, progress and reflections are stored only in this browser on this computer; nothing is sent to a server.');
     homePage();
   }
