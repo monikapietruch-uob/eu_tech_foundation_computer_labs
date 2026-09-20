@@ -1,186 +1,1419 @@
 <!DOCTYPE html>
-<!--
-  index.html — the hub page. Students start here. It has one card for each
-  practice area (Python, the web, AI, extra games), a "Your progress" strip
-  and a "Your saved work" area (js/hub.js, reading js/progress.js), plus the
-  Resources list. The header, nav and footer are added by js/layout.js.
--->
-<html lang="en">
+<html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>EU Foundation — Tech Practice Hub</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="color-scheme" content="light">
+<title>Tech Practice Hub — EU Foundation, University of Bedfordshire</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+<style>
+:root {
+  --red: #D0112B;
+  --maroon: #8A0A2E;
+  --black: #000000;
+  --white: #FFFFFF;
+  --ink: #1B1B1B;
+  --grey: #5C5C5C;
+  --line: #D6D6D6;
+  --paper: #F4F4F4;
+  --green: #0E7A3E;
+  --display: "Bebas Neue", "Oswald", "Arial Narrow", Impact, sans-serif;
+  --body: "Univers", "Univers LT Std", "Helvetica Neue", Helvetica, Arial, sans-serif;
+  --mono: "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+  box-sizing: border-box;
+  padding-top: env(safe-area-inset-top, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+html { scroll-padding-top: env(safe-area-inset-top, 0px); }
+*, *::before, *::after { box-sizing: inherit; }
+html, body { margin: 0; background: var(--white); }
+body { font-family: var(--body); color: var(--ink); font-weight: 700; line-height: 1.45; font-size: 16px; }
+h1, h2, h3, h4 { font-family: var(--display); font-weight: 400; text-transform: uppercase; letter-spacing: 0.01em; line-height: 0.95; margin: 0; }
+a { color: inherit; }
+button { font: inherit; cursor: pointer; }
+code, pre { font-family: var(--mono); font-weight: 400; }
+p code, li code, .brief code { background: var(--paper); padding: 0 .3em; border: 1px solid var(--line); font-size: .92em; }
+:focus-visible { outline: 3px solid var(--black); outline-offset: 2px; }
+.wrap { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 640px) { .wrap { padding: 0 16px; } }
+
+/* ---------- top bars ---------- */
+.topbar { background: var(--black); color: var(--white); }
+.topbar .wrap { display: flex; justify-content: space-between; align-items: center; min-height: 74px; gap: 16px; }
+.logo { display: inline-flex; align-items: center; border: 1px dashed #777; padding: 12px 34px; font-size: 11px; letter-spacing: .12em; color: #ddd; text-decoration: none; }
+.accred { font-size: 12px; text-align: right; line-height: 1.35; }
+.nav { background: var(--red); color: var(--white); }
+.nav .wrap { display: flex; gap: 0; overflow-x: auto; }
+.nav a { padding: 15px 20px; text-decoration: none; font-size: 15px; white-space: nowrap; }
+.nav a[aria-current="page"] { background: var(--maroon); }
+.nav a:hover { background: #B50E25; }
+
+/* ---------- hero ---------- */
+.hero { background: var(--red); color: var(--white); position: relative; overflow: hidden; }
+.hero::after { content: ""; position: absolute; right: -8vw; top: -32vw; width: 60vw; height: 60vw; max-width: 760px; max-height: 760px; min-width: 420px; min-height: 420px; border-radius: 50%; background: var(--maroon); pointer-events: none; }
+.hero .wrap { position: relative; z-index: 1; padding-top: 44px; padding-bottom: 42px; }
+.eyebrow { font-size: 13px; letter-spacing: .16em; margin: 0 0 84px; }
+.hero h1 { font-size: clamp(72px, 12vw, 150px); }
+.hero .lede { max-width: 30ch; font-size: clamp(18px, 2.3vw, 24px); margin: 12px 0 96px; line-height: 1.3; }
+.hero-foot { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; }
+.chips { display: flex; gap: 14px; flex-wrap: wrap; }
+.chip { font-family: var(--display); text-transform: uppercase; font-size: 24px; letter-spacing: .02em; padding: 8px 22px; border: 2px solid var(--white); color: var(--white); background: transparent; text-decoration: none; line-height: 1.2; }
+.chip.on { background: var(--white); color: var(--red); }
+.hero-note { font-size: 13px; text-align: right; line-height: 1.5; }
+@media (max-width: 720px) { .eyebrow { margin-bottom: 40px; } .hero .lede { margin-bottom: 48px; } .hero-note { text-align: left; } .hero::after { min-width: 300px; min-height: 300px; top: -40vw; } }
+
+/* ---------- sections ---------- */
+section.block { padding: 48px 0 8px; }
+section.block h2 { font-size: 46px; }
+section.block > .wrap > p.intro { color: var(--grey); margin: 6px 0 22px; max-width: 80ch; }
+.cards { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+@media (max-width: 960px) { .cards { grid-template-columns: repeat(2, 1fr); } }
+@media (max-width: 560px) { .cards { grid-template-columns: 1fr; } }
+.card { padding: 24px 22px 22px; min-height: 460px; display: flex; flex-direction: column; color: var(--white); text-decoration: none; }
+.card.maroon { background: var(--maroon); } .card.red { background: var(--red); } .card.black { background: var(--black); }
+.card.outline { background: var(--white); color: var(--ink); border: 3px solid var(--black); }
+.card .when { font-size: 11px; letter-spacing: .16em; margin-bottom: 10px; }
+.card.outline .when { color: var(--grey); }
+.card h3 { font-size: 40px; margin-bottom: 12px; }
+.card p { font-size: 15px; line-height: 1.5; margin: 0; }
+.card .foot { margin-top: auto; padding-top: 24px; }
+.card .count { font-size: 13px; margin-bottom: 10px; }
+.card .btn { display: block; text-align: center; padding: 11px; background: var(--white); color: var(--ink); text-decoration: none; }
+.card.maroon .btn { color: var(--maroon); } .card.red .btn { color: var(--red); } .card.outline .btn { background: var(--black); color: var(--white); }
+.card .btn:hover { filter: brightness(.94); }
+
+.games { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+@media (max-width: 800px) { .games { grid-template-columns: 1fr; } }
+.game { border: 1px solid var(--line); padding: 20px 20px 18px; }
+.game h3 { font-size: 24px; margin-bottom: 6px; }
+.game p { margin: 0 0 10px; font-size: 14px; }
+.game a { color: var(--red); text-decoration: none; font-size: 14px; }
+.game a:hover { text-decoration: underline; }
+
+.two { display: grid; grid-template-columns: 1fr 1fr; gap: 48px; padding-bottom: 56px; }
+@media (max-width: 800px) { .two { grid-template-columns: 1fr; gap: 32px; } }
+.two h2 { font-size: 40px; margin-bottom: 8px; }
+.two p { font-size: 14px; margin: 0 0 16px; max-width: 60ch; }
+.btnrow { display: flex; gap: 10px; flex-wrap: wrap; }
+.button { padding: 11px 20px; border: 2px solid var(--black); background: var(--white); color: var(--ink); text-decoration: none; display: inline-block; }
+.button.primary { background: var(--red); border-color: var(--red); color: var(--white); }
+.button.primary:hover { background: #B50E25; border-color: #B50E25; }
+.button.black { background: var(--black); color: var(--white); }
+.button:disabled { opacity: .5; cursor: default; }
+.reslist { list-style: none; padding: 0; margin: 0; }
+.reslist li { border-top: 1px solid var(--line); }
+.reslist li:last-child { border-bottom: 1px solid var(--line); }
+.reslist a { display: flex; justify-content: space-between; padding: 12px 0; text-decoration: none; font-size: 15px; }
+.reslist a span:last-child { color: var(--red); }
+
+.footer { background: var(--black); color: var(--white); padding: 40px 0 34px; margin-top: 40px; }
+.footer h2 { font-size: 46px; line-height: .95; }
+.footer h2 span { display: block; color: var(--red); }
+.footer .row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-top: 22px; font-size: 13px; }
+.footer .row a { text-decoration: none; margin-left: 22px; }
+
+/* ---------- task list page ---------- */
+.pagehead { background: var(--red); color: var(--white); }
+.pagehead .wrap { padding: 34px 24px 30px; }
+.pagehead h1 { font-size: clamp(48px, 7vw, 84px); }
+.pagehead p { max-width: 70ch; margin: 8px 0 0; font-size: 16px; }
+.weeknav { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
+.tasklist { padding: 40px 0 56px; }
+.group { margin-bottom: 36px; }
+.group-head { display: grid; grid-template-columns: 220px 1fr; gap: 24px; align-items: start; border-top: 4px solid var(--black); padding-top: 14px; margin-bottom: 16px; }
+@media (max-width: 720px) { .group-head { grid-template-columns: 1fr; gap: 6px; } }
+.group-head h2 { font-size: 40px; }
+.group-head .sub { font-size: 12px; letter-spacing: .12em; color: var(--grey); margin-bottom: 4px; }
+.group-head p { margin: 0; font-size: 15px; color: var(--grey); max-width: 70ch; }
+.trow { display: grid; grid-template-columns: 56px 1fr auto; gap: 16px; align-items: center; padding: 14px 0; border-top: 1px solid var(--line); text-decoration: none; }
+.trow:last-child { border-bottom: 1px solid var(--line); }
+.trow .n { font-family: var(--display); font-size: 34px; line-height: 1; color: var(--red); }
+.trow.done .n { color: var(--green); }
+.trow .t { font-size: 17px; }
+.trow .c { font-size: 13px; color: var(--grey); font-weight: 700; }
+.trow .s { font-size: 12px; letter-spacing: .1em; padding: 6px 10px; border: 2px solid var(--black); }
+.trow.done .s { background: var(--green); color: var(--white); border-color: var(--green); }
+.trow:hover .t { text-decoration: underline; }
+
+/* ---------- task page ---------- */
+.taskbar { background: var(--red); color: var(--white); }
+.taskbar .wrap { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; padding-top: 20px; padding-bottom: 18px; flex-wrap: wrap; }
+.taskbar .meta { font-size: 12px; letter-spacing: .14em; margin-bottom: 4px; }
+.taskbar h1 { font-size: clamp(40px, 6vw, 64px); }
+.taskbar .steps { display: flex; gap: 6px; flex-wrap: wrap; }
+.taskbar .steps a { width: 22px; height: 22px; border: 2px solid var(--white); display: block; }
+.taskbar .steps a.done { background: var(--white); }
+.taskbar .steps a.cur { background: var(--black); border-color: var(--black); }
+.task { display: grid; grid-template-columns: minmax(300px, 5fr) minmax(0, 7fr); gap: 36px; padding: 32px 0 48px; }
+@media (max-width: 900px) { .task { grid-template-columns: 1fr; gap: 28px; } }
+.brief h2 { font-size: 30px; margin-bottom: 10px; }
+.brief p { font-size: 15.5px; line-height: 1.6; margin: 0 0 14px; font-weight: 500; }
+.brief p b { font-weight: 800; }
+.brief .scen { background: var(--paper); border-left: 6px solid var(--black); padding: 12px 14px; font-size: 14px; font-weight: 500; margin: 0 0 18px; }
+.cmds { margin: 8px 0 20px; border: 1px solid var(--line); font-size: 13px; }
+.cmds > div { display: grid; grid-template-columns: 1fr 1fr; }
+.cmds h4 { font-size: 20px; padding: 8px 12px 4px; }
+.cmds ul { list-style: none; margin: 0; padding: 0 12px 10px; }
+.cmds li { font-weight: 500; padding: 2px 0; }
+.cmds li code { background: none; border: 0; padding: 0; font-weight: 600; }
+.wordbank h3 { font-size: 26px; margin: 0 0 4px; }
+.wordbank details { border-top: 1px solid var(--line); }
+.wordbank details:last-child { border-bottom: 1px solid var(--line); }
+.wordbank summary { cursor: pointer; padding: 9px 0; font-size: 15px; list-style: none; display: flex; justify-content: space-between; }
+.wordbank summary::after { content: "+"; color: var(--red); font-family: var(--display); font-size: 22px; line-height: .8; }
+.wordbank details[open] summary::after { content: "–"; }
+.wordbank .def { font-weight: 500; font-size: 14px; padding: 0 0 12px; line-height: 1.55; }
+.hints { margin-top: 20px; }
+.hints h3 { font-size: 26px; margin-bottom: 6px; }
+.hints button { display: block; width: 100%; text-align: left; border: 2px solid var(--black); background: var(--white); padding: 9px 12px; margin-bottom: 6px; }
+.hints .hint { display: none; border-left: 6px solid var(--red); padding: 8px 12px; margin: 0 0 8px; font-weight: 500; font-size: 14px; background: var(--paper); }
+.hints .hint.show { display: block; }
+.hints .hint pre { margin: 6px 0 0; font-size: 13px; }
+
+.worlds { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
+@media (max-width: 560px) { .worlds { grid-template-columns: 1fr; } }
+.worldbox { border: 3px solid var(--black); }
+.worldbox .lab, .editor .lab, .console .lab { text-transform: uppercase; }
+.worldbox .lab { display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--black); color: var(--white); font-family: var(--display); font-size: 20px; letter-spacing: .04em; }
+.worldbox .lab small { font-family: var(--body); font-size: 11px; letter-spacing: .06em; }
+.worldbox svg { display: block; width: 100%; height: auto; }
+.worldbox.goal .lab { background: var(--maroon); }
+
+.editor { border: 3px solid var(--black); }
+.editor .lab { display: flex; justify-content: space-between; align-items: center; gap: 10px; padding: 6px 10px; background: var(--black); color: var(--white); font-family: var(--display); font-size: 20px; letter-spacing: .04em; flex-wrap: wrap; }
+.editor .lab .tools { display: flex; gap: 8px; align-items: center; font-family: var(--body); font-size: 12px; }
+.editor .lab button { background: transparent; color: var(--white); border: 1px solid #888; padding: 3px 8px; font-size: 12px; }
+.editor .lab button:hover { border-color: var(--white); }
+.edwrap { display: grid; grid-template-columns: 44px 1fr; background: var(--white); }
+.gutter { background: var(--paper); color: #9a9a9a; font-family: var(--mono); font-size: 14px; line-height: 1.5; padding: 12px 6px 12px 0; text-align: right; user-select: none; overflow: hidden; white-space: pre; }
+.gutter .err { color: var(--white); background: var(--red); }
+textarea.code { border: 0; margin: 0; resize: vertical; width: 100%; min-height: 380px; padding: 12px 12px; font-family: var(--mono); font-size: 14px; line-height: 1.5; tab-size: 4; white-space: pre; overflow: auto; color: var(--ink); background: var(--white); font-weight: 400; }
+textarea.code:focus { outline: none; box-shadow: inset 0 0 0 3px var(--red); }
+.runrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 14px 0; }
+.runrow .speed { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-left: auto; }
+.runrow input[type=range] { width: 120px; accent-color: var(--red); }
+.inputs { margin: 0 0 14px; }
+.inputs label { display: block; font-size: 13px; margin-bottom: 4px; }
+.inputs textarea { width: 100%; border: 2px solid var(--black); font-family: var(--mono); font-size: 14px; padding: 8px; min-height: 60px; resize: vertical; }
+.console { border: 3px solid var(--black); background: var(--black); color: #eee; font-family: var(--mono); font-size: 14px; line-height: 1.5; padding: 12px 14px; min-height: 120px; white-space: pre-wrap; word-break: break-word; }
+.console .lab { font-family: var(--display); font-size: 18px; color: #bbb; letter-spacing: .06em; margin-bottom: 6px; }
+.console .in { color: #FFD166; }
+.console .errline { color: #FF6B7A; }
+.result { margin-top: 14px; padding: 14px 16px; border: 3px solid var(--black); font-size: 15px; display: none; }
+.result.ok { display: block; border-color: var(--green); background: #E9F5EE; }
+.result.bad { display: block; border-color: var(--red); background: #FBEAEC; }
+.result.warn { display: block; border-color: #B8860B; background: #FBF5E1; }
+.result h3 { font-size: 26px; margin-bottom: 4px; }
+.result p { margin: 0; font-weight: 500; }
+.result pre { background: var(--white); border: 1px solid var(--line); padding: 8px; margin: 8px 0 0; font-size: 13px; overflow-x: auto; }
+.reflect { margin-top: 28px; border-top: 4px solid var(--black); padding-top: 16px; }
+.reflect h3 { font-size: 30px; margin-bottom: 4px; }
+.reflect p { font-weight: 500; margin: 0 0 10px; font-size: 15px; }
+.reflect textarea { width: 100%; min-height: 110px; border: 2px solid var(--black); padding: 10px; font: inherit; font-weight: 500; font-size: 15px; resize: vertical; }
+.reflect .saved { font-size: 12px; color: var(--grey); margin-top: 6px; }
+.pager { display: flex; justify-content: space-between; gap: 12px; margin-top: 28px; }
+.pager a { text-decoration: none; }
+
+.notice { padding: 56px 0 80px; }
+.notice h1 { font-size: 64px; margin-bottom: 12px; }
+.notice p { max-width: 60ch; font-weight: 500; }
+.visually-hidden { position: absolute; left: -9999px; }
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+</style>
 </head>
 <body>
+<div id="app"></div>
+<script>
+/* MiniPy — a small Python subset interpreter for teaching tasks.
+   Supports: def/return, if/elif/else, while, for..in range(), assignment (+= -= *=),
+   int/float/str/bool, + - * / // % comparisons and/or/not, print/input/int/str/float/len,
+   `import`/`from .. import ..` (ignored), `if __name__ == '__main__':`.
+   Execution is a generator so the page can animate robot steps.            */
+var MiniPy = (function () {
+  'use strict';
 
-  <div data-layout="header"></div>
-  <div data-layout="nav"></div>
+  function PyError(kind, msg, line) { this.kind = kind; this.msg = msg; this.line = line; }
+  PyError.prototype.toString = function () { return this.kind + (this.line ? ' (line ' + this.line + ')' : '') + ': ' + this.msg; };
 
-  <main class="container">
-    <h1>EU Foundation - Tech Practice Hub</h1>
-    <p class="page-intro">Practise the words and ideas from class by writing real code. Choose a section to start.</p>
+  function PyFloat(v) { this.v = v; }
 
-    <!-- BLOCKS: one row per block; js/hub.js fills in the progress of each -->
-    <section id="practice" class="blocks">
-      <h2>Practice</h2>
-      <p id="progressIntro">Loading…</p>
+  var KEYWORDS = { 'def': 1, 'if': 1, 'elif': 1, 'else': 1, 'while': 1, 'for': 1, 'in': 1, 'return': 1, 'pass': 1, 'and': 1, 'or': 1, 'not': 1, 'True': 1, 'False': 1, 'None': 1, 'import': 1, 'from': 1, 'break': 1, 'continue': 1 };
 
-      <div class="block-rows">
+  /* ---------------- tokenizer ---------------- */
+  function tokenize(src) {
+    var lines = src.replace(/\r\n?/g, '\n').split('\n');
+    var toks = [], indents = [0], depth = 0, i, ln;
+    var inTriple = null; // {q, line}
+    for (i = 0; i < lines.length; i++) {
+      ln = i + 1;
+      var line = lines[i];
+      var pos = 0;
+      if (inTriple) {
+        var endIdx = line.indexOf(inTriple);
+        if (endIdx < 0) continue;
+        pos = endIdx + 3; inTriple = null;
+        // rest of line is treated as continuation of a statement-level string; ignore remainder tokens rarely matter
+        if (line.slice(pos).trim() === '') continue;
+      } else {
+        // indentation
+        var m = /^[ \t]*/.exec(line)[0];
+        var stripped = line.slice(m.length);
+        if (stripped === '' || stripped[0] === '#' || /^(import|from)\s/.test(stripped)) continue; // blank/comment/import line
+        if (depth === 0) {
+          var col = 0;
+          for (var k = 0; k < m.length; k++) col += (m[k] === '\t') ? 4 - (col % 4) : 1;
+          if (col > indents[indents.length - 1]) { indents.push(col); toks.push({ t: 'INDENT', line: ln }); }
+          else {
+            while (col < indents[indents.length - 1]) { indents.pop(); toks.push({ t: 'DEDENT', line: ln }); }
+            if (col !== indents[indents.length - 1]) throw new PyError('IndentationError', 'this line is indented by a different amount from the lines above it. Use 4 spaces for each level of indentation.', ln);
+          }
+        }
+        pos = m.length;
+      }
+      while (pos < line.length) {
+        var c = line[pos];
+        if (c === ' ' || c === '\t') { pos++; continue; }
+        if (c === '#') break;
+        if (c === '"' || c === "'") {
+          if (line.substr(pos, 3) === c + c + c) {
+            var close = line.indexOf(c + c + c, pos + 3);
+            if (close < 0) { inTriple = c + c + c; toks.push({ t: 'STRING', v: line.slice(pos + 3), line: ln }); pos = line.length; break; }
+            toks.push({ t: 'STRING', v: line.slice(pos + 3, close), line: ln }); pos = close + 3; continue;
+          }
+          var j = pos + 1, s = '';
+          while (j < line.length && line[j] !== c) {
+            if (line[j] === '\\' && j + 1 < line.length) { var e = line[j + 1]; s += (e === 'n' ? '\n' : e === 't' ? '\t' : e); j += 2; }
+            else { s += line[j]; j++; }
+          }
+          if (j >= line.length) throw new PyError('SyntaxError', 'this string is missing its closing quote ' + c, ln);
+          toks.push({ t: 'STRING', v: s, line: ln }); pos = j + 1; continue;
+        }
+        if (/[0-9]/.test(c) || (c === '.' && /[0-9]/.test(line[pos + 1] || ''))) {
+          var nm = /^(\d+\.\d*|\.\d+|\d+)/.exec(line.slice(pos))[0];
+          toks.push({ t: 'NUMBER', v: nm, line: ln }); pos += nm.length; continue;
+        }
+        if (/[A-Za-z_]/.test(c)) {
+          var nmm = /^[A-Za-z_][A-Za-z0-9_]*/.exec(line.slice(pos))[0];
+          toks.push({ t: KEYWORDS[nmm] ? 'KW' : 'NAME', v: nmm, line: ln }); pos += nmm.length; continue;
+        }
+        var ops = ['//=', '==', '!=', '<=', '>=', '//', '+=', '-=', '*=', '/=', '(', ')', ',', ':', '=', '+', '-', '*', '/', '%', '<', '>', '[', ']'];
+        var found = null;
+        for (var o = 0; o < ops.length; o++) if (line.substr(pos, ops[o].length) === ops[o]) { found = ops[o]; break; }
+        if (!found) throw new PyError('SyntaxError', 'unexpected character "' + c + '"', ln);
+        if (found === '(' || found === '[') depth++;
+        if (found === ')' || found === ']') depth = Math.max(0, depth - 1);
+        toks.push({ t: 'OP', v: found, line: ln }); pos += found.length;
+      }
+      if (depth === 0 && !inTriple) toks.push({ t: 'NEWLINE', line: ln });
+    }
+    if (depth > 0) throw new PyError('SyntaxError', 'a bracket "(" was opened but never closed', lines.length);
+    while (indents.length > 1) { indents.pop(); toks.push({ t: 'DEDENT', line: lines.length }); }
+    toks.push({ t: 'EOF', line: lines.length });
+    return toks;
+  }
 
-        <article class="block-row" data-weeks="2,3,4">
-          <div class="block-band">
-            <span class="block-weeks">Weeks 2–4</span>
-            <h3>Python practice</h3>
-          </div>
-          <div class="block-body">
-            <p>Write short Python programs and move a robot called Karel around a grid. Variables, input, loops, conditions and functions.</p>
-            <div class="block-progress" data-progress></div>
-          </div>
-          <div class="block-action">
-            <a class="btn" href="practice-python.html">Open Python practice</a>
-          </div>
-        </article>
+  /* ---------------- parser ---------------- */
+  function Parser(toks) { this.toks = toks; this.i = 0; }
+  Parser.prototype.peek = function (k) { return this.toks[this.i + (k || 0)]; };
+  Parser.prototype.next = function () { return this.toks[this.i++]; };
+  Parser.prototype.is = function (t, v) { var p = this.peek(); return p.t === t && (v === undefined || p.v === v); };
+  Parser.prototype.expect = function (t, v, what) {
+    var p = this.peek();
+    if (p.t === t && (v === undefined || p.v === v)) return this.next();
+    var got = p.t === 'NEWLINE' ? 'the end of the line' : p.t === 'EOF' ? 'the end of the file' : p.t === 'INDENT' ? 'an indented line' : '"' + p.v + '"';
+    throw new PyError('SyntaxError', 'expected ' + (what || (v ? '"' + v + '"' : t.toLowerCase())) + ' but found ' + got, p.line);
+  };
+  Parser.prototype.program = function () {
+    var body = [];
+    while (!this.is('EOF')) {
+      if (this.is('NEWLINE')) { this.next(); continue; }
+      if (this.is('INDENT')) throw new PyError('IndentationError', 'unexpected indentation. This line should not be indented.', this.peek().line);
+      body.push(this.statement());
+    }
+    return body;
+  };
+  Parser.prototype.block = function () {
+    this.expect('OP', ':', 'a colon ":" at the end of this line');
+    if (!this.is('NEWLINE')) { // single-line block  e.g. "if x: move()"
+      var s = [this.simple()]; this.expect('NEWLINE'); return s;
+    }
+    this.next();
+    while (this.is('NEWLINE')) this.next();
+    if (!this.is('INDENT')) throw new PyError('IndentationError', 'expected an indented block after the colon. Indent the lines that belong inside it by 4 spaces.', this.peek().line);
+    this.next();
+    var body = [];
+    while (!this.is('DEDENT') && !this.is('EOF')) {
+      if (this.is('NEWLINE')) { this.next(); continue; }
+      body.push(this.statement());
+    }
+    if (this.is('DEDENT')) this.next();
+    return body;
+  };
+  Parser.prototype.statement = function () {
+    var p = this.peek();
+    if (p.t === 'KW') {
+      if (p.v === 'def') {
+        this.next();
+        var name = this.expect('NAME', undefined, 'a function name after "def"');
+        this.expect('OP', '(', '"(" after the function name');
+        var params = [];
+        while (!this.is('OP', ')')) { params.push(this.expect('NAME').v); if (this.is('OP', ',')) this.next(); }
+        this.expect('OP', ')');
+        var body = this.block();
+        return { k: 'def', name: name.v, params: params, body: body, line: p.line };
+      }
+      if (p.v === 'if') {
+        this.next();
+        var node = { k: 'if', branches: [], orelse: null, line: p.line };
+        node.branches.push({ test: this.expr(), body: this.block() });
+        while (this.is('KW', 'elif')) { var e = this.next(); node.branches.push({ test: this.expr(), body: this.block(), line: e.line }); }
+        if (this.is('KW', 'else')) { this.next(); node.orelse = this.block(); }
+        return node;
+      }
+      if (p.v === 'while') { this.next(); var t = this.expr(); return { k: 'while', test: t, body: this.block(), line: p.line }; }
+      if (p.v === 'for') {
+        this.next();
+        var v = this.expect('NAME', undefined, 'a variable name after "for"');
+        this.expect('KW', 'in', '"in"');
+        var it = this.expr();
+        return { k: 'for', v: v.v, iter: it, body: this.block(), line: p.line };
+      }
+      if (p.v === 'else' || p.v === 'elif') throw new PyError('SyntaxError', '"' + p.v + '" must come straight after an "if" block, at the same level of indentation', p.line);
+    }
+    var s = this.simple();
+    if (!this.is('EOF')) this.expect('NEWLINE', undefined, 'the end of the line');
+    return s;
+  };
+  Parser.prototype.simple = function () {
+    var p = this.peek();
+    if (p.t === 'KW') {
+      if (p.v === 'pass') { this.next(); return { k: 'pass', line: p.line }; }
+      if (p.v === 'break') { this.next(); return { k: 'break', line: p.line }; }
+      if (p.v === 'continue') { this.next(); return { k: 'continue', line: p.line }; }
+      if (p.v === 'return') { this.next(); var val = (this.is('NEWLINE') || this.is('EOF')) ? null : this.expr(); return { k: 'return', value: val, line: p.line }; }
+      if (p.v === 'import' || p.v === 'from') { while (!this.is('NEWLINE') && !this.is('EOF')) this.next(); return { k: 'pass', line: p.line }; }
+    }
+    if (p.t === 'NAME' && this.peek(1).t === 'OP' && ['=', '+=', '-=', '*=', '/=', '//='].indexOf(this.peek(1).v) >= 0) {
+      this.next(); var op = this.next().v; var value = this.expr();
+      return { k: 'assign', name: p.v, op: op, value: value, line: p.line };
+    }
+    var e = this.expr();
+    return { k: 'expr', expr: e, line: p.line };
+  };
+  Parser.prototype.expr = function () { return this.orExpr(); };
+  Parser.prototype.orExpr = function () { var l = this.andExpr(); while (this.is('KW', 'or')) { var t = this.next(); l = { k: 'bool', op: 'or', l: l, r: this.andExpr(), line: t.line }; } return l; };
+  Parser.prototype.andExpr = function () { var l = this.notExpr(); while (this.is('KW', 'and')) { var t = this.next(); l = { k: 'bool', op: 'and', l: l, r: this.notExpr(), line: t.line }; } return l; };
+  Parser.prototype.notExpr = function () { if (this.is('KW', 'not')) { var t = this.next(); return { k: 'not', e: this.notExpr(), line: t.line }; } return this.compare(); };
+  Parser.prototype.compare = function () {
+    var l = this.arith();
+    while (this.is('OP') && ['==', '!=', '<', '>', '<=', '>='].indexOf(this.peek().v) >= 0) { var t = this.next(); l = { k: 'bin', op: t.v, l: l, r: this.arith(), line: t.line }; }
+    if (this.is('OP', '=')) throw new PyError('SyntaxError', 'a single "=" assigns a value. To compare two values use "==" (two equals signs).', this.peek().line);
+    return l;
+  };
+  Parser.prototype.arith = function () { var l = this.term(); while (this.is('OP', '+') || this.is('OP', '-')) { var t = this.next(); l = { k: 'bin', op: t.v, l: l, r: this.term(), line: t.line }; } return l; };
+  Parser.prototype.term = function () { var l = this.factor(); while (this.is('OP') && ['*', '/', '//', '%'].indexOf(this.peek().v) >= 0) { var t = this.next(); l = { k: 'bin', op: t.v, l: l, r: this.factor(), line: t.line }; } return l; };
+  Parser.prototype.factor = function () { if (this.is('OP', '-') || this.is('OP', '+')) { var t = this.next(); return { k: 'unary', op: t.v, e: this.factor(), line: t.line }; } return this.atom(); };
+  Parser.prototype.atom = function () {
+    var p = this.next();
+    if (p.t === 'NUMBER') return { k: 'num', v: p.v.indexOf('.') >= 0 ? new PyFloat(parseFloat(p.v)) : parseInt(p.v, 10), line: p.line };
+    if (p.t === 'STRING') { var s = p.v; while (this.is('STRING')) s += this.next().v; return { k: 'str', v: s, line: p.line }; }
+    if (p.t === 'KW' && p.v === 'True') return { k: 'const', v: true, line: p.line };
+    if (p.t === 'KW' && p.v === 'False') return { k: 'const', v: false, line: p.line };
+    if (p.t === 'KW' && p.v === 'None') return { k: 'const', v: null, line: p.line };
+    if (p.t === 'OP' && p.v === '(') { var e = this.expr(); this.expect('OP', ')', 'a closing bracket ")"'); return e; }
+    if (p.t === 'NAME') {
+      if (this.is('OP', '(')) {
+        this.next(); var args = [], kwargs = {};
+        while (!this.is('OP', ')')) {
+          if (this.is('NAME') && this.peek(1).t === 'OP' && this.peek(1).v === '=') { var kn = this.next().v; this.next(); kwargs[kn] = this.expr(); }
+          else args.push(this.expr());
+          if (this.is('OP', ',')) this.next(); else if (!this.is('OP', ')')) throw new PyError('SyntaxError', 'expected "," or ")" inside the brackets of ' + p.v + '(...)', this.peek().line);
+        }
+        this.next();
+        return { k: 'call', name: p.v, args: args, kwargs: kwargs, line: p.line };
+      }
+      return { k: 'name', v: p.v, line: p.line };
+    }
+    if (p.t === 'KW') throw new PyError('SyntaxError', '"' + p.v + '" cannot be used here', p.line);
+    var got = p.t === 'NEWLINE' ? 'the end of the line' : p.t === 'EOF' ? 'the end of the file' : p.t === 'INDENT' ? 'an indented line' : p.t === 'DEDENT' ? 'the end of the block' : '"' + p.v + '"';
+    throw new PyError('SyntaxError', 'expected a value but found ' + got, p.line);
+  };
 
-        <article class="block-row" data-weeks="6,7,8">
-          <div class="block-band">
-            <span class="block-weeks">Weeks 6–8</span>
-            <h3>How the web works</h3>
-          </div>
-          <div class="block-body">
-            <p>Build a small page, look inside real websites for problems, follow a request from your browser to a server and back, and summarise how HTTPS keeps you safe.</p>
-            <div class="block-progress" data-progress></div>
-          </div>
-          <div class="block-action">
-            <a class="btn" href="practice-web.html">Open web practice</a>
-          </div>
-        </article>
+  /* ---------------- values ---------------- */
+  function typeName(v) {
+    if (v === null || v === undefined) return 'NoneType';
+    if (typeof v === 'boolean') return 'bool';
+    if (typeof v === 'number') return 'int';
+    if (v instanceof PyFloat) return 'float';
+    if (typeof v === 'string') return 'str';
+    if (v && v.fn) return 'function';
+    return 'object';
+  }
+  function repr(v, line) {
+    if (v === null || v === undefined) return 'None';
+    if (typeof v === 'boolean') return v ? 'True' : 'False';
+    if (typeof v === 'number') return String(v);
+    if (v instanceof PyFloat) { var s = String(v.v); if (/^-?\d+$/.test(s)) s += '.0'; return s; }
+    if (typeof v === 'string') return v;
+    if (v && v.fn) return '<function ' + v.name + '>';
+    return String(v);
+  }
+  function num(v) { return v instanceof PyFloat ? v.v : v; }
+  function isNum(v) { return typeof v === 'number' || v instanceof PyFloat || typeof v === 'boolean'; }
+  function truthy(v) { if (v instanceof PyFloat) return v.v !== 0; return !!v; }
 
-        <article class="block-row" data-weeks="9">
-          <div class="block-band">
-            <span class="block-weeks">Week 9</span>
-            <h3>Working with AI</h3>
-          </div>
-          <div class="block-body">
-            <p>Write a Python program that asks an AI a question with call_gpt() and prints the answer. Then check whether the answer is true.</p>
-            <div class="block-progress" data-progress></div>
-          </div>
-          <div class="block-action">
-            <a class="btn" href="practice-ai.html">Open the AI task</a>
-          </div>
-        </article>
+  function binop(op, a, b, line) {
+    if (op === '+') {
+      if (typeof a === 'string' && typeof b === 'string') return a + b;
+      if (typeof a === 'string' || typeof b === 'string') {
+        var other = typeof a === 'string' ? b : a;
+        throw new PyError('TypeError', 'can only concatenate str (not "' + typeName(other) + '") to str. Python cannot add text and a number together — wrap the number in str( ) first.', line);
+      }
+    }
+    if (op === '*' && (typeof a === 'string' || typeof b === 'string')) {
+      var s = typeof a === 'string' ? a : b, n = typeof a === 'string' ? b : a;
+      if (typeof n === 'number') { var out = ''; for (var i = 0; i < n; i++) out += s; return out; }
+    }
+    if (['==', '!='].indexOf(op) >= 0) {
+      var eq = (isNum(a) && isNum(b)) ? num(a) === num(b) : a === b;
+      return op === '==' ? eq : !eq;
+    }
+    if (['<', '>', '<=', '>='].indexOf(op) >= 0) {
+      if ((isNum(a) && isNum(b)) || (typeof a === 'string' && typeof b === 'string')) {
+        var x = num(a), y = num(b);
+        return op === '<' ? x < y : op === '>' ? x > y : op === '<=' ? x <= y : x >= y;
+      }
+      throw new PyError('TypeError', "'" + op + "' not supported between " + typeName(a) + ' and ' + typeName(b), line);
+    }
+    if (!isNum(a) || !isNum(b)) throw new PyError('TypeError', 'unsupported operand type(s) for ' + op + ": '" + typeName(a) + "' and '" + typeName(b) + "'", line);
+    var fa = a instanceof PyFloat || b instanceof PyFloat, x2 = num(a) + 0, y2 = num(b) + 0, r;
+    switch (op) {
+      case '+': r = x2 + y2; break;
+      case '-': r = x2 - y2; break;
+      case '*': r = x2 * y2; break;
+      case '/': if (y2 === 0) throw new PyError('ZeroDivisionError', 'division by zero', line); return new PyFloat(x2 / y2);
+      case '//': if (y2 === 0) throw new PyError('ZeroDivisionError', 'division by zero', line); r = Math.floor(x2 / y2); break;
+      case '%': if (y2 === 0) throw new PyError('ZeroDivisionError', 'division by zero', line); r = ((x2 % y2) + y2) % y2; break;
+    }
+    return fa ? new PyFloat(r) : r;
+  }
 
-        <article class="block-row block-row-extra">
-          <div class="block-band">
-            <span class="block-weeks">Any time</span>
-            <h3>Extra practice and games</h3>
-          </div>
-          <div class="block-body">
-            <p>Coding games made by other people, and the official guides, for when you want more.</p>
-          </div>
-          <div class="block-action">
-            <a class="btn outline" href="#games">See the games</a>
-          </div>
-        </article>
+  /* ---------------- interpreter ---------------- */
+  function editDistance(a, b) {
+    var m = a.length, n = b.length, prev = [], cur, i, j;
+    for (j = 0; j <= n; j++) prev.push(j);
+    for (i = 1; i <= m; i++) { cur = [i]; for (j = 1; j <= n; j++) cur.push(Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i - 1] === b[j - 1] ? 0 : 1))); prev = cur; }
+    return prev[n];
+  }
+  function Signal(type, value) { this.type = type; this.value = value; }
 
-      </div>
-    </section>
+  function Runner(src, opts) {
+    opts = opts || {};
+    this.out = '';
+    this.inputs = (opts.inputs || []).slice();
+    this.builtins = {};
+    this.globals = { '__name__': '__main__' };
+    this.stepCount = 0;
+    this.maxSteps = opts.maxSteps || 20000;
+    this.onPrint = opts.onPrint || null;
+    var self = this;
+    var B = this.builtins;
+    B['print'] = { fn: function (args, kw) {
+      var sep = kw.sep !== undefined ? kw.sep : ' ', end = kw.end !== undefined ? kw.end : '\n';
+      var text = args.map(function (a) { return repr(a); }).join(sep) + end;
+      self.write(text); return null; } };
+    B['input'] = { fn: function (args, kw, line) {
+      var prompt = args.length ? repr(args[0]) : '';
+      self.write(prompt);
+      if (!self.inputs.length) throw new PyError('EOFError', 'the program asked for input() but there was nothing left to type in. Check the "Keyboard input" box.', line);
+      var v = self.inputs.shift();
+      self.write(v + '\n', true); return v; } };
+    B['int'] = { fn: function (a, kw, line) {
+      var v = a[0];
+      if (typeof v === 'number') return v;
+      if (typeof v === 'boolean') return v ? 1 : 0;
+      if (v instanceof PyFloat) return Math.trunc(v.v);
+      if (typeof v === 'string') { var t = v.trim(); if (/^[+-]?\d+$/.test(t)) return parseInt(t, 10); throw new PyError('ValueError', "invalid literal for int() with base 10: '" + v + "'. int( ) can only convert text that looks like a whole number.", line); }
+      throw new PyError('TypeError', 'int() cannot convert ' + typeName(v), line); } };
+    B['float'] = { fn: function (a, kw, line) {
+      var v = a[0];
+      if (typeof v === 'number') return new PyFloat(v);
+      if (v instanceof PyFloat) return v;
+      if (typeof v === 'string') { var t = v.trim(); if (/^[+-]?(\d+\.?\d*|\.\d+)$/.test(t)) return new PyFloat(parseFloat(t)); throw new PyError('ValueError', "could not convert string to float: '" + v + "'", line); }
+      throw new PyError('TypeError', 'float() cannot convert ' + typeName(v), line); } };
+    B['str'] = { fn: function (a) { return a.length ? repr(a[0]) : ''; } };
+    B['len'] = { fn: function (a, kw, line) { if (typeof a[0] === 'string') return a[0].length; throw new PyError('TypeError', "object of type '" + typeName(a[0]) + "' has no len()", line); } };
+    B['abs'] = { fn: function (a) { return a[0] instanceof PyFloat ? new PyFloat(Math.abs(a[0].v)) : Math.abs(a[0]); } };
+    B['round'] = { fn: function (a) { var n = num(a[0]); if (a.length > 1) { var d = Math.pow(10, a[1]); return new PyFloat(Math.round(n * d) / d); } return Math.round(n); } };
+    B['type'] = { fn: function (a) { return "<class '" + typeName(a[0]) + "'>"; } };
+    B['range'] = { fn: function (a, kw, line) {
+      for (var i = 0; i < a.length; i++) if (typeof a[i] !== 'number') throw new PyError('TypeError', "'" + typeName(a[i]) + "' object cannot be interpreted as an integer. range( ) needs a whole number (an int).", line);
+      var start = a.length > 1 ? a[0] : 0, stop = a.length > 1 ? a[1] : a[0], step = a.length > 2 ? a[2] : 1;
+      if (stop === undefined) throw new PyError('TypeError', 'range() needs a number, e.g. range(4)', line);
+      var out = []; if (step > 0) for (var x = start; x < stop; x += step) out.push(x); else if (step < 0) for (var y = start; y > stop; y += step) out.push(y);
+      return { list: out }; } };
+    if (opts.builtins) for (var k in opts.builtins) B[k] = opts.builtins[k];
+    this.ast = new Parser(tokenize(src)).program();
+  }
+  Runner.prototype.write = function (t, isInput) { this.out += t; if (this.onPrint) this.onPrint(t, !!isInput); };
+  Runner.prototype.tick = function (line) {
+    if (++this.stepCount > this.maxSteps) throw new PyError('RuntimeError', 'the program has run more than ' + this.maxSteps + ' steps and was stopped. This usually means a loop never ends — check the condition of your while loop.', line);
+  };
+  Runner.prototype.run = function* () {
+    var self = this;
+    // define all functions first (hoisting like Python does when executed top-down is not exact, but this
+    // lets `if __name__ == '__main__': main()` appear anywhere and mirrors what students see in class)
+    for (var i = 0; i < this.ast.length; i++) {
+      var s = this.ast[i];
+      if (s.k === 'def') this.globals[s.name] = { fn: null, name: s.name, def: s };
+    }
+    var calledMain = false;
+    for (var j = 0; j < this.ast.length; j++) {
+      var st = this.ast[j];
+      if (st.k === 'def') continue;
+      if (st.k === 'if' && !calledMain) calledMain = true;
+      var sig = yield* this.execStmt(st, this.globals, true);
+      if (sig && sig.type === 'return') break;
+    }
+    return this.out;
+  };
+  Runner.prototype.execBlock = function* (body, env) {
+    for (var i = 0; i < body.length; i++) {
+      var sig = yield* this.execStmt(body[i], env);
+      if (sig) return sig;
+    }
+    return null;
+  };
+  Runner.prototype.execStmt = function* (s, env, top) {
+    this.tick(s.line);
+    switch (s.k) {
+      case 'pass': return null;
+      case 'break': return new Signal('break');
+      case 'continue': return new Signal('continue');
+      case 'return': return new Signal('return', s.value ? (yield* this.evalExpr(s.value, env)) : null);
+      case 'def':
+        env[s.name] = { fn: null, name: s.name, def: s }; return null;
+      case 'assign': {
+        var v = yield* this.evalExpr(s.value, env);
+        if (s.op !== '=') {
+          if (!(s.name in env)) throw new PyError('NameError', "name '" + s.name + "' is not defined. You must give a variable a value before you can change it.", s.line);
+          v = binop(s.op.slice(0, -1), env[s.name], v, s.line);
+        }
+        env[s.name] = v; return null;
+      }
+      case 'expr': {
+        var r = yield* this.evalExpr(s.expr, env);
+        if (s.expr.k === 'name' && r && r.fn !== undefined) throw new PyError('SyntaxError', "'" + s.expr.v + "' is a function. To call it you need brackets: " + s.expr.v + "()", s.line);
+        return null;
+      }
+      case 'if': {
+        for (var b = 0; b < s.branches.length; b++) {
+          if (truthy(yield* this.evalExpr(s.branches[b].test, env))) return yield* this.execBlock(s.branches[b].body, env);
+        }
+        if (s.orelse) return yield* this.execBlock(s.orelse, env);
+        return null;
+      }
+      case 'while': {
+        while (truthy(yield* this.evalExpr(s.test, env))) {
+          this.tick(s.line);
+          var sg = yield* this.execBlock(s.body, env);
+          if (sg) { if (sg.type === 'break') break; if (sg.type === 'return') return sg; }
+        }
+        return null;
+      }
+      case 'for': {
+        var it = yield* this.evalExpr(s.iter, env);
+        var items = it && it.list ? it.list : (typeof it === 'string' ? it.split('') : null);
+        if (!items) throw new PyError('TypeError', "'" + typeName(it) + "' object is not iterable. A for loop needs something like range(4).", s.line);
+        for (var q = 0; q < items.length; q++) {
+          env[s.v] = items[q]; this.tick(s.line);
+          var sg2 = yield* this.execBlock(s.body, env);
+          if (sg2) { if (sg2.type === 'break') break; if (sg2.type === 'return') return sg2; }
+        }
+        return null;
+      }
+    }
+    throw new PyError('RuntimeError', 'unknown statement', s.line);
+  };
+  Runner.prototype.lookup = function (name, env, line) {
+    if (name in env) return env[name];
+    if (name in this.globals) return this.globals[name];
+    if (name in this.builtins) return this.builtins[name];
+    var hint = '', best = null, bestD = 3;
+    var candidates = Object.keys(this.builtins).concat(Object.keys(this.globals), Object.keys(env));
+    for (var i = 0; i < candidates.length; i++) {
+      var c = candidates[i]; if (c === name || c.charAt(0) === '_') continue;
+      if (c.toLowerCase() === name.toLowerCase()) { best = c; bestD = 0; break; }
+      var d = editDistance(c, name); if (d < bestD) { bestD = d; best = c; }
+    }
+    if (best) hint = ' Did you mean "' + best + '"?' + (bestD === 0 ? ' Names are case sensitive.' : ' Check the spelling.');
+    throw new PyError('NameError', "name '" + name + "' is not defined." + (hint || ' Check the spelling, or define it with "def ' + name + '():" if it is a function.'), line);
+  };
+  Runner.prototype.evalExpr = function* (e, env) {
+    switch (e.k) {
+      case 'num': case 'str': case 'const': return e.v;
+      case 'name': return this.lookup(e.v, env, e.line);
+      case 'unary': { var v = yield* this.evalExpr(e.e, env); if (!isNum(v)) throw new PyError('TypeError', "bad operand type for unary " + e.op + ": '" + typeName(v) + "'", e.line); return e.op === '-' ? (v instanceof PyFloat ? new PyFloat(-v.v) : -v) : v; }
+      case 'not': return !truthy(yield* this.evalExpr(e.e, env));
+      case 'bool': {
+        var l = yield* this.evalExpr(e.l, env);
+        if (e.op === 'and') return truthy(l) ? (yield* this.evalExpr(e.r, env)) : l;
+        return truthy(l) ? l : (yield* this.evalExpr(e.r, env));
+      }
+      case 'bin': { var a = yield* this.evalExpr(e.l, env); var b = yield* this.evalExpr(e.r, env); return binop(e.op, a, b, e.line); }
+      case 'call': {
+        var f = this.lookup(e.name, env, e.line);
+        var args = [];
+        for (var i = 0; i < e.args.length; i++) args.push(yield* this.evalExpr(e.args[i], env));
+        var kw = {};
+        for (var k in e.kwargs) kw[k] = yield* this.evalExpr(e.kwargs[k], env);
+        if (f && f.def) {
+          if (args.length !== f.def.params.length) throw new PyError('TypeError', e.name + '() takes ' + f.def.params.length + ' argument(s) but ' + args.length + ' were given', e.line);
+          var local = {};
+          for (var p = 0; p < f.def.params.length; p++) local[f.def.params[p]] = args[p];
+          this.tick(e.line);
+          var sig = yield* this.execBlock(f.def.body, local);
+          return sig && sig.type === 'return' ? sig.value : null;
+        }
+        if (f && f.fn) {
+          if (f.arity !== undefined && args.length !== f.arity) throw new PyError('TypeError', e.name + '() takes ' + f.arity + ' arguments but ' + args.length + ' were given. Robot commands are written with empty brackets: ' + e.name + '()', e.line);
+          var r = f.fn(args, kw, e.line);
+          if (f.step) yield { line: e.line, name: e.name };
+          return r;
+        }
+        throw new PyError('TypeError', "'" + typeName(f) + "' object is not callable", e.line);
+      }
+    }
+    throw new PyError('RuntimeError', 'unknown expression', e.line);
+  };
 
-    <!-- GAMES -->
-    <section id="games">
-      <h2>Extra practice and games</h2>
-      <p>These are made by other people. They open in a new tab.</p>
+  function check(src) { try { new Parser(tokenize(src)).program(); return null; } catch (e) { return e; } }
 
-      <div class="card-grid">
-        <div class="card small">
-          <h3>Exercism</h3>
-          <p>Python exercises with feedback from a mentor.</p>
-          <a class="btn" href="https://exercism.org/tracks/python" target="_blank" rel="noopener">Go to Exercism</a>
-        </div>
-        <div class="card small">
-          <h3>CSS Diner</h3>
-          <p>Learn CSS selectors by playing a game.</p>
-          <a class="btn" href="https://flukeout.github.io" target="_blank" rel="noopener">Play CSS Diner</a>
-        </div>
-        <div class="card small">
-          <h3>Flexbox Froggy</h3>
-          <p>Learn CSS Flexbox by helping a frog.</p>
-          <a class="btn" href="https://flexboxfroggy.com" target="_blank" rel="noopener">Play Froggy</a>
-        </div>
-        <div class="card small">
-          <h3>CodeCombat</h3>
-          <p>Learn Python by controlling a game hero.</p>
-          <a class="btn" href="https://codecombat.com" target="_blank" rel="noopener">Play CodeCombat</a>
-        </div>
-        <div class="card small">
-          <h3>CheckiO</h3>
-          <p>Python puzzles, from beginner to advanced.</p>
-          <a class="btn" href="https://checkio.org" target="_blank" rel="noopener">Go to CheckiO</a>
-        </div>
-        <div class="card small">
-          <h3>Grid Garden</h3>
-          <p>Learn CSS Grid by growing carrots.</p>
-          <a class="btn" href="https://cssgridgarden.com" target="_blank" rel="noopener">Play Grid Garden</a>
-        </div>
-      </div>
-    </section>
+  return { Runner: Runner, PyError: PyError, PyFloat: PyFloat, tokenize: tokenize, check: check, repr: repr };
+})();
+if (typeof module !== 'undefined') module.exports = MiniPy;
 
-    <!-- SAVED WORK: reflections export and clearing -->
-    <section id="saved" class="saved-section">
-      <h2>Your saved work</h2>
-      <p class="saved-note">Your work is saved only in this browser, on this computer. Nothing is sent anywhere.</p>
-      <div class="saved-actions">
-        <div class="saved-action">
-          <h3>Reflections for Padlet</h3>
-          <p>Copies the answers you wrote after each task, as plain text with the task titles as headings.</p>
-          <button type="button" class="btn" id="copyReflections">Copy my reflections</button>
-        </div>
-        <div class="saved-action">
-          <h3>Leaving a shared computer?</h3>
-          <p>This deletes your code, progress and reflections from this browser. Copy your reflections first.</p>
-          <button type="button" class="btn outline" id="clearWork">Clear my saved work</button>
-          <div class="confirm" id="clearConfirm" hidden>
-            <p>Are you sure? This cannot be undone.</p>
-            <button type="button" class="btn" id="clearYes">Yes, clear everything</button>
-            <button type="button" class="btn outline" id="clearNo">Cancel</button>
-          </div>
-          <p class="muted small" id="clearDone" role="status" aria-live="polite"></p>
-        </div>
-      </div>
-    </section>
+/* ---------- Worlds (robot scenarios) ---------- */
+var WORLDS = {
+  mars: {
+    name: 'Mars rover', robot: 'the rover', robotName: 'Rover BED-1', item: 'rock', items: 'rocks',
+    cmds: { pick: 'pick_rock', put: 'put_rock', present: 'rock_present', absent: 'no_rock_present' },
+    importLine: 'from rover.marsrover import *',
+    bg: '#F2E1D2', grid: '#D9BFA8', wall: '#4A2A1A', robotFill: '#D0112B', itemFill: '#5B5B5B',
+    intro: 'A small rover has landed on Mars. It cannot see very far, so mission control (that is you) has to send it a complete program before it starts driving. The rover moves across a grid of squares, one square at a time, and it can collect rock samples and put them down again.'
+  },
+  warehouse: {
+    name: 'Warehouse robot', robot: 'the robot', robotName: 'Robot LU-7', item: 'parcel', items: 'parcels',
+    cmds: { pick: 'pick_parcel', put: 'put_parcel', present: 'parcel_present', absent: 'no_parcel_present' },
+    importLine: 'from warehouse.robot import *',
+    bg: '#EBEBEB', grid: '#CFCFCF', wall: '#1A1A1A', robotFill: '#000000', itemFill: '#B9834A',
+    intro: 'A delivery company near Luton has bought a robot for its warehouse. The robot rolls along the aisles between the shelves and places parcels where the packers need them. The robot has an endless supply of parcels in its tray, so it never runs out.'
+  },
+  ocean: {
+    name: 'Ocean drone', robot: 'the drone', robotName: 'Drone TIDE-3', item: 'bottle', items: 'bottles',
+    cmds: { pick: 'pick_bottle', put: 'put_bottle', present: 'bottle_present', absent: 'no_bottle_present' },
+    importLine: 'from ocean.drone import *',
+    bg: '#D7E8F0', grid: '#B4CFDC', wall: '#20363F', robotFill: '#8A0A2E', itemFill: '#3E8FB0',
+    intro: 'An underwater drone cleans plastic out of a bay. The bay is divided into a grid. Dark blocks are reef — solid rock that the drone cannot swim through. The drone does not know in advance where the bottles are, so it has to check its sensors as it goes.'
+  }
+};
 
-    <!-- RESOURCES -->
-    <section id="resources">
-      <h2>Resources</h2>
-      <p>Official guides you can use to check something.</p>
-      <div class="card-grid">
-        <div class="card small">
-          <h3>Python Docs</h3>
-          <p>The official Python tutorial.</p>
-          <a class="btn outline" href="https://docs.python.org/3/tutorial/" target="_blank" rel="noopener">Official Tutorial</a>
-        </div>
-        <div class="card small">
-          <h3>MDN Web Docs</h3>
-          <p>A guide to HTML and CSS.</p>
-          <a class="btn outline" href="https://developer.mozilla.org/en-US/docs/Learn" target="_blank" rel="noopener">HTML &amp; CSS Guide</a>
-        </div>
-        <div class="card small">
-          <h3>W3Schools</h3>
-          <p>Quick examples you can copy.</p>
-          <a class="btn outline" href="https://www.w3schools.com" target="_blank" rel="noopener">Quick Reference</a>
-        </div>
-      </div>
-    </section>
+var COMMON_VOCAB = {
+  'function': 'a self-contained block of code that performs one specific task. You <b>define</b> it once and can <b>call</b> it many times.',
+  'main function': 'the function where the program starts. It usually controls the program by calling other functions.',
+  'define a function': 'give a name to a set of actions you want the computer to perform, using <code>def name():</code>.',
+  'call a function': 'tell the computer to run (execute) that set of actions, by writing the name followed by brackets: <code>name()</code>.',
+  'undefined function': 'a function that is called but never defined, so Python cannot run it. You will see <i>NameError: name ... is not defined</i>.',
+  'helper function': 'a small function that does one step of the job, called from <code>main()</code> or from another function.',
+  'indentation': 'the spaces at the beginning of a line of code. In Python, indentation shows which lines belong inside a function, a loop or an if-statement.',
+  'code block': 'a group of indented lines that belong together, for example the body of a function.',
+  'colon': 'the <code>:</code> symbol at the end of <code>def</code>, <code>for</code>, <code>while</code> and <code>if</code> lines. It says “an indented block follows”.',
+  'parenthesis': 'a round bracket <code>( )</code>. A function is always called with a pair of them, even when it needs no information: <code>move()</code>.',
+  'control flow': 'the order in which the statements of a program are executed.',
+  'decomposition': 'breaking a large problem into smaller, more manageable sub-problems — in code, into several short functions.',
+  'top-down design': 'starting with the most general step of the problem (what <code>main()</code> should do) and then working out the details of each step.',
+  'for loop': 'a loop that repeats a block of code a specific number of times: <code>for i in range(4):</code>',
+  'while loop': 'a loop that keeps repeating as long as a condition is true: <code>while front_is_clear():</code>',
+  'body of the loop': 'the indented lines inside the loop — the code that runs every time the loop repeats.',
+  'iterate': 'to repeat a process. One repetition is called an <b>iteration</b>.',
+  'definite loop': 'a loop where you know in advance how many times it will run (a for loop).',
+  'indefinite loop': 'a loop where you do not know how many times it will run — it stops when a condition changes (a while loop).',
+  'condition': 'a test that is either <code>True</code> or <code>False</code>, for example <code>front_is_clear()</code>.',
+  'if-statement': 'a decision: the indented block runs only if the condition is true.',
+  'if-else statement': 'a decision with two paths: one block runs if the condition is true, the <code>else</code> block runs if it is false.',
+  'pre-condition': 'what must be true <i>before</i> a function is called, for example “the robot is facing east”.',
+  'post-condition': 'what is true <i>after</i> the function has finished, for example “the robot is on the next corner, facing east”.',
+  'bug': 'a mistake in a program that makes it behave in an unexpected way.',
+  'fence post problem': 'also called an <b>off-by-one error</b>: a loop that repeats one time too many or one time too few, like counting fence posts and fence rails.',
+  'source code': 'the text of a program, written by a programmer.',
+  'import': 'load a package (a collection of ready-made functions) so that your program can use it.',
+  'variable': 'a named place to store information in a program. It associates a <b>name</b> with a <b>value</b>.',
+  'assignment': 'giving a variable a value with the <code>=</code> sign. Python first works out the right-hand side, then stores the result in the variable on the left.',
+  'string': 'a piece of text, written between quotes: <code>"hello"</code> or <code>\'10\'</code>.',
+  'integer': 'a whole number with no decimal point, such as <code>7</code> or <code>-2</code>. In Python this type is called <code>int</code>.',
+  'float': 'a real number with a decimal point, such as <code>3.5</code> or <code>700.0</code>.',
+  'type': 'the kind of information stored in a variable: <code>int</code>, <code>float</code>, <code>str</code> or <code>bool</code>.',
+  'concatenate': 'join strings together with <code>+</code>: <code>"hi" + " " + "there"</code>.',
+  'convert': 'change a value from one type to another, for example <code>int("9")</code> turns the string <code>"9"</code> into the integer <code>9</code>.',
+  'input': 'the <code>input()</code> function shows a message, waits for the user to type something, and gives that text back to the program.',
+  'print': 'the <code>print()</code> function writes text to the terminal (the screen).',
+  'terminal': 'the text window where a program shows its output and where the user types input.',
+  'snake case': 'the naming style used in Python: lowercase words joined with underscores, e.g. <code>num_students</code>.',
+  'boolean': 'a value that is either <code>True</code> or <code>False</code>. In Python this type is called <code>bool</code>.'
+};
 
-  </main>
+/* ---------- Tasks ---------- */
+var TASKS = [
+  /* ================= WEEK 2 — MARS: functions ================= */
+  {
+    id: 'mars-1', week: 2, world: 'mars', title: 'First drive', concept: 'Calling functions',
+    brief: [
+      'The rover has just woken up on the surface of Mars. It is standing on the left-hand square of the top row, <b>facing east</b>. Three squares ahead of it, mission control has spotted an interesting rock sample.',
+      'Write a program that drives the rover east until it reaches the rock, and then collects the rock. The rover understands only four <b>commands</b>: <code>move()</code>, <code>turn_left()</code>, <code>pick_rock()</code> and <code>put_rock()</code>. Each command is a <b>function call</b> — the name of the function followed by a pair of <b>parentheses</b>.',
+      'All of your commands must go inside the <b>main function</b>, and every line inside <code>main()</code> must be <b>indented</b> by four spaces. The last two lines of the file start the program — leave them exactly as they are.'
+    ],
+    starter: 'from rover.marsrover import *\n\n# File: first_drive.py\n# --------------------\n# Drive the rover to the rock sample and collect it.\n\ndef main():\n    pass  # replace this line with your commands\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 6, rows: 3, robot: { x: 1, y: 3, dir: 'E' }, items: { '4,3': 1 } },
+    goal: { items: {}, robot: { x: 4, y: 3 } },
+    hints: ['One <code>move()</code> moves the rover exactly one square in the direction it is facing.', 'The rock is three squares away, so you need three <code>move()</code> calls before <code>pick_rock()</code>.'],
+    vocab: ['function', 'call a function', 'main function', 'parenthesis', 'indentation'],
+    reflect: 'What does it mean to call a function? Explain it in your own words, using one of the rover commands as an example.'
+  },
+  {
+    id: 'mars-2', week: 2, world: 'mars', title: 'Turn right', concept: 'Defining a function',
+    brief: [
+      'This time the rock is two squares east of the rover, and the base station where samples are stored is at the bottom of the same column. The program in the editor already describes the whole journey: drive to the rock, collect it, <b>turn right</b>, drive down to the bottom row and put the rock down.',
+      'There is one problem. The rover was shipped from the factory knowing how to <code>turn_left()</code>, but nobody taught it to turn right. If you run the program now, Python stops with a <i>NameError</i>, because <code>turn_right</code> is an <b>undefined function</b>.',
+      'Your job is to <b>define</b> the missing function. A definition starts with the keyword <code>def</code>, then the name, then <code>():</code>, and the <b>body</b> of the function goes on the indented lines below. Ask yourself: how many left turns make one right turn? Put your new <b>helper function</b> above <code>main()</code>.'
+    ],
+    starter: 'from rover.marsrover import *\n\n# File: turn_right.py\n# -------------------\n# Collect the rock and deliver it to the base at the bottom.\n\n\ndef main():\n    move()\n    move()\n    pick_rock()\n    turn_right()\n    move()\n    move()\n    put_rock()\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 5, rows: 3, robot: { x: 1, y: 3, dir: 'E' }, items: { '3,3': 1 } },
+    goal: { items: { '3,1': 1 }, robot: { x: 3, y: 1 } },
+    requires: [{ re: /def\s+turn_right\s*\(\s*\)\s*:/, msg: 'The task asks you to define a function called <code>turn_right</code>.' }],
+    hints: ['Three left turns bring the rover round to the right.', 'The definition looks like this:<pre>def turn_right():\n    turn_left()\n    turn_left()\n    turn_left()</pre>'],
+    vocab: ['define a function', 'undefined function', 'helper function', 'colon', 'code block'],
+    reflect: 'Why did the program fail before you added the definition? What is the difference between defining a function and calling it?'
+  },
+  {
+    id: 'mars-3', week: 2, world: 'mars', title: 'Around the crater', concept: 'Decomposition',
+    brief: [
+      'The rover is in the middle of the top row, facing east, and a rock sample lies two squares ahead. The base station is on the far left of the same row — but between the rover and the base there is a small crater. The rover cannot drive into the crater; it must go round it through the row below.',
+      'This journey has several clearly separate steps: collect the rock, turn around, go round the crater, and deliver the rock. Good programmers use <b>decomposition</b>: instead of writing one long list of commands in <code>main()</code>, they break the problem into smaller sub-problems and write one short <b>helper function</b> for each. Then <code>main()</code> simply calls those functions in order, so it reads almost like English.',
+      'Write at least these two helpers: <code>turn_right()</code> and <code>turn_around()</code>. You may add more, for example <code>go_around_crater()</code>. Remember that Python needs a function to be defined before the program reaches the line that calls it, so put your helpers above the <code>if __name__</code> lines.'
+    ],
+    starter: 'from rover.marsrover import *\n\n# File: crater.py\n# ---------------\n# Collect the rock, turn around and deliver it to the base at the\n# far left. The crater is in the way, so go round it.\n\n\ndef main():\n    collect_rock()\n    turn_around()\n    go_around_crater()\n    put_rock()\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 6, rows: 2, robot: { x: 3, y: 2, dir: 'E' }, items: { '5,2': 1 }, walls: [[2, 2, 'W'], [2, 2, 'E'], [2, 2, 'S']] },
+    goal: { items: { '1,2': 1 }, robot: { x: 1, y: 2 } },
+    requires: [{ re: /def\s+turn_around\s*\(/, msg: 'Define a helper function called <code>turn_around</code>.' }, { re: /def\s+turn_right\s*\(/, msg: 'Define a helper function called <code>turn_right</code>.' }],
+    hints: ['A <code>turn_around()</code> is two left turns.', 'The dark lines around the crater are walls. To go round: turn left (facing south), move, turn right (facing west), move twice, turn right (north), move, turn left (west) — but check the rover ends on the base square.'],
+    vocab: ['decomposition', 'top-down design', 'helper function', 'control flow', 'source code'],
+    reflect: 'Explain the principle of decomposition using this task as your example. Which helper functions did you write and why?'
+  },
 
-  <div data-layout="footer"></div>
+  /* ================= WEEK 2 — WAREHOUSE: for loops ================= */
+  {
+    id: 'wh-1', week: 2, world: 'warehouse', title: 'Fill the shelf', concept: 'The for loop',
+    brief: [
+      'The robot is at the start of an aisle, facing east. The packers need a parcel on each of the first four squares of the aisle. You could write <code>put_parcel()</code> and <code>move()</code> four times each, but programmers avoid repeating themselves.',
+      'Use a <b>for loop</b>. The line <code>for i in range(4):</code> tells Python to <b>iterate</b> — to repeat the indented lines below it, called the <b>body of the loop</b>, exactly four times. A loop like this, where you know in advance how many repetitions you need, is called a <b>definite loop</b>.',
+      'Inside the body, put a parcel down and then move one square forward. Look carefully at the goal picture to see where the robot should finish.'
+    ],
+    starter: 'from warehouse.robot import *\n\n# File: fill_shelf.py\n# -------------------\n# Put a parcel on each of the first four squares of the aisle.\n\n\ndef main():\n    pass  # replace this line with a for loop\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 6, rows: 2, robot: { x: 1, y: 1, dir: 'E' }, items: {} },
+    goal: { items: { '1,1': 1, '2,1': 1, '3,1': 1, '4,1': 1 }, robot: { x: 5, y: 1 } },
+    requires: [{ re: /\bfor\b/, msg: 'This task asks you to use a <code>for</code> loop rather than repeating the commands by hand.' }],
+    hints: ['<pre>for i in range(4):\n    put_parcel()\n    move()</pre>', 'Both lines of the body must be indented under the <code>for</code> line.'],
+    vocab: ['for loop', 'body of the loop', 'iterate', 'definite loop', 'indentation'],
+    reflect: 'What is a for loop? Paraphrase the definition and give the name of the variable that counts the repetitions in your code.'
+  },
+  {
+    id: 'wh-2', week: 2, world: 'warehouse', title: 'Four corners', concept: 'Repeating a pattern',
+    brief: [
+      'The robot is in the bottom-left corner of a square storage area, four squares by four, facing east. A parcel is needed in each of the four corners, and afterwards the robot should be back where it started, facing east again.',
+      'Notice that the same pattern repeats four times: put down a parcel, drive along one side of the square, and turn left at the corner. That is exactly the shape of a for loop with four <b>iterations</b>.',
+      'Before you write any code, work out how many <code>move()</code> calls it takes to get from one corner to the next. Getting this number wrong by one is the most common <b>bug</b> in this task.'
+    ],
+    starter: 'from warehouse.robot import *\n\n# File: four_corners.py\n# ---------------------\n# Place one parcel in each corner of the storage area.\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 4, rows: 4, robot: { x: 1, y: 1, dir: 'E' }, items: {} },
+    goal: { items: { '1,1': 1, '4,1': 1, '4,4': 1, '1,4': 1 }, robot: { x: 1, y: 1, dir: 'E' } },
+    requires: [{ re: /\bfor\b/, msg: 'Use a <code>for</code> loop: the same steps repeat four times.' }],
+    hints: ['From one corner to the next is three moves, not four.', '<pre>for i in range(4):\n    put_parcel()\n    move()\n    move()\n    move()\n    turn_left()</pre>'],
+    vocab: ['for loop', 'iterate', 'bug', 'fence post problem'],
+    reflect: 'How many moves did you need between corners, and why is it not four? Use the term “off-by-one error” in your answer.'
+  },
+  {
+    id: 'wh-3', week: 2, world: 'warehouse', title: 'Five per corner', concept: 'Helper functions with loops',
+    brief: [
+      'Same storage area, but now each corner needs a stack of five parcels. The robot can put several parcels on the same square, one on top of the other.',
+      'Combine what you have learnt: write a helper function <code>put_five_parcels()</code> that uses a for loop to put down five parcels, and a helper function <code>move_to_next_corner()</code> that drives to the next corner and turns left. Then <code>main()</code> repeats those two calls four times.',
+      'When you write a helper, think about its <b>pre-condition</b> (what must be true before it is called — for example, the robot is standing on a corner) and its <b>post-condition</b> (what is true afterwards — the robot is on the next corner, facing along the next side). If every helper keeps its promise, the loop in <code>main()</code> works.'
+    ],
+    starter: 'from warehouse.robot import *\n\n# File: five_per_corner.py\n# ------------------------\n# Place five parcels in each corner of the storage area.\n\n\n# Pre-condition:  robot is on a corner, facing along the next side\n# Post-condition: five parcels are on this corner\ndef put_five_parcels():\n    pass\n\n\n# Pre-condition:  robot is on a corner\n# Post-condition: robot is on the next corner, facing along the next side\ndef move_to_next_corner():\n    pass\n\n\ndef main():\n    for i in range(4):\n        put_five_parcels()\n        move_to_next_corner()\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 4, rows: 4, robot: { x: 1, y: 1, dir: 'E' }, items: {} },
+    goal: { items: { '1,1': 5, '4,1': 5, '4,4': 5, '1,4': 5 }, robot: { x: 1, y: 1, dir: 'E' } },
+    requires: [{ re: /def\s+put_five_parcels/, msg: 'Keep the helper function <code>put_five_parcels()</code>.' }, { re: /def\s+move_to_next_corner/, msg: 'Keep the helper function <code>move_to_next_corner()</code>.' }],
+    hints: ['<code>put_five_parcels()</code> is a for loop with <code>range(5)</code> and one <code>put_parcel()</code> inside.', 'A function that calls another function, which contains a loop, which is called from a loop — this is decomposition in action.'],
+    vocab: ['pre-condition', 'post-condition', 'helper function', 'decomposition', 'for loop'],
+    reflect: 'Write the pre-condition and post-condition of move_to_next_corner() in your own words. Why do these help when you use the function inside a loop?'
+  },
+  {
+    id: 'wh-4', week: 2, world: 'warehouse', title: 'Fix the fence post', concept: 'The while loop and off-by-one errors',
+    brief: [
+      'A colleague has written a program to lay a parcel on every square of an aisle, using a <b>while loop</b>. A while loop is an <b>indefinite loop</b>: it does not count; it keeps repeating its body as long as a <b>condition</b> stays true. Here the condition is <code>front_is_clear()</code>, which is true while there is no wall directly in front of the robot.',
+      'Run the program and compare the result with the goal. One square is missed. This is a classic <b>fence post problem</b>, also called an <b>off-by-one error</b>: imagine building a fence — you need one more post than the number of rails between them. In the loop, every iteration does one <i>put</i> and one <i>move</i>, but the last square needs a <i>put</i> without a <i>move</i>.',
+      'Fix the <b>bug</b> without changing the loop into a for loop. Think about what happens after the loop finishes.'
+    ],
+    starter: 'from warehouse.robot import *\n\n# File: parcel_line_bug.py\n# ------------------------\n# Lay a parcel on every square of the aisle.\n# Something is wrong. Run it and find the bug.\n\n\ndef main():\n    while front_is_clear():\n        put_parcel()\n        move()\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 6, rows: 1, robot: { x: 1, y: 1, dir: 'E' }, items: {} },
+    goal: { items: { '1,1': 1, '2,1': 1, '3,1': 1, '4,1': 1, '5,1': 1, '6,1': 1 }, robot: { x: 6, y: 1 } },
+    requires: [{ re: /\bwhile\b/, msg: 'Keep the <code>while</code> loop — fix the bug instead of replacing the loop.' }],
+    hints: ['The loop stops as soon as the robot is against the wall — before it puts down the last parcel.', 'Add one more <code>put_parcel()</code> <i>after</i> the loop, at the same indentation as the <code>while</code> line.'],
+    vocab: ['while loop', 'indefinite loop', 'condition', 'fence post problem', 'bug'],
+    reflect: 'Explain the fence post problem to a friend who has never programmed. Why did the while loop leave one square empty?'
+  },
 
-  <script src="js/layout.js?v=5"></script>
-  <script src="js/tasks.js?v=5"></script>
-  <script src="js/progress.js?v=5"></script>
-  <script src="js/reflections.js?v=5"></script>
-  <script src="js/hub.js?v=5"></script>
+  /* ================= WEEK 2 — OCEAN: while and if ================= */
+  {
+    id: 'sea-1', week: 2, world: 'ocean', title: 'Swim to the reef', concept: 'while with a sensor',
+    brief: [
+      'The drone is at the left end of the bay, facing east. Somewhere ahead there is a wall of reef, but the drone does not know how far away it is — the maps of this bay are out of date. So counting moves with a for loop is not an option.',
+      'Instead, use a <b>while loop</b> with a <b>sensor</b>. The drone can ask <code>front_is_clear()</code>, which returns <code>True</code> when nothing blocks the square ahead. As long as that condition is true, the drone should keep moving. The moment it becomes false, the loop stops and the drone is safely next to the reef.',
+      'Write this as a helper function <code>move_to_reef()</code> and call it from <code>main()</code>.'
+    ],
+    starter: 'from ocean.drone import *\n\n# File: to_the_reef.py\n# --------------------\n# Swim east until the drone reaches the reef.\n\n\ndef move_to_reef():\n    pass\n\n\ndef main():\n    move_to_reef()\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 8, rows: 3, robot: { x: 1, y: 2, dir: 'E' }, items: {}, walls: [[5, 2, 'E'], [5, 1, 'E'], [5, 3, 'E']] },
+    goal: { items: {}, robot: { x: 5, y: 2 } },
+    requires: [{ re: /\bwhile\b/, msg: 'Use a <code>while</code> loop with <code>front_is_clear()</code> — the drone does not know the distance.' }],
+    hints: ['<pre>while front_is_clear():\n    move()</pre>', 'If the drone crashes into the reef, check that the <code>move()</code> is <i>inside</i> the loop, not after it.'],
+    vocab: ['while loop', 'condition', 'indefinite loop', 'boolean'],
+    reflect: 'When is a while loop a better choice than a for loop? Use the words “definite” and “indefinite” in your answer.'
+  },
+  {
+    id: 'sea-2', week: 2, world: 'ocean', title: 'Find the bottle', concept: 'Negative conditions',
+    brief: [
+      'A single plastic bottle is floating somewhere along the bottom row of the bay. The drone starts at the left end, facing east, and does not know which square the bottle is on.',
+      'The drone has a sensor called <code>bottle_present()</code>, which is true when there is a bottle on the drone’s own square, and the opposite sensor <code>no_bottle_present()</code>. Keep moving <i>while there is no bottle here</i>; when the loop ends, the drone must be on the bottle’s square, so pick it up.',
+      'Try to write the condition so that the program reads like a sentence in English.'
+    ],
+    starter: 'from ocean.drone import *\n\n# File: find_bottle.py\n# --------------------\n# Swim east until the drone is on the bottle, then pick it up.\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 8, rows: 2, robot: { x: 1, y: 1, dir: 'E' }, items: { '6,1': 1 } },
+    goal: { items: {}, robot: { x: 6, y: 1 } },
+    requires: [{ re: /\bwhile\b/, msg: 'Use a <code>while</code> loop — the distance to the bottle is unknown.' }],
+    hints: ['<pre>while no_bottle_present():\n    move()\npick_bottle()</pre>', 'The <code>pick_bottle()</code> goes <i>after</i> the loop, because the loop ends exactly when the drone reaches the bottle.'],
+    vocab: ['condition', 'while loop', 'boolean', 'iterate'],
+    reflect: 'Read your while line aloud as an English sentence. Why is the pick_bottle() call outside the loop?'
+  },
+  {
+    id: 'sea-3', week: 2, world: 'ocean', title: 'Only where needed', concept: 'The if-statement',
+    brief: [
+      'Now the whole lane needs cleaning. The drone must swim from the left end of the lane to the right end and pick up every bottle it finds on the way. Some squares have a bottle, some do not, and the drone must not try to pick up a bottle from an empty square — that causes an error.',
+      'This calls for an <b>if-statement</b>: a decision inside the loop. On every square, check the condition <code>bottle_present()</code>; only if it is true, call <code>pick_bottle()</code>. Then move on. The block under <code>if</code> is indented one level deeper than the <code>while</code> body, so this program has two <b>levels of indentation</b>.',
+      'Watch out for the fence post: the last square of the lane also needs to be checked.'
+    ],
+    starter: 'from ocean.drone import *\n\n# File: clean_lane.py\n# -------------------\n# Swim to the end of the lane and pick up every bottle on the way.\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 8, rows: 1, robot: { x: 1, y: 1, dir: 'E' }, items: { '2,1': 1, '4,1': 1, '5,1': 1, '8,1': 1 } },
+    goal: { items: {}, robot: { x: 8, y: 1 } },
+    requires: [{ re: /\bif\b/, msg: 'Use an <code>if</code>-statement to decide whether to pick up a bottle.' }, { re: /\bwhile\b/, msg: 'Use a <code>while</code> loop to reach the end of the lane.' }],
+    hints: ['Write a helper <code>clean_square()</code> containing the if-statement, and call it inside the loop and once more after it.', '<pre>while front_is_clear():\n    if bottle_present():\n        pick_bottle()\n    move()\nif bottle_present():\n    pick_bottle()</pre>'],
+    vocab: ['if-statement', 'condition', 'fence post problem', 'code block'],
+    reflect: 'Paraphrase this definition: “The if-statement is a decision-making statement that guides a program to make decisions based on specified criteria.”'
+  },
+  {
+    id: 'sea-4', week: 2, world: 'ocean', title: 'Reef hurdles', concept: 'if-else and decomposition',
+    brief: [
+      'The drone must cross the bay from the left side to the right side along the bottom row, but reef walls of different heights stick up from the seabed. When the way ahead is clear, the drone simply moves. When a reef blocks the way, the drone has to climb: go up until it can pass, swim over the top, and come back down on the other side.',
+      'This is the classic steeplechase problem. Use an <b>if-else statement</b> inside a loop that crosses the bay: <code>if front_is_clear():</code> move, <code>else:</code> jump the reef. Write <code>jump_reef()</code> as a helper, and decompose it further into <code>climb_up()</code>, <code>swim_over()</code> and <code>climb_down()</code> if that helps.',
+      'The reefs have different heights, so climbing must use a while loop with the sensor <code>right_is_blocked()</code>, not a fixed number of moves. Take it step by step — this is the hardest task of the week.'
+    ],
+    starter: 'from ocean.drone import *\n\n# File: reef_hurdles.py\n# ---------------------\n# Cross the bay from left to right, climbing over each reef.\n# The bay is 9 squares wide, so the drone crosses 8 gaps.\n\n\ndef turn_right():\n    turn_left()\n    turn_left()\n    turn_left()\n\n\n# Pre-condition:  facing east, at the bottom of a reef\n# Post-condition: facing east, at the bottom, on the other side\ndef jump_reef():\n    pass\n\n\ndef main():\n    for i in range(8):\n        if front_is_clear():\n            move()\n        else:\n            jump_reef()\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 9, rows: 4, robot: { x: 1, y: 1, dir: 'E' }, items: {},
+      walls: [[2, 1, 'E'], [4, 1, 'E'], [4, 2, 'E'], [6, 1, 'E'], [7, 1, 'E'], [7, 2, 'E'], [7, 3, 'E']] },
+    goal: { items: {}, robot: { x: 9, y: 1 } },
+    requires: [{ re: /\belse\b/, msg: 'Keep the <code>if-else</code> decision in the loop.' }, { re: /\bwhile\b/, msg: 'Use a <code>while</code> loop when climbing — the reefs have different heights.' }],
+    hints: ['<code>climb_up()</code>: turn left, then <code>while right_is_blocked(): move()</code>, then turn right.', '<code>swim_over()</code> is one <code>move()</code>. <code>climb_down()</code>: turn right, <code>while front_is_clear(): move()</code>, turn left.'],
+    vocab: ['if-else statement', 'decomposition', 'pre-condition', 'post-condition', 'while loop'],
+    reflect: 'Describe how you decomposed jump_reef(). Which sensor did you use to climb and why was a while loop necessary?'
+  },
+  {
+    id: 'sea-5', week: 2, world: 'ocean', title: 'Sweep the bay', concept: 'Challenge: putting it all together',
+    brief: [
+      'A challenge for anyone who has finished the other tasks. Bottles are scattered across the whole bay, four rows deep. The drone starts in the bottom-left corner facing east and must pick up every bottle. Where it finishes does not matter.',
+      'Plan before you type. A good approach is a zigzag: clean one row from left to right, move up one row, clean the next row from right to left, and so on. Decompose the problem into helpers such as <code>clean_row()</code> and <code>go_up_and_turn()</code>, and think about the pre- and post-conditions of each one.',
+      'Nothing here is new — it is loops, if-statements and helper functions, combined. That is what programming is.'
+    ],
+    starter: 'from ocean.drone import *\n\n# File: sweep_bay.py\n# ------------------\n# Pick up every bottle in the bay.\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    map: { cols: 6, rows: 4, robot: { x: 1, y: 1, dir: 'E' }, items: { '2,1': 1, '5,1': 1, '6,1': 1, '1,2': 1, '3,2': 1, '4,3': 1, '6,3': 1, '2,4': 1, '5,4': 1 } },
+    goal: { items: {} },
+    hints: ['Clean a row: <code>while front_is_clear(): clean_square(); move()</code> and then <code>clean_square()</code> once more.', 'At the end of a row, the drone needs to turn towards the next row (left if it was going east, right if it was going west), move one square, and turn again. Use <code>facing_east()</code> to decide which way to turn.'],
+    vocab: ['decomposition', 'while loop', 'if-else statement', 'pre-condition', 'post-condition'],
+    reflect: 'Which part of this challenge was hardest, and how did decomposition help you? What would you do differently next time?'
+  },
+
+  /* ================= WEEK 3 — CONSOLE: Python basics ================= */
+  {
+    id: 'py-1', week: 3, kind: 'console', title: 'Hello, world', concept: 'The print function',
+    brief: [
+      'Goodbye rover, hello Python. Now you will write ordinary Python programs that run in a <b>terminal</b>: a text window where a program can show its results and where a person can type answers.',
+      'It is a tradition that a programmer’s first program writes the words <i>hello, world!</i> on the screen. The <b>print function</b> does exactly that: it takes some text between the parentheses and displays it. Text in a program is called a <b>string</b> and is always written between quotes.',
+      'Make this program print exactly <code>hello, world!</code> — lower case, with a comma and an exclamation mark. Python compares text character by character, so spelling and punctuation matter.'
+    ],
+    starter: '"""\nFile: helloworld.py\n-------------------\nThis is our first Python program.\n"""\n\n\ndef main():\n    pass\n\n\n# This provided line is required at the end of a Python\n# file to call the main() function.\nif __name__ == \'__main__\':\n    main()\n',
+    tests: [{ inputs: [], expect: 'hello, world!\n' }],
+    hints: ['<code>print("hello, world!")</code>', 'The text must be inside quotes, and the whole thing inside the parentheses of <code>print( )</code>.'],
+    vocab: ['print', 'string', 'terminal', 'main function'],
+    reflect: 'What does the print function do? What happens if you forget the quotes around the text?'
+  },
+  {
+    id: 'py-2', week: 3, kind: 'console', title: 'Quotes inside quotes', concept: 'Single and double quotes',
+    brief: [
+      'A string can be written between double quotes <code>"like this"</code> or single quotes <code>\'like this\'</code>. Usually it does not matter which you choose. It matters when the text itself contains a quote mark.',
+      'If your text contains an apostrophe, such as <i>didn\'t</i>, wrap the string in double quotes. If your text contains double quotes, such as <i>say "hi"</i>, wrap the string in single quotes. Otherwise Python thinks the string ends early and you get a <i>SyntaxError</i>.',
+      'Print these two lines exactly: first <code>no, you didn\'t</code> and then <code>say "hi" to the rover</code>.'
+    ],
+    starter: '"""\nFile: quotes.py\n---------------\nPrinting text that contains quote marks.\n"""\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    tests: [{ inputs: [], expect: 'no, you didn\'t\nsay "hi" to the rover\n' }],
+    hints: ['<code>print("no, you didn\'t")</code>', '<code>print(\'say "hi" to the rover\')</code>'],
+    vocab: ['string', 'print', 'source code'],
+    reflect: 'When do you use single quotes and when double quotes? Give one example of each.'
+  },
+  {
+    id: 'py-3', week: 3, kind: 'console', title: 'Absent students', concept: 'Variables and assignment',
+    brief: [
+      'A <b>variable</b> is a place to store information in a program: it gives a <b>name</b> to a <b>value</b>. You create a variable by <b>assigning</b> a value to it with the equals sign: <code>num_students = 700</code>. The name should be descriptive and written in <b>snake case</b> — lowercase words joined by underscores.',
+      'Assignment is not the same as “equals” in maths. Python first works out whatever is on the right-hand side and then stores the result in the variable on the left. That is why <code>total = total + 1</code> makes sense in a program: it takes the current value, adds one, and stores the new value back.',
+      'A lecture has 700 registered students, and 550 are in the room. Store both numbers in well-named variables, calculate how many are absent in a third variable, and print <code>150 students are absent.</code> Then imagine 3 more students arrive late: increase the number in the room by 3, recalculate, and print the line again. Do not type the answers directly — let Python calculate them.'
+    ],
+    starter: '"""\nFile: absent.py\n---------------\nUse variables to count absent students.\n"""\n\n\ndef main():\n    num_students = 700\n    # create num_in_class and num_absent here\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    tests: [{ inputs: [], expect: '150 students are absent.\n147 students are absent.\n' }],
+    requires: [{ re: /\bnum_absent\s*=/, msg: 'Store the result in a variable called <code>num_absent</code>.' }, { re: /num_in_class\s*=\s*num_in_class\s*\+\s*3|num_in_class\s*\+=\s*3/, msg: 'Update the variable with <code>num_in_class = num_in_class + 3</code> rather than typing a new number.' }],
+    hints: ['<code>num_absent = num_students - num_in_class</code>', 'A number cannot be joined to a string with <code>+</code>. Convert it first: <code>print(str(num_absent) + " students are absent.")</code>, or use a comma: <code>print(num_absent, "students are absent.")</code>'],
+    vocab: ['variable', 'assignment', 'snake case', 'integer', 'concatenate'],
+    reflect: 'Explain the line num_in_class = num_in_class + 3. Why would this make no sense in maths but does make sense in Python?'
+  },
+  {
+    id: 'py-4', week: 3, kind: 'console', title: 'Add two numbers', concept: 'input, int and str',
+    brief: [
+      'Programs become interesting when they react to the person using them. The <b>input function</b> shows a message, waits for the user to type something and press Enter, and then gives that text back to the program so you can store it in a variable.',
+      'There is a catch. Whatever the user types is a <b>string</b>, even if they typed <code>9</code>. The string <code>"9"</code> is not the same as the <b>integer</b> <code>9</code>, and adding two strings joins them together: <code>"9" + "17"</code> is <code>"917"</code>. To do arithmetic you must first <b>convert</b> the text with <code>int()</code>. Going the other way, when you want to print a number inside a sentence you convert it back with <code>str()</code>.',
+      'Write the program from the lecture: print a welcome line, ask for two numbers, add them and print the total as a sentence. The test types in 9 and 17, and the program must produce <code>The total is 26.</code>'
+    ],
+    starter: '"""\nFile: add2numbers.py\n--------------------\nAsk the user for two numbers and print their total.\n"""\n\n\ndef main():\n    print("This program adds two numbers.")\n    num1 = input("Enter first number: ")\n    # convert num1 to an int\n    # ask for the second number and convert it too\n    # add them together and print the total\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    tests: [{ inputs: ['9', '17'], expect: 'This program adds two numbers.\nEnter first number: 9\nEnter second number: 17\nThe total is 26.\n' }, { inputs: ['100', '-1'], expect: 'This program adds two numbers.\nEnter first number: 100\nEnter second number: -1\nThe total is 99.\n' }],
+    hints: ['<code>num1 = int(num1)</code> creates an integer version and stores it back in the same variable.', '<code>print("The total is " + str(total) + ".")</code>'],
+    vocab: ['input', 'convert', 'integer', 'string', 'concatenate'],
+    reflect: 'Why does the program need int() and str()? What would happen if you removed the int() lines — try it and describe the result.'
+  },
+  {
+    id: 'py-5', week: 3, kind: 'console', title: 'Average of two', concept: 'int and float',
+    brief: [
+      'Python stores every value with a <b>type</b>. Whole numbers are <code>int</code>; numbers with a decimal point are <code>float</code>. The type decides how the value behaves: <code>7 // 2</code> (whole-number division) gives the int <code>3</code>, while <code>7 / 2</code> gives the float <code>3.5</code>. Even when a division comes out exactly, the result is still a float, so <code>26 / 2</code> is <code>13.0</code>, not <code>13</code>.',
+      'Extend the adding program. After printing the total, also calculate the average of the two numbers with <code>/</code> and print it. Notice how Python displays the average — the <code>.0</code> at the end tells you it is a float.',
+      'You can print a number on its own without <code>str()</code>, or you can print several items separated by commas and Python puts a space between them: <code>print("The average is", average)</code>.'
+    ],
+    starter: '"""\nFile: average.py\n----------------\nAsk for two numbers, then print their total and their average.\n"""\n\n\ndef main():\n    print("This program finds the average of two numbers.")\n    num1 = int(input("Enter first number: "))\n    num2 = int(input("Enter second number: "))\n    total = num1 + num2\n    print("The total is", total)\n    # calculate and print the average\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    tests: [{ inputs: ['9', '17'], expect: 'This program finds the average of two numbers.\nEnter first number: 9\nEnter second number: 17\nThe total is 26\nThe average is 13.0\n' }, { inputs: ['3', '4'], expect: 'This program finds the average of two numbers.\nEnter first number: 3\nEnter second number: 4\nThe total is 7\nThe average is 3.5\n' }],
+    requires: [{ re: /\baverage\s*=/, msg: 'Store the result in a variable called <code>average</code>.' }],
+    hints: ['<code>average = total / 2</code>', 'Look at the starter code: <code>int(input(...))</code> does two steps in one line — it asks for input and converts it straight away.'],
+    vocab: ['type', 'integer', 'float', 'variable', 'print'],
+    reflect: 'What is the difference between an int and a float? Give an example of a real-world quantity for each, as in the lecture.'
+  },
+  {
+    id: 'py-6', week: 3, kind: 'console', title: 'Next year', concept: 'Putting the basics together',
+    brief: [
+      'Write a small conversation. The program asks for the user’s name, then asks for their age. It then greets the user by name and tells them how old they will be next year.',
+      'You will need everything from this week: <code>input()</code> to read the answers, <code>int()</code> to convert the age so that you can add one to it, and either <code>str()</code> with <code>+</code> or commas inside <code>print()</code> to build the sentence. Choose descriptive variable names.',
+      'For the name <i>Ada</i> and the age <i>20</i>, the last line must be exactly <code>Hello, Ada. Next year you will be 21.</code> Check the spaces and the full stops carefully.'
+    ],
+    starter: '"""\nFile: next_year.py\n------------------\nAsk for a name and an age, then say how old the user will be next year.\n"""\n\n\ndef main():\n    pass\n\n\nif __name__ == \'__main__\':\n    main()\n',
+    tests: [{ inputs: ['Ada', '20'], expect: 'What is your name? Ada\nHow old are you? 20\nHello, Ada. Next year you will be 21.\n' }, { inputs: ['Sami', '34'], expect: 'What is your name? Sami\nHow old are you? 34\nHello, Sami. Next year you will be 35.\n' }],
+    hints: ['The prompts must match exactly: <code>input("What is your name? ")</code> and <code>input("How old are you? ")</code> — note the space after the question mark.', '<code>print("Hello, " + name + ". Next year you will be " + str(age + 1) + ".")</code>'],
+    vocab: ['input', 'convert', 'concatenate', 'variable', 'string'],
+    reflect: 'List the types of every variable in your program (str, int or float). Where did a conversion happen, and why was it needed?'
+  }
+];
+
+/* Robot world engine (shared by the page and the test harness) */
+/* ---------- robot world ---------- */
+var DIRS = { N: [0, 1], E: [1, 0], S: [0, -1], W: [-1, 0] };
+var LEFT = { N: 'W', W: 'S', S: 'E', E: 'N' }, RIGHT = { N: 'E', E: 'S', S: 'W', W: 'N' };
+function RobotError(msg) { this.msg = msg; }
+
+function makeWorld(spec) {
+  var w = { cols: spec.cols, rows: spec.rows, x: spec.robot.x, y: spec.robot.y, dir: spec.robot.dir || 'E', items: {}, walls: {}, bag: 0, crashed: false };
+  for (var k in (spec.items || {})) w.items[k] = spec.items[k];
+  (spec.walls || []).forEach(function (wl) { addWall(w, wl[0], wl[1], wl[2]); });
+  return w;
+}
+function addWall(w, x, y, d) {
+  w.walls[x + ',' + y + ',' + d] = true;
+  var v = DIRS[d], nx = x + v[0], ny = y + v[1], opp = { N: 'S', S: 'N', E: 'W', W: 'E' }[d];
+  w.walls[nx + ',' + ny + ',' + opp] = true;
+}
+function clearIn(w, d) {
+  var v = DIRS[d], nx = w.x + v[0], ny = w.y + v[1];
+  if (nx < 1 || nx > w.cols || ny < 1 || ny > w.rows) return false;
+  return !w.walls[w.x + ',' + w.y + ',' + d];
+}
+function worldBuiltins(w, theme) {
+  var c = theme.cmds, B = {};
+  function cmd(f) { return { fn: function () { f(); return null; }, step: true, arity: 0 }; }
+  function sensor(f) { return { fn: function () { return !!f(); }, arity: 0 }; }
+  B.move = cmd(function () { if (!clearIn(w, w.dir)) { w.crashed = true; throw new RobotError(theme.robotName + ' crashed: it tried to move but the way ahead is blocked (a wall or the edge of the world). Use front_is_clear() to check first.'); } var v = DIRS[w.dir]; w.x += v[0]; w.y += v[1]; });
+  B.turn_left = cmd(function () { w.dir = LEFT[w.dir]; });
+  B[c.pick] = cmd(function () { var k = w.x + ',' + w.y; if (!w.items[k]) throw new RobotError(theme.robotName + ' tried to ' + c.pick.replace('_', ' ') + ' but there is no ' + theme.item + ' on this square. Use ' + c.present + '() to check first.'); w.items[k]--; if (!w.items[k]) delete w.items[k]; w.bag++; });
+  B[c.put] = cmd(function () { var k = w.x + ',' + w.y; w.items[k] = (w.items[k] || 0) + 1; });
+  B.front_is_clear = sensor(function () { return clearIn(w, w.dir); });
+  B.front_is_blocked = sensor(function () { return !clearIn(w, w.dir); });
+  B.left_is_clear = sensor(function () { return clearIn(w, LEFT[w.dir]); });
+  B.left_is_blocked = sensor(function () { return !clearIn(w, LEFT[w.dir]); });
+  B.right_is_clear = sensor(function () { return clearIn(w, RIGHT[w.dir]); });
+  B.right_is_blocked = sensor(function () { return !clearIn(w, RIGHT[w.dir]); });
+  B[c.present] = sensor(function () { return !!w.items[w.x + ',' + w.y]; });
+  B[c.absent] = sensor(function () { return !w.items[w.x + ',' + w.y]; });
+  ['north', 'east', 'south', 'west'].forEach(function (d) { var L = d[0].toUpperCase(); B['facing_' + d] = sensor(function () { return w.dir === L; }); B['not_facing_' + d] = sensor(function () { return w.dir !== L; }); });
+  return B;
+}
+
+function checkGoal(w, task) {
+  var g = task.goal, k;
+  for (k in g.items) if ((w.items[k] || 0) !== g.items[k]) return 'The ' + WORLDS[task.world].items + ' are not where the goal picture shows them.';
+  for (k in w.items) if (!g.items[k]) return 'There is a ' + WORLDS[task.world].item + ' on a square that should be empty in the goal.';
+  if (g.robot) {
+    if (w.x !== g.robot.x || w.y !== g.robot.y) return WORLDS[task.world].robotName + ' finished on the wrong square. Compare its position with the goal picture.';
+    if (g.robot.dir && w.dir !== g.robot.dir) return WORLDS[task.world].robotName + ' is on the right square but facing the wrong way.';
+  }
+  return null;
+}
+
+
+var RobotWorld = { make: makeWorld, builtins: worldBuiltins, checkGoal: checkGoal, RobotError: RobotError, DIRS: DIRS, LEFT: LEFT, RIGHT: RIGHT, clearIn: clearIn };
+if (typeof module !== 'undefined') module.exports = RobotWorld;
+
+(function () {
+  'use strict';
+  var makeWorld = RobotWorld.make, worldBuiltins = RobotWorld.builtins, checkGoal = RobotWorld.checkGoal, RobotError = RobotWorld.RobotError;
+  var $app = document.getElementById('app');
+
+  /* ---------- storage (per browser, per computer) ---------- */
+  var KEY = 'tph.v2';
+  function load() { try { return JSON.parse(localStorage.getItem(KEY)) || {}; } catch (e) { return {}; } }
+  function save(d) { try { localStorage.setItem(KEY, JSON.stringify(d)); } catch (e) { /* storage unavailable: work in memory */ } }
+  var state = load();
+  state.done = state.done || {}; state.code = state.code || {}; state.reflect = state.reflect || {};
+
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function taskIndex(id) { for (var i = 0; i < TASKS.length; i++) if (TASKS[i].id === id) return i; return -1; }
+  function countDone(filter) { var n = 0, t = 0; TASKS.forEach(function (x) { if (!filter || filter(x)) { t++; if (state.done[x.id]) n++; } }); return { done: n, total: t }; }
+
+  /* ---------- chrome ---------- */
+  function chrome(current, inner) {
+    var links = [['home', 'Home', '#/'], ['python', 'Python practice', '#/python'], ['web', 'Web practice', '#/web'], ['ai', 'AI task', '#/ai'], ['res', 'Resources', '#/resources']];
+    return '<header class="topbar"><div class="wrap"><a class="logo" href="#/">[ UB LOGO ARTWORK ]</a><div class="accred">Accredited by the British Council<br>for the teaching of English in the UK</div></div></header>' +
+      '<nav class="nav" aria-label="Main"><div class="wrap">' + links.map(function (l) { return '<a href="' + l[2] + '"' + (l[0] === current ? ' aria-current="page"' : '') + '>' + l[1] + '</a>'; }).join('') + '</div></nav>' +
+      inner +
+      '<footer class="footer"><div class="wrap"><h2>Practise today.<span>Build tomorrow.</span></h2><div class="row"><div>University of Bedfordshire — EU Foundation, Tech Practice Hub</div><div><a href="#/resources">Accessibility</a><a href="#/resources">Privacy</a><a href="mailto:">Contact</a></div></div></div></footer>';
+  }
+
+  /* ---------- home ---------- */
+  function homePage() {
+    var w2 = countDone(function (t) { return t.week === 2; }), w3 = countDone(function (t) { return t.week === 3; }), all = countDone();
+    var inner = '<section class="hero"><div class="wrap"><p class="eyebrow">EU FOUNDATION · ACADEMIC SKILLS</p><h1>Code it.</h1><p class="lede">Every word from class, turned into a program you actually write.</p>' +
+      '<div class="hero-foot"><div class="chips"><a class="chip on" href="#/python">Python practice</a><a class="chip" href="#/web">How the web works</a><a class="chip" href="#/ai">Working with AI</a><a class="chip" href="#extra">Games</a></div>' +
+      '<div class="hero-note">' + all.total + ' tasks.<br>Saved in this browser.<br>Nothing sent anywhere.</div></div></div></section>' +
+      '<section class="block"><div class="wrap"><h2>Practice</h2><p class="intro">Each block matches a few weeks of the unit. Your progress appears here as you finish tasks on this computer.</p><div class="cards">' +
+      card('maroon', 'Weeks 2–3', 'Python practice', 'Program a rover on Mars, a warehouse robot and an ocean drone. Functions, loops and if-statements — then your first real Python programs with variables, input and print.', all.done + ' of ' + all.total + ' done', 'Open', '#/python') +
+      card('red', 'Weeks 6–8', 'How the web works', 'Build a small page, look inside real websites for problems, follow a request from your browser to a server and back.', 'Opens in week 6', 'Open', '#/web') +
+      card('black', 'Week 9', 'Working with AI', 'Write a Python program that asks an AI a question with call_gpt() and prints the answer. Then check whether the answer is true.', 'Opens in week 9', 'Open', '#/ai') +
+      card('outline', 'Any time', 'Extra practice and games', 'Coding games made by other people, and the official guides, for when you want more.', 'Opens in a new tab', 'See the games', '#extra') +
+      '</div></div></section>' +
+      '<section class="block" id="extra"><div class="wrap"><h2>Extra practice and games</h2><div class="games">' +
+      game('Exercism', 'Python exercises with feedback from a mentor.', 'Go to Exercism', 'https://exercism.org/tracks/python') +
+      game('CSS Diner', 'Learn CSS selectors by playing a game.', 'Play CSS Diner', 'https://flukeout.github.io/') +
+      game('Flexbox Froggy', 'Learn CSS Flexbox by helping a frog.', 'Play Froggy', 'https://flexboxfroggy.com/') +
+      game('CodeCombat', 'Learn Python by controlling a game hero.', 'Play CodeCombat', 'https://codecombat.com/') +
+      game('CheckiO', 'Python puzzles, from beginner to advanced.', 'Go to CheckiO', 'https://py.checkio.org/') +
+      game('Grid Garden', 'Learn CSS Grid by growing carrots.', 'Play Grid Garden', 'https://cssgridgarden.com/') +
+      '</div></div></section>' +
+      '<section class="block"><div class="wrap two"><div><h2>Your saved work</h2><p>Saved only in this browser, on this computer. Nothing is sent anywhere. Copy your reflections into Padlet before you log out.</p><div class="btnrow"><button class="button primary" id="copyRef">Copy my reflections</button><button class="button" id="clearAll">Clear my saved work</button></div><p id="copyMsg" style="margin-top:10px;font-size:13px;color:var(--grey)"></p></div>' +
+      '<div><h2>Resources</h2><ul class="reslist">' + res('Python docs — the official Python tutorial', 'https://docs.python.org/3/tutorial/') + res('MDN web docs — a guide to HTML and CSS', 'https://developer.mozilla.org/en-US/docs/Learn') + res('W3Schools — quick examples you can copy', 'https://www.w3schools.com/python/') + '</ul></div></div></section>';
+    $app.innerHTML = chrome('home', inner);
+    document.getElementById('copyRef').onclick = copyReflections;
+    document.getElementById('clearAll').onclick = function () { if (confirm('Clear all saved code, progress and reflections on this computer?')) { state = { done: {}, code: {}, reflect: {} }; save(state); homePage(); } };
+    void w2; void w3;
+  }
+  function card(cls, when, title, text, count, btn, href) {
+    return '<div class="card ' + cls + '"><div class="when">' + when.toUpperCase() + '</div><h3>' + title + '</h3><p>' + text + '</p><div class="foot"><div class="count">' + count + '</div><a class="btn" href="' + href + '"' + (href.indexOf('http') === 0 ? ' target="_blank" rel="noopener"' : '') + '>' + btn + '</a></div></div>';
+  }
+  function game(t, d, l, h) { return '<div class="game"><h3>' + t + '</h3><p>' + d + '</p><a href="' + h + '" target="_blank" rel="noopener">' + l + ' →</a></div>'; }
+  function res(t, h) { return '<li><a href="' + h + '" target="_blank" rel="noopener"><span>' + t + '</span><span>→</span></a></li>'; }
+
+  function copyReflections() {
+    var lines = [];
+    TASKS.forEach(function (t, i) { var r = state.reflect[t.id]; if (r && r.trim()) lines.push('Task ' + (i + 1) + ' — ' + t.title + '\nQ: ' + t.reflect + '\nA: ' + r.trim() + '\n'); });
+    var text = lines.length ? lines.join('\n') : '(no reflections written yet)';
+    var msg = document.getElementById('copyMsg');
+    function fallback() { var ta = document.createElement('textarea'); ta.value = text; document.body.appendChild(ta); ta.select(); try { document.execCommand('copy'); msg.textContent = 'Copied ' + lines.length + ' reflection(s). Paste them into Padlet.'; } catch (e) { msg.textContent = 'Could not copy automatically — select the text in a task page instead.'; } document.body.removeChild(ta); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { msg.textContent = 'Copied ' + lines.length + ' reflection(s). Paste them into Padlet.'; }, fallback); else fallback();
+  }
+
+  /* ---------- placeholder pages ---------- */
+  function noticePage(key, title, text) {
+    $app.innerHTML = chrome(key, '<section class="notice"><div class="wrap"><h1>' + title + '</h1><p>' + text + '</p><p style="margin-top:18px"><a class="button primary" href="#/python">Go to Python practice</a></p></div></section>');
+  }
+
+  /* ---------- task list ---------- */
+  function listPage() {
+    var groups = [
+      { week: 2, world: 'mars', sub: 'Week 2 · Functions', title: 'Mars rover', text: WORLDS.mars.intro },
+      { week: 2, world: 'warehouse', sub: 'Week 2 · For loops', title: 'Warehouse robot', text: WORLDS.warehouse.intro },
+      { week: 2, world: 'ocean', sub: 'Week 2 · While loops and if', title: 'Ocean drone', text: WORLDS.ocean.intro },
+      { week: 3, kind: 'console', sub: 'Week 3 · Python basics', title: 'Your first programs', text: 'No robot this time. These programs run in a terminal: they print text, ask the user to type something, store it in variables and do arithmetic with it — exactly the programs from the lecture.' }
+    ];
+    var all = countDone();
+    var html = '<section class="pagehead"><div class="wrap"><h1>Python practice</h1><p>Eighteen short programs for weeks 2 and 3. Each brief is written in the language of the lectures, so read it slowly: the words in <b>bold</b> are the terms you need to know, and every task has a word bank to check them. Finish a task, then answer its reflection question — you will need those answers for your Padlet posts and your presentation.</p>' +
+      '<div class="weeknav"><span class="chip on">' + all.done + ' of ' + all.total + ' done</span><a class="chip" href="#/python/' + TASKS[0].id + '">Start at task 1</a></div></div></section><section class="tasklist"><div class="wrap">';
+    groups.forEach(function (g) {
+      html += '<div class="group"><div class="group-head"><div><div class="sub">' + g.sub.toUpperCase() + '</div><h2>' + g.title + '</h2></div><p>' + g.text + '</p></div>';
+      TASKS.forEach(function (t, i) {
+        if (t.week !== g.week) return;
+        if (g.world && t.world !== g.world) return;
+        if (g.kind && t.kind !== g.kind) return;
+        var done = !!state.done[t.id];
+        html += '<a class="trow' + (done ? ' done' : '') + '" href="#/python/' + t.id + '"><div class="n">' + (i + 1) + '</div><div><div class="t">' + t.title + '</div><div class="c">' + t.concept + '</div></div><div class="s">' + (done ? 'DONE' : 'TO DO') + '</div></a>';
+      });
+      html += '</div>';
+    });
+    html += '</div></section>';
+    $app.innerHTML = chrome('python', html);
+  }
+
+  var CELL = 52;
+  function renderWorld(w, theme, opts) {
+    opts = opts || {};
+    var pad = 10, W = w.cols * CELL + pad * 2, H = w.rows * CELL + pad * 2;
+    var s = '<svg viewBox="0 0 ' + W + ' ' + H + '" role="img" aria-label="' + (opts.label || 'world') + '">';
+    s += '<rect x="0" y="0" width="' + W + '" height="' + H + '" fill="' + theme.bg + '"/>';
+    function cx(x) { return pad + (x - 1) * CELL + CELL / 2; }
+    function cy(y) { return pad + (w.rows - y) * CELL + CELL / 2; }
+    // grid crosses
+    for (var x = 1; x <= w.cols; x++) for (var y = 1; y <= w.rows; y++) {
+      s += '<path d="M' + (cx(x) - 5) + ' ' + cy(y) + 'h10M' + cx(x) + ' ' + (cy(y) - 5) + 'v10" stroke="' + theme.grid + '" stroke-width="2"/>';
+    }
+    // robot (drawn first so items on its square stay visible)
+    if (!opts.hideRobot) {
+      var rot = { E: 0, S: 90, W: 180, N: 270 }[w.dir];
+      s += '<g transform="translate(' + cx(w.x) + ' ' + cy(w.y) + ') rotate(' + rot + ')">' + robotShape(theme, w.crashed) + '</g>';
+    }
+    // items
+    for (var k in w.items) {
+      var p = k.split(','), ix = cx(+p[0]), iy = cy(+p[1]), n = w.items[k];
+      s += '<g opacity="0.92">' + itemShape(theme, ix, iy) + '</g>';
+      if (n > 1) s += '<text x="' + (ix + 14) + '" y="' + (iy - 12) + '" font-family="Bebas Neue, Arial Narrow, sans-serif" font-size="18" fill="#000">' + n + '</text>';
+    }
+    // walls
+    var drawn = {};
+    for (var wk in w.walls) {
+      var q = wk.split(','), wx = +q[0], wy = +q[1], d = q[2];
+      if (wx < 1 || wx > w.cols || wy < 1 || wy > w.rows) continue;
+      var x0 = pad + (wx - 1) * CELL, y0 = pad + (w.rows - wy) * CELL, line;
+      if (d === 'N') line = [x0, y0, x0 + CELL, y0]; else if (d === 'S') line = [x0, y0 + CELL, x0 + CELL, y0 + CELL]; else if (d === 'E') line = [x0 + CELL, y0, x0 + CELL, y0 + CELL]; else line = [x0, y0, x0, y0 + CELL];
+      var key = line.join(','); if (drawn[key]) continue; drawn[key] = 1;
+      s += '<line x1="' + line[0] + '" y1="' + line[1] + '" x2="' + line[2] + '" y2="' + line[3] + '" stroke="' + theme.wall + '" stroke-width="6" stroke-linecap="square"/>';
+    }
+    // boundary
+    s += '<rect x="' + pad + '" y="' + pad + '" width="' + (w.cols * CELL) + '" height="' + (w.rows * CELL) + '" fill="none" stroke="' + theme.wall + '" stroke-width="6"/>';
+    s += '</svg>';
+    return s;
+  }
+  function itemShape(theme, x, y) {
+    if (theme.item === 'rock') return '<path d="M' + (x - 13) + ' ' + (y + 6) + 'l4 -13 12 -5 10 9 -1 11 -9 5 -12 -1z" fill="' + theme.itemFill + '" stroke="#2b2b2b" stroke-width="2"/>';
+    if (theme.item === 'parcel') return '<rect x="' + (x - 12) + '" y="' + (y - 11) + '" width="24" height="22" fill="' + theme.itemFill + '" stroke="#3b2a15" stroke-width="2"/><path d="M' + x + ' ' + (y - 11) + 'v22" stroke="#EAD9BF" stroke-width="4"/>';
+    return '<rect x="' + (x - 6) + '" y="' + (y - 13) + '" width="12" height="26" rx="4" fill="' + theme.itemFill + '" stroke="#1f4a5c" stroke-width="2"/><rect x="' + (x - 4) + '" y="' + (y - 16) + '" width="8" height="5" fill="#1f4a5c"/>';
+  }
+  function robotShape(theme, crashed) {
+    var f = crashed ? '#777' : theme.robotFill;
+    return '<rect x="-17" y="-14" width="30" height="28" rx="4" fill="' + f + '" stroke="#000" stroke-width="2.5"/><path d="M13 -10 L24 0 L13 10 Z" fill="#000"/><rect x="-14" y="-18" width="8" height="5" fill="#000"/><rect x="-14" y="13" width="8" height="5" fill="#000"/><rect x="2" y="-18" width="8" height="5" fill="#000"/><rect x="2" y="13" width="8" height="5" fill="#000"/><circle cx="-4" cy="0" r="5" fill="#fff" stroke="#000" stroke-width="2"/>';
+  }
+  function goalWorld(task) {
+    var w = makeWorld(task.map);
+    w.items = {}; for (var k in task.goal.items) w.items[k] = task.goal.items[k];
+    if (task.goal.robot) { w.x = task.goal.robot.x; w.y = task.goal.robot.y; w.dir = task.goal.robot.dir || w.dir; }
+    return w;
+  }
+  /* ---------- task page ---------- */
+  var runToken = 0;
+  function taskPage(id) {
+    var i = taskIndex(id); if (i < 0) { location.hash = '#/python'; return; }
+    var t = TASKS[i], theme = t.world ? WORLDS[t.world] : null, isConsole = t.kind === 'console';
+    var code = state.code[t.id] !== undefined ? state.code[t.id] : t.starter;
+    var steps = TASKS.map(function (x) { return '<a href="#/python/' + x.id + '" class="' + (x.id === t.id ? 'cur' : state.done[x.id] ? 'done' : '') + '" title="Task ' + (taskIndex(x.id) + 1) + ': ' + esc(x.title) + '"></a>'; }).join('');
+    var html = '<section class="taskbar"><div class="wrap"><div><div class="meta">WEEK ' + t.week + ' · ' + (theme ? theme.name.toUpperCase() : 'PYTHON BASICS') + ' · TASK ' + (i + 1) + ' OF ' + TASKS.length + '</div><h1>' + t.title + '</h1></div><div class="steps" aria-label="All tasks">' + steps + '</div></div></section>';
+    html += '<div class="wrap task"><div class="brief">';
+    if (theme) html += '<p class="scen">' + theme.intro + '</p>';
+    html += '<h2>Your brief</h2>' + t.brief.map(function (p) { return '<p>' + p + '</p>'; }).join('');
+    if (theme) {
+      html += '<div class="cmds"><div><div><h4>' + theme.robotName + ' can</h4><ul><li><code>move()</code></li><li><code>turn_left()</code></li><li><code>' + theme.cmds.pick + '()</code></li><li><code>' + theme.cmds.put + '()</code></li></ul></div><div><h4>It can check</h4><ul><li><code>front_is_clear()</code> / <code>front_is_blocked()</code></li><li><code>left_is_clear()</code>, <code>right_is_clear()</code> (and <code>..._blocked()</code>)</li><li><code>' + theme.cmds.present + '()</code> / <code>' + theme.cmds.absent + '()</code></li><li><code>facing_north()</code>, <code>facing_east()</code>, <code>facing_south()</code>, <code>facing_west()</code></li></ul></div></div></div>';
+    }
+    html += '<div class="wordbank"><h3>Word bank</h3>' + t.vocab.map(function (v) { return '<details><summary>' + v + '</summary><div class="def">' + (COMMON_VOCAB[v] || '') + '</div></details>'; }).join('') + '</div>';
+    html += '<div class="hints"><h3>Stuck?</h3>' + t.hints.map(function (h, n) { return '<button type="button" data-hint="' + n + '">Show hint ' + (n + 1) + '</button><div class="hint" id="hint' + n + '">' + h + '</div>'; }).join('') + '</div>';
+    html += '</div><div class="work">';
+    if (theme) html += '<div class="worlds"><div class="worldbox"><div class="lab"><span>Now</span><small id="posLabel"></small></div><div id="worldNow"></div></div><div class="worldbox goal"><div class="lab"><span>Goal</span><small>' + (t.goal.robot ? 'finish here' : 'finish anywhere') + '</small></div>' + renderWorld(goalWorld(t), theme, { hideRobot: !t.goal.robot, label: 'goal' }) + '</div></div>';
+    html += '<div class="editor"><div class="lab"><span>' + (theme ? t.id.replace('-', '_') + '.py' : (t.starter.match(/File: (\S+)/) || [0, 'program.py'])[1]) + '</span><div class="tools"><button type="button" id="resetCode">Reset to starter code</button></div></div><div class="edwrap"><div class="gutter" id="gutter"></div><textarea class="code" id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code">' + esc(code) + '</textarea></div></div>';
+    if (isConsole) html += '<div class="inputs" style="margin-top:14px"><label for="inputs">Keyboard input — what the user types, one answer per line (the test uses its own values)</label><textarea id="inputs">' + esc((t.tests[0].inputs || []).join('\n')) + '</textarea></div>';
+    html += '<div class="runrow"><button class="button primary" id="run">Run</button>' + (theme ? '<button class="button black" id="check">Run and check</button>' : '<button class="button black" id="check">Run the tests</button>') + '<button class="button" id="stop" disabled>Stop</button>' + (theme ? '<div class="speed"><label for="speed">Speed</label><input type="range" id="speed" min="0" max="4" value="2"></div>' : '') + '</div>';
+    html += '<div class="console" id="console"><div class="lab">Terminal</div><div id="out"></div></div><div class="result" id="result"></div>';
+    html += '<div class="reflect"><h3>Reflection</h3><p>' + t.reflect + '</p><textarea id="reflect" placeholder="Write two or three sentences. This is saved on this computer for your Padlet post.">' + esc(state.reflect[t.id] || '') + '</textarea><div class="saved" id="refSaved"></div></div>';
+    html += '<div class="pager">' + (i > 0 ? '<a class="button" href="#/python/' + TASKS[i - 1].id + '">← Task ' + i + ': ' + TASKS[i - 1].title + '</a>' : '<a class="button" href="#/python">← All tasks</a>') + (i < TASKS.length - 1 ? '<a class="button black" href="#/python/' + TASKS[i + 1].id + '">Task ' + (i + 2) + ': ' + TASKS[i + 1].title + ' →</a>' : '<a class="button black" href="#/python">All tasks →</a>') + '</div>';
+    html += '</div></div>';
+    $app.innerHTML = chrome('python', html);
+
+    var $code = document.getElementById('code'), $gutter = document.getElementById('gutter'), $out = document.getElementById('out'), $res = document.getElementById('result');
+    var world = theme ? makeWorld(t.map) : null;
+    function drawNow() { if (!theme) return; document.getElementById('worldNow').innerHTML = renderWorld(world, theme, { label: 'now' }); document.getElementById('posLabel').textContent = 'column ' + world.x + ', row ' + world.y + ', facing ' + { N: 'north', E: 'east', S: 'south', W: 'west' }[world.dir] + (world.bag ? ' · ' + world.bag + ' in bag' : ''); }
+    drawNow();
+
+    function updateGutter(errLine) {
+      var n = $code.value.split('\n').length, g = '';
+      for (var k = 1; k <= n; k++) g += (k === errLine ? '<span class="err">' + k + '</span>' : k) + '\n';
+      $gutter.innerHTML = g;
+    }
+    updateGutter();
+    $code.addEventListener('scroll', function () { $gutter.scrollTop = $code.scrollTop; });
+    $code.addEventListener('input', function () { updateGutter(); state.code[t.id] = $code.value; save(state); });
+    $code.addEventListener('keydown', function (e) {
+      if (e.key === 'Tab') { e.preventDefault(); insert('    '); }
+      if (e.key === 'Enter') {
+        e.preventDefault();
+        var before = $code.value.slice(0, $code.selectionStart), line = before.slice(before.lastIndexOf('\n') + 1);
+        var ind = /^[ \t]*/.exec(line)[0]; if (/:\s*(#.*)?$/.test(line)) ind += '    ';
+        insert('\n' + ind);
+      }
+    });
+    function insert(txt) { var s = $code.selectionStart, e = $code.selectionEnd; $code.value = $code.value.slice(0, s) + txt + $code.value.slice(e); $code.selectionStart = $code.selectionEnd = s + txt.length; $code.dispatchEvent(new Event('input')); }
+    document.getElementById('resetCode').onclick = function () { if (confirm('Replace your code with the starter code?')) { $code.value = t.starter; $code.dispatchEvent(new Event('input')); world = theme ? makeWorld(t.map) : null; drawNow(); clearOut(); } };
+    Array.prototype.forEach.call(document.querySelectorAll('[data-hint]'), function (b) { b.onclick = function () { var h = document.getElementById('hint' + b.getAttribute('data-hint')); h.classList.toggle('show'); b.textContent = (h.classList.contains('show') ? 'Hide' : 'Show') + ' hint ' + (+b.getAttribute('data-hint') + 1); }; });
+    var $ref = document.getElementById('reflect'), refTimer;
+    $ref.addEventListener('input', function () { clearTimeout(refTimer); refTimer = setTimeout(function () { state.reflect[t.id] = $ref.value; save(state); document.getElementById('refSaved').textContent = 'Saved on this computer.'; }, 400); });
+
+    function clearOut() { $out.innerHTML = ''; $res.className = 'result'; $res.innerHTML = ''; }
+    function writeOut(txt, isInput, cls) { var sp = document.createElement('span'); if (isInput) sp.className = 'in'; if (cls) sp.className = cls; sp.textContent = txt; $out.appendChild(sp); }
+    function showResult(kind, title, body) { $res.className = 'result ' + kind; $res.innerHTML = '<h3>' + title + '</h3>' + body; }
+    function setRunning(on) { document.getElementById('run').disabled = on; document.getElementById('check').disabled = on; document.getElementById('stop').disabled = !on; }
+    function errHtml(e) {
+      if (e instanceof RobotError) return '<p>' + esc(e.msg) + '</p>';
+      if (e && e.kind) return '<p><b>' + esc(e.kind) + '</b>' + (e.line ? ' on line ' + e.line : '') + ': ' + esc(e.msg) + '</p>';
+      return '<p>' + esc(String(e && e.message || e)) + '</p>';
+    }
+    function requirementsMissing() { var miss = []; (t.requires || []).forEach(function (r) { if (!r.re.test($code.value)) miss.push(r.msg); }); return miss; }
+    function markDone() { state.done[t.id] = true; save(state); var cur = document.querySelector('.steps a.cur'); if (cur) cur.classList.add('done'); }
+    function delayFor() { var v = +document.getElementById('speed').value; return [0, 80, 220, 450, 900][v]; }
+
+    /* run a robot program with animation */
+    function runRobot(check) {
+      clearOut(); updateGutter(); world = makeWorld(t.map); drawNow();
+      var token = ++runToken; setRunning(true);
+      var runner, wrapped;
+      try {
+        runner = new MiniPy.Runner($code.value, { builtins: worldBuiltins(world, theme), onPrint: function (s, isIn) { writeOut(s, isIn); } });
+      } catch (e) { setRunning(false); updateGutter(e.line); showResult('bad', 'Python could not read the program', errHtml(e)); return; }
+      if (!/def\s+main\s*\(/.test($code.value)) { setRunning(false); showResult('bad', 'No main function', '<p>Every program here needs a <code>main()</code> function. The last two lines of the file call it.</p>'); return; }
+      var gen = runner.run();
+      function finish(err) {
+        if (token !== runToken) return;
+        setRunning(false); drawNow();
+        if (err) { if (err.line) updateGutter(err.line); if (err.kind === 'RuntimeError') world.crashed = true; drawNow(); writeOut('\n' + (err.kind || 'Error') + ': ' + err.msg, false, 'errline'); showResult('bad', 'The program stopped with an error', errHtml(err)); return; }
+        if (!runner.out.trim()) writeOut('(program finished — no text printed)', false);
+        if (!check) { showResult('warn', 'Finished', '<p>The program ran to the end. Use <b>Run and check</b> to compare the result with the goal.</p>'); return; }
+        var fail = checkGoal(world, t);
+        if (fail) { showResult('bad', 'Not there yet', '<p>' + fail + '</p>'); return; }
+        var miss = requirementsMissing();
+        if (miss.length) { showResult('warn', 'The goal is reached — but read the brief again', miss.map(function (m) { return '<p>' + m + '</p>'; }).join('') + '<p>Change your program so it does what the brief asks, then check again.</p>'); return; }
+        markDone(); showResult('ok', 'Task complete', '<p>' + theme.robotName + ' did exactly what the brief asked. Answer the reflection question below, then move on to the next task.</p>');
+      }
+      function step() {
+        if (token !== runToken) return;
+        var r;
+        try { r = gen.next(); } catch (e) { finish(e); return; }
+        if (r.done) { finish(null); return; }
+        drawNow();
+        var d = delayFor();
+        if (d === 0) { var guard = 0; while (guard++ < 100) { try { r = gen.next(); } catch (e2) { finish(e2); return; } if (r.done) { finish(null); return; } } drawNow(); setTimeout(step, 0); }
+        else setTimeout(step, d);
+      }
+      wrapped = step; wrapped();
+    }
+
+    /* run a console program (instant), optionally against all tests */
+    function runConsole(check) {
+      clearOut(); updateGutter();
+      if (!/def\s+main\s*\(/.test($code.value)) { showResult('bad', 'No main function', '<p>Every program here needs a <code>main()</code> function. The last two lines of the file call it.</p>'); return; }
+      var inputs = document.getElementById('inputs').value.split('\n').filter(function (l, k, a) { return !(k === a.length - 1 && l === ''); });
+      var firstOut = null;
+      function exec(ins, live) {
+        var r; try { r = new MiniPy.Runner($code.value, { inputs: ins, onPrint: live ? function (s, isIn) { writeOut(s, isIn); } : null }); } catch (e) { return { err: e }; }
+        var g = r.run();
+        try { var n; do { n = g.next(); } while (!n.done); } catch (e2) { return { err: e2, out: r.out }; }
+        return { out: r.out };
+      }
+      if (!check) {
+        var res = exec(inputs, true);
+        if (res.err) { updateGutter(res.err.line); writeOut('\n' + (res.err.kind || 'Error') + ': ' + res.err.msg, false, 'errline'); showResult('bad', 'The program stopped with an error', errHtml(res.err)); return; }
+        if (!res.out) writeOut('(program finished — nothing was printed)');
+        showResult('warn', 'Finished', '<p>The program ran. Use <b>Run the tests</b> to check the output against what the brief asks for.</p>');
+        return;
+      }
+      var report = '', allOk = true;
+      for (var k = 0; k < t.tests.length; k++) {
+        var tc = t.tests[k], rr = exec(tc.inputs.slice(), k === 0);
+        if (rr.err) { allOk = false; if (k === 0) { updateGutter(rr.err.line); writeOut('\n' + (rr.err.kind || 'Error') + ': ' + rr.err.msg, false, 'errline'); } report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') — the program stopped with an error.</p>' + errHtml(rr.err); continue; }
+        var got = normalise(rr.out), want = normalise(tc.expect);
+        if (got === want) report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') — correct.</p>';
+        else { allOk = false; report += '<p><b>Test ' + (k + 1) + '</b> (typing: ' + (tc.inputs.length ? tc.inputs.map(esc).join(', ') : 'nothing') + ') — the output is different.</p><pre>Expected:\n' + esc(tc.expect) + '\nYour program printed:\n' + esc(rr.out || '(nothing)') + '</pre>' + diffHint(rr.out, tc.expect); }
+      }
+      if (!allOk) { showResult('bad', 'Not there yet', report); return; }
+      var miss = requirementsMissing();
+      if (miss.length) { showResult('warn', 'The output is right — but read the brief again', miss.map(function (m) { return '<p>' + m + '</p>'; }).join('') + report); return; }
+      markDone(); showResult('ok', 'Task complete', report + '<p>Answer the reflection question below, then move on to the next task.</p>');
+    }
+    function normalise(s) { return s.replace(/\r/g, '').split('\n').map(function (l) { return l.replace(/\s+$/, ''); }).join('\n').replace(/\n+$/, ''); }
+    function diffHint(got, want) {
+      var g = normalise(got).split('\n'), w = normalise(want).split('\n');
+      for (var k = 0; k < Math.max(g.length, w.length); k++) {
+        if (g[k] !== w[k]) {
+          if (g[k] === undefined) return '<p>Line ' + (k + 1) + ' is missing from your output.</p>';
+          if (w[k] === undefined) return '<p>Your program printed an extra line ' + (k + 1) + '.</p>';
+          if (g[k].toLowerCase() === w[k].toLowerCase()) return '<p>Line ' + (k + 1) + ' differs only in capital letters — Python compares text exactly.</p>';
+          if (g[k].replace(/\s/g, '') === w[k].replace(/\s/g, '')) return '<p>Line ' + (k + 1) + ' differs only in spaces. Check the spaces inside your strings, and remember that commas in print() add a space.</p>';
+          return '<p>The first difference is on line ' + (k + 1) + '. Compare the two versions character by character.</p>';
+        }
+      }
+      return '';
+    }
+    document.getElementById('run').onclick = function () { theme ? runRobot(false) : runConsole(false); };
+    document.getElementById('check').onclick = function () { theme ? runRobot(true) : runConsole(true); };
+    document.getElementById('stop').onclick = function () { runToken++; setRunning(false); writeOut('\n(stopped)', false, 'errline'); };
+    window.addEventListener('keydown', function onKey(e) { if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); document.getElementById('check').click(); } });
+  }
+
+  /* ---------- router ---------- */
+  function route() {
+    runToken++;
+    var h = location.hash.replace(/^#\/?/, '');
+    window.scrollTo(0, 0);
+    if (h === '' || h === 'extra') { homePage(); if (h === 'extra') { var el = document.getElementById('extra'); if (el) el.scrollIntoView(); } return; }
+    if (h === 'python') return listPage();
+    if (h.indexOf('python/') === 0) return taskPage(h.slice(7));
+    if (h === 'web') return noticePage('web', 'How the web works', 'This block opens in week 6. You will build a small page, look inside real websites for problems, and follow a request from your browser to a server and back.');
+    if (h === 'ai') return noticePage('ai', 'Working with AI', 'This block opens in week 9. You will write a Python program that asks an AI a question with call_gpt() and prints the answer — and then check whether the answer is true.');
+    if (h === 'resources') return noticePage('res', 'Resources', 'The official Python tutorial, MDN web docs and W3Schools are linked at the bottom of the home page. Your code, progress and reflections are stored only in this browser on this computer; nothing is sent to a server.');
+    homePage();
+  }
+  window.addEventListener('hashchange', route);
+  route();
+})();
+
+</script>
 </body>
 </html>
