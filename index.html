@@ -198,7 +198,22 @@ section.block > .wrap > p.intro { color: var(--grey); margin: 6px 0 22px; max-wi
 .gutter .err { color: var(--white); background: var(--red); }
 textarea.code { border: 0; margin: 0; resize: vertical; width: 100%; min-height: 380px; padding: 12px 12px; font-family: var(--mono); font-size: 14px; line-height: 1.5; tab-size: 4; white-space: pre; overflow: auto; color: var(--ink); background: var(--white); font-weight: 400; }
 textarea.code:focus { outline: none; box-shadow: inset 0 0 0 3px var(--red); }
-.runrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 14px 0; }
+/* locked lines: the import/docstring header and the if __name__ footer can't be edited */
+.edbody { position: relative; display: grid; }  /* textarea stretches to the gutter's height, as before */
+.edbody textarea.code { position: relative; background: transparent; z-index: 1; display: block; }
+.lockbg { position: absolute; inset: 0; overflow: hidden; pointer-events: none; background: var(--white); }
+.lockbg .band { position: absolute; left: 0; right: 0; background: #ECECE8; background-image: repeating-linear-gradient(135deg, transparent 0 9px, rgba(0,0,0,.035) 9px 10px); border-left: 4px solid #c9c9c4; }
+.gutter .ln { display: block; }
+.gutter .lock { background: #E6E6E2; color: #7a7a7a; }
+.editor.shake .lockbg .band { border-left-color: var(--red); background-color: #f6dfe2; }
+.editor .lab .locknote { color: #ffd6dc; font-size: 12px; font-family: var(--body); }
+.editor .lab .locknote[hidden] { display: none; }
+.runrow { display: flex; gap: 10px; align-items: center; flex-wrap: wrap; margin: 0 0 14px; }
+/* worlds + Run buttons stay on screen while a long program is scrolled */
+.stage { position: sticky; top: 0; z-index: 5; background: var(--white); padding-top: 10px; margin-top: -10px; }
+.stage .worlds { margin-bottom: 10px; }
+.stage.no-world .runrow { border-bottom: 3px solid var(--black); padding-bottom: 12px; }
+@media (max-height: 640px) { .stage { position: static; } }
 .runrow .speed { display: flex; align-items: center; gap: 8px; font-size: 13px; margin-left: auto; }
 .runrow input[type=range] { width: 120px; accent-color: var(--red); }
 .inputs { margin: 0 0 14px; }
@@ -272,7 +287,7 @@ var MiniPy = (function () {
         if (endIdx < 0) continue;
         pos = endIdx + 3; inTriple = null;
         // rest of line is treated as continuation of a statement-level string; ignore remainder tokens rarely matter
-        if (line.slice(pos).trim() === '') continue;
+        if (line.slice(pos).trim() === '') { if (depth === 0) toks.push({ t: 'NEWLINE', line: ln }); continue; }
       } else {
         // indentation
         var m = /^[ \t]*/.exec(line)[0];
@@ -1287,12 +1302,46 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     if (task.goal.robot) { w.x = task.goal.robot.x; w.y = task.goal.robot.y; w.dir = task.goal.robot.dir || w.dir; }
     return w;
   }
+  /* ---------- locked header / footer ----------
+     Every starter has a fixed top (import line or docstring + comments)
+     and a fixed bottom (if __name__ == '__main__': main()). Students may
+     only edit the middle. lockRegions() works both out from the starter;
+     repair() puts them back on saved code that lost them. */
+  function lockRegions(starter) {
+    var lines = starter.split('\n'), head = '', tail = '';
+    var d = -1; for (var i = 0; i < lines.length; i++) if (/^def\s/.test(lines[i])) { d = i; break; }
+    if (d > 0) {
+      var h = d; while (h > 0 && /^\s*#/.test(lines[h - 1])) h--;   /* comments glued to the def belong to the student */
+      head = lines.slice(0, h).join('\n') + '\n';
+    }
+    var m = -1; for (var j = lines.length - 1; j >= 0; j--) if (/^if\s+__name__\s*==/.test(lines[j])) { m = j; break; }
+    if (m > 0) {
+      var k = m; while (k > 0 && /^\s*#/.test(lines[k - 1])) k--;   /* e.g. "# This provided line is required..." */
+      tail = '\n' + lines.slice(k).join('\n');
+    }
+    var headLines = head ? head.split('\n').length - 1 : 0;
+    var tailLines = tail ? tail.split('\n').length - 2 : 0;
+    function ok(v) { return v.length >= head.length + tail.length && v.slice(0, head.length) === head && v.slice(v.length - tail.length) === tail; }
+    function repair(v) {
+      if (ok(v)) return v;
+      var mid = v;
+      if (mid.slice(0, head.length) === head) mid = mid.slice(head.length);
+      else { var ml = mid.split('\n'), f = -1; for (var q = 0; q < ml.length; q++) if (/^def\s/.test(ml[q])) { f = q; break; } if (f > 0) mid = ml.slice(f).join('\n'); }
+      if (tail && mid.slice(mid.length - tail.length) === tail) mid = mid.slice(0, mid.length - tail.length);
+      else { var idx = mid.search(/\n*if\s+__name__\s*==[^]*$/); if (idx >= 0) mid = mid.slice(0, idx); }
+      mid = mid.replace(/\s+$/, '') + '\n';
+      return head + mid + tail;
+    }
+    return { head: head, tail: tail, headLines: headLines, tailLines: tailLines, ok: ok, repair: repair };
+  }
+
   /* ---------- task page ---------- */
   var runToken = 0;
   function taskPage(id) {
     var i = taskIndex(id); if (i < 0) { location.hash = '#/python'; return; }
     var t = TASKS[i], theme = t.world ? WORLDS[t.world] : null, isConsole = t.kind === 'console';
-    var code = state.code[t.id] !== undefined ? state.code[t.id] : t.starter;
+    var lock = lockRegions(t.starter);
+    var code = state.code[t.id] !== undefined ? lock.repair(state.code[t.id]) : t.starter;
     var steps = TASKS.map(function (x) { return '<a href="#/python/' + x.id + '" class="' + (x.id === t.id ? 'cur' : state.done[x.id] ? 'done' : '') + '" title="Task ' + (taskIndex(x.id) + 1) + ': ' + esc(x.title) + '"></a>'; }).join('');
     var html = '<section class="taskbar"><div class="wrap"><div><div class="meta">WEEK ' + t.week + ' · ' + (theme ? theme.name.toUpperCase() : 'PYTHON BASICS') + ' · TASK ' + (i + 1) + ' OF ' + TASKS.length + '</div><h1>' + t.title + '</h1></div><div class="steps" aria-label="All tasks">' + steps + '</div></div></section>';
     html += '<div class="wrap task"><div class="brief">';
@@ -1304,10 +1353,12 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     html += '<div class="wordbank"><h3>Word bank</h3>' + t.vocab.map(function (v) { return '<details><summary>' + v + '</summary><div class="def">' + (COMMON_VOCAB[v] || '') + '</div></details>'; }).join('') + '</div>';
     html += '<div class="hints"><h3>Stuck?</h3>' + t.hints.map(function (h, n) { return '<button type="button" data-hint="' + n + '">Show hint ' + (n + 1) + '</button><div class="hint" id="hint' + n + '">' + h + '</div>'; }).join('') + '</div>';
     html += '</div><div class="work">';
+    var runrow = '<div class="runrow"><button class="button primary" id="run">Run</button>' + (theme ? '<button class="button black" id="check">Run and check</button>' : '<button class="button black" id="check">Run the tests</button>') + '<button class="button" id="stop" disabled>Stop</button>' + (theme ? '<div class="speed"><label for="speed">Speed</label><input type="range" id="speed" min="0" max="4" value="2"></div>' : '') + '</div>';
+    html += '<div class="stage' + (theme ? '' : ' no-world') + '">';
     if (theme) html += '<div class="worlds"><div class="worldbox"><div class="lab"><span>Now</span><small id="posLabel"></small></div><div id="worldNow"></div></div><div class="worldbox goal"><div class="lab"><span>Goal</span><small>' + (t.goal.robot ? 'finish here' : 'finish anywhere') + '</small></div>' + renderWorld(goalWorld(t), theme, { hideRobot: !t.goal.robot, label: 'goal' }) + '</div></div>';
-    html += '<div class="editor"><div class="lab"><span>' + (theme ? t.id.replace('-', '_') + '.py' : (t.starter.match(/File: (\S+)/) || [0, 'program.py'])[1]) + '</span><div class="tools"><button type="button" id="resetCode">Reset to starter code</button></div></div><div class="edwrap"><div class="gutter" id="gutter"></div><textarea class="code" id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code">' + esc(code) + '</textarea></div></div>';
+    html += runrow + '</div>';
+    html += '<div class="editor"><div class="lab"><span>' + (theme ? t.id.replace('-', '_') + '.py' : (t.starter.match(/File: (\S+)/) || [0, 'program.py'])[1]) + '</span><div class="tools"><span class="locknote" id="lockNote" hidden>Grey lines are locked - write inside main()</span><button type="button" id="resetCode">Reset to starter code</button></div></div><div class="edwrap"><div class="gutter" id="gutter"></div><div class="edbody"><div class="lockbg" aria-hidden="true"><div class="band head" id="lockHead"></div><div class="band tail" id="lockTail"></div></div><textarea class="code" id="code" spellcheck="false" autocapitalize="off" autocomplete="off" aria-label="Your code (the first and last lines are locked)">' + esc(code) + '</textarea></div></div></div>';
     if (isConsole) html += '<div class="inputs" style="margin-top:14px"><label for="inputs">Keyboard input - what the user types, one answer per line (the test uses its own values)</label><textarea id="inputs">' + esc((t.tests[0].inputs || []).join('\n')) + '</textarea></div>';
-    html += '<div class="runrow"><button class="button primary" id="run">Run</button>' + (theme ? '<button class="button black" id="check">Run and check</button>' : '<button class="button black" id="check">Run the tests</button>') + '<button class="button" id="stop" disabled>Stop</button>' + (theme ? '<div class="speed"><label for="speed">Speed</label><input type="range" id="speed" min="0" max="4" value="2"></div>' : '') + '</div>';
     html += '<div class="console" id="console"><div class="lab">Terminal</div><div id="out"></div></div><div class="result" id="result"></div>';
     html += quickPracticeHtml(t, i);
     html += '<div class="reflect"><h3>Reflection</h3><p>' + t.reflect + '</p><div class="btnrow"><a class="button primary" href="' + PADLET + '" target="_blank" rel="noopener">Post your reflection on Padlet</a></div></div>';
@@ -1320,15 +1371,58 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     function drawNow() { if (!theme) return; document.getElementById('worldNow').innerHTML = renderWorld(world, theme, { label: 'now' }); document.getElementById('posLabel').textContent = 'column ' + world.x + ', row ' + world.y + ', facing ' + { N: 'north', E: 'east', S: 'south', W: 'west' }[world.dir] + (world.bag ? ' · ' + world.bag + ' in bag' : ''); }
     drawNow();
 
+    var $lockHead = document.getElementById('lockHead'), $lockTail = document.getElementById('lockTail'), $lockNote = document.getElementById('lockNote');
     function updateGutter(errLine) {
       var n = $code.value.split('\n').length, g = '';
-      for (var k = 1; k <= n; k++) g += (k === errLine ? '<span class="err">' + k + '</span>' : k) + '\n';
+      var headN = lock.headLines, tailFrom = n - lock.tailLines;   /* lines 1..headN and tailFrom..n are locked */
+      for (var k = 1; k <= n; k++) {
+        var locked = k <= headN || (lock.tail && k >= tailFrom);
+        g += '<span class="ln' + (k === errLine ? ' err' : locked ? ' lock' : '') + '">' + k + '</span>';
+      }
       $gutter.innerHTML = g;
+      updateBands();
     }
+    function updateBands() {
+      var cs = getComputedStyle($code), lh = parseFloat(cs.lineHeight) || 21, pad = parseFloat(cs.paddingTop) || 12, n = $code.value.split('\n').length, y = $code.scrollTop;
+      $lockHead.style.top = (-y) + 'px'; $lockHead.style.height = (pad + lock.headLines * lh) + 'px'; $lockHead.style.display = lock.headLines ? '' : 'none';
+      $lockTail.style.top = (pad + (n - lock.tailLines - 1) * lh - y) + 'px'; $lockTail.style.height = '100000px'; $lockTail.style.display = lock.tail ? '' : 'none';
+    }
+    /* Is the current selection inside the editable middle? mode: 'insert' | 'back' | 'fwd' */
+    var noteTimer = 0;
+    function inLocked(mode) {
+      var s = $code.selectionStart, e = $code.selectionEnd, headEnd = lock.head.length, tailStart = $code.value.length - lock.tail.length;
+      if (s < headEnd || e > tailStart) return true;
+      if (mode === 'back' && s === e && s <= headEnd) return true;
+      if (mode === 'fwd' && s === e && s >= tailStart) return true;
+      return false;
+    }
+    function refuse() {
+      var ed = $code.closest('.editor'); ed.classList.remove('shake'); void ed.offsetWidth; ed.classList.add('shake');
+      $lockNote.hidden = false; clearTimeout(noteTimer); noteTimer = setTimeout(function () { ed.classList.remove('shake'); $lockNote.hidden = true; }, 1600);
+    }
+    var lastGood = $code.value;
     updateGutter();
-    $code.addEventListener('scroll', function () { $gutter.scrollTop = $code.scrollTop; });
+    $code.addEventListener('scroll', function () { $gutter.scrollTop = $code.scrollTop; updateBands(); });
+    $code.addEventListener('beforeinput', function (e) {
+      var it = e.inputType || '';
+      var mode = /^delete.*Backward$/.test(it) ? 'back' : /^delete.*Forward$/.test(it) ? 'fwd' : 'insert';
+      if (inLocked(mode)) { e.preventDefault(); refuse(); }
+    });
+    /* safety net: whatever happened (undo, drag-drop, old browser), the header and footer must survive */
+    $code.addEventListener('input', function () {
+      var v = $code.value;
+      if (!lock.ok(v)) {
+        var pos = $code.selectionStart;
+        $code.value = lastGood;
+        pos = Math.max(lock.head.length, Math.min(pos, lastGood.length - lock.tail.length));
+        $code.selectionStart = $code.selectionEnd = pos;
+        refuse();
+      }
+      lastGood = $code.value;
+    });
     $code.addEventListener('input', function () { updateGutter(); state.code[t.id] = $code.value; save(state); });
     $code.addEventListener('keydown', function (e) {
+      if ((e.key === 'Tab' || e.key === 'Enter') && inLocked('insert')) { e.preventDefault(); refuse(); return; }
       if (e.key === 'Tab') { e.preventDefault(); insert('    '); }
       if (e.key === 'Enter') {
         e.preventDefault();
