@@ -17,16 +17,20 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Web practice — Tech Practice Hub</title>
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=5" />
+  <link rel="stylesheet" href="css/style.css?v=6" />
 </head>
 <body>
 
   <div data-layout="header"></div>
   <div data-layout="nav"></div>
 
-  <main class="container">
-    <h1>How the web works</h1>
-    <p class="page-intro">Weeks 6 to 8. Look inside real web pages, then learn what happens between your browser and a server.</p>
+  <main>
+    <section class="pagehead"><div class="container">
+      <p class="eyebrow">EU Foundation &middot; Weeks 6&ndash;8</p>
+      <h1>How the web works</h1>
+      <p class="page-intro">Look inside real web pages, then learn what happens between your browser and a server.</p>
+    </div></section>
+    <div class="container page-body">
 
     <!-- TASK TILES: one small card per task, grouped by week (js/task-shell.js) -->
     <section class="task-picker" id="taskPicker" aria-label="Choose a task">
@@ -91,11 +95,12 @@
         </div>
       </section>
     </div>
+    </div>
   </main>
 
   <div data-layout="footer"></div>
 
-  <script src="js/layout.js?v=6"></script>
+  <script src="js/layout.js?v=7"></script>
   <script src="js/tasks.js?v=5"></script>
   <script src="js/progress.js?v=5"></script>
   <script src="js/reflections.js?v=5"></script>

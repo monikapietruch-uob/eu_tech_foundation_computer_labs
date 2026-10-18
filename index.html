@@ -9,6 +9,12 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
 <style>
+/* Univers, the UoB body face, shipped in fonts/ (the same files the practice pages use):
+   45 Light for running text (400) and 55 Roman for UI text (700). */
+@font-face { font-family: "Univers"; src: url("fonts/lte50136.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
+@font-face { font-family: "Univers"; src: url("fonts/lte50138.ttf") format("truetype"); font-weight: 700; font-style: normal; font-display: swap; }
+/* Bebas Neue from fonts/ too, so the headings do not depend on Google Fonts being reachable. */
+@font-face { font-family: "Bebas Neue"; src: url("fonts/BebasNeue-Regular.ttf") format("truetype"); font-weight: 400; font-style: normal; font-display: swap; }
 :root {
   --red: #D0112B;
   --maroon: #8A0A2E;
@@ -115,7 +121,7 @@ section.block > .wrap > p.intro { color: var(--grey); margin: 6px 0 22px; max-wi
 .footer { background: var(--black); color: var(--white); padding: 40px 0 34px; margin-top: 40px; }
 .footer h2 { font-size: 46px; line-height: .95; }
 .footer h2 span { display: block; color: var(--red); }
-.footer .credit { font-size: 13px; font-weight: 500; color: #cfcfcf; max-width: 70ch; margin: 18px 0 0; line-height: 1.5; }
+.footer .credit { font-size: 13px; color: #cfcfcf; max-width: 70ch; margin: 18px 0 0; line-height: 1.5; }
 .pagehead .credit { font-size: 14px; font-weight: 500; opacity: .9; }
 .footer .row { display: flex; justify-content: space-between; align-items: flex-end; gap: 24px; flex-wrap: wrap; margin-top: 22px; font-size: 13px; }
 .footer .row a { text-decoration: none; margin-left: 22px; }
