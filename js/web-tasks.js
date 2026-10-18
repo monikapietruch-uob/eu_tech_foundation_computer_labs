@@ -103,7 +103,18 @@
     var bar = el("div", "browser-bar");
     var nav = el("span", "browser-nav");
     nav.setAttribute("aria-hidden", "true");
-    nav.innerHTML = ICON.back + ICON.forward + ICON.reload;
+    if (opts.onBack || opts.onReload) {
+      // the back and reload arrows do something: they put the student's own page back
+      nav.removeAttribute("aria-hidden");
+      var backBtn = el("button", "browser-navbtn"); backBtn.type = "button"; backBtn.title = "Back to your page"; backBtn.innerHTML = ICON.back;
+      var fwd = el("span", "browser-navbtn off"); fwd.setAttribute("aria-hidden", "true"); fwd.innerHTML = ICON.forward;
+      var reloadBtn = el("button", "browser-navbtn"); reloadBtn.type = "button"; reloadBtn.title = "Reload your page"; reloadBtn.innerHTML = ICON.reload;
+      backBtn.addEventListener("click", function () { (opts.onBack || opts.onReload)(); });
+      reloadBtn.addEventListener("click", function () { (opts.onReload || opts.onBack)(); });
+      nav.appendChild(backBtn); nav.appendChild(fwd); nav.appendChild(reloadBtn);
+    } else {
+      nav.innerHTML = ICON.back + ICON.forward + ICON.reload;
+    }
     bar.appendChild(nav);
     var address = el("div", "browser-address");
     // a padlock for an https address; "Not secure", as Chrome says, for a local page
@@ -162,10 +173,12 @@
     var stage = TaskShell.stage() || wrap;
     var reset = el("button", null, "Reset to starter code");
     reset.type = "button";
-    var win = browserWindow({ url: "localhost:8000/index.html", secure: false, frameTitle: "Preview of your page", tools: [reset], className: "preview", untitled: "index.html" });
+    var win = browserWindow({ url: "localhost:8000/index.html", secure: false, frameTitle: "Preview of your page", tools: [reset], className: "preview", untitled: "index.html",
+      onBack: function () { win.setUrl("localhost:8000/index.html"); update(); } });
     var frame = win.frame;
-    frame.setAttribute("sandbox", "allow-same-origin");
-    stage.appendChild(el("p", "web-caption", "Your page, as a browser shows it. It updates as you type; the tab shows the page's title."));
+    // allow-popups so a link can open a real new tab; no allow-scripts, so the
+    // student's page cannot run code on the hub
+    frame.setAttribute("sandbox", "allow-same-origin allow-popups allow-popups-to-escape-sandbox");
     stage.appendChild(win.wrap);
 
     var head = el("div", "checklist-head");
@@ -184,6 +197,7 @@
       var li = el("li", "check todo");
       li.appendChild(el("span", "check-status", ""));
       li.appendChild(el("span", "check-label", check.label));
+      li.appendChild(el("span", "check-note", ""));
       list.appendChild(li);
       return li;
     });
@@ -205,14 +219,28 @@
     }
 
     frame.addEventListener("load", function () {
-      var doc = frame.contentDocument;
+      var doc = null;
+      try { doc = frame.contentDocument; } catch (e) { doc = null; }
       if (!doc) { return; }
+      // Links in the preview open in a real new tab (the preview cannot show
+      // other websites - most of them refuse to be shown inside another page),
+      // so the student's page stays where it is.
+      doc.addEventListener("click", function (e) {
+        var a = e.target && e.target.closest ? e.target.closest("a[href]") : null;
+        if (!a) { return; }
+        var href = a.getAttribute("href") || "";
+        if (/^https?:\/\//i.test(href)) { e.preventDefault(); window.open(href, "_blank", "noopener"); }
+        else if (href.charAt(0) !== "#") { e.preventDefault(); win.setUrl("localhost:8000/" + href.replace(/^\.?\//, "")); }
+      });
       var allOk = true, passed = 0, total = (task.checks || []).length;
       (task.checks || []).forEach(function (check, i) {
-        var ok = false;
+        var ok = false, note = "";
         try { ok = runCheck(check, doc, frame.contentWindow); } catch (e) { ok = false; }
-        items[i].className = "check " + (ok ? "pass" : "todo");
-        text(items[i].firstChild, ok ? "✓" : "");
+        if (!ok) { try { note = checkNote(check, doc); } catch (e2) { note = ""; } }
+        var part = !!note && check.exact !== 0; // "none left" items stay grey until they are done
+        items[i].className = "check " + (ok ? "pass" : part ? "part" : "todo");
+        text(items[i].firstChild, ok ? "✓" : part ? "½" : "");
+        text(items[i].lastChild, ok ? "" : note);
         if (ok) { passed++; } else { allOk = false; }
       });
       meterFill.style.width = (total ? Math.round(passed / total * 100) : 0) + "%";
@@ -233,6 +261,21 @@
       schedule();
     });
     update();
+  }
+
+  // A short note for a count check that is not green yet but is on its way,
+  // e.g. "3 found - the page needs exactly 1" (so the item goes half-green
+  // instead of staying grey while the student is clearly working on it).
+  function checkNote(check, doc) {
+    if (check.kind !== "count") { return ""; }
+    var n = doc.querySelectorAll(check.selector).length;
+    if (check.exact != null) {
+      if (check.exact === 0) { return n + " still there"; }
+      return n ? n + " found - the page needs exactly " + check.exact : "";
+    }
+    if (check.min != null) { return n ? n + " of " + check.min + " so far" : ""; }
+    if (check.max != null) { return n + " found - no more than " + check.max; }
+    return "";
   }
 
   function runCheck(check, doc, win) {
@@ -387,17 +430,25 @@
 
     // The website goes full-width above the brief and the checklist.
     var stage = TaskShell.stage() || wrap;
+    function sampleUrl() { return task.sample + (revealed ? "?reveal=1" : ""); }
     var openLink = el("a", null, "Open in a new tab ↗");
-    openLink.href = task.sample; openLink.target = "_blank"; openLink.rel = "noopener";
-    openLink.title = "Open the page on its own - easier with the developer tools";
-    var win = browserWindow({ url: task.displayUrl || task.sample, frameTitle: "The website to inspect", tools: [openLink], className: "sample" });
+    openLink.href = sampleUrl(); openLink.target = "_blank"; openLink.rel = "noopener";
+    openLink.title = "Open the page on its own, so the developer tools show only this website";
+    var sideBtn = el("button", null, "Open beside this page");
+    sideBtn.type = "button";
+    sideBtn.title = "Open the website in a small separate window you can put next to the checklist";
+    sideBtn.addEventListener("click", function () {
+      var w = Math.min(760, Math.round(window.screen.availWidth * 0.5)), h = Math.round(window.screen.availHeight * 0.9);
+      window.open(sampleUrl(), "sample-" + task.id, "popup=yes,width=" + w + ",height=" + h + ",left=" + (window.screen.availWidth - w) + ",top=0");
+    });
+    var win = browserWindow({ url: task.displayUrl || task.sample, frameTitle: "The website to inspect", tools: [openLink, sideBtn], className: "sample" });
     var frame = win.frame;
     frame.src = task.sample + (revealed ? "?reveal=1" : "");
     stage.appendChild(win.wrap);
 
     var tip = el("div", "tip");
     tip.appendChild(el("strong", null, "How to look at the real HTML: "));
-    tip.appendChild(document.createTextNode("right-click anything on the website and choose Inspect. The developer tools open and show the tag under your mouse. If the window is too small, open the page in a new tab with the button in its address bar."));
+    tip.appendChild(document.createTextNode("the website above is shown inside this page, so if you right-click it here, the developer tools open for the whole Practice Hub and the cafe is buried inside an <iframe>. Instead, click \"Open beside this page\" (or \"Open in a new tab\"), then right-click anything in that window and choose Inspect: now the developer tools show only the website. Keep this tab for the checklist and switch between the two."));
     stage.appendChild(tip);
 
     wrap.appendChild(el("h3", "tests-title", "What is wrong with this page?"));
@@ -473,6 +524,7 @@
       revealed = true;
       save({ revealed: true });
       frame.src = task.sample + "?reveal=1";
+      openLink.href = sampleUrl();
       reveal.disabled = true;
       text(reveal, "Answers are revealed");
       rows.forEach(function (r) {

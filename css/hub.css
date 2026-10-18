@@ -134,7 +134,7 @@ section.block > .wrap > p.intro { color: var(--grey); margin: 6px 0 22px; max-wi
 .pagehead { background: var(--red); color: var(--white); }
 .pagehead .wrap { padding: 34px 24px 30px; }
 .pagehead h1 { font-size: clamp(48px, 7vw, 84px); }
-.pagehead p { max-width: 70ch; margin: 8px 0 0; font-size: 16px; }
+.pagehead p { max-width: 110ch; margin: 8px 0 0; font-size: 16px; }
 .weeknav { display: flex; gap: 10px; margin-top: 22px; flex-wrap: wrap; }
 .tasklist { padding: 40px 0 56px; }
 .group { margin-bottom: 36px; }

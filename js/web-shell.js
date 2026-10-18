@@ -43,7 +43,7 @@ var TaskShell = (function () {
   // Python tasks.
   var GROUPS = [
     { week: 6, type: "html-editor", sub: "Week 6 · HTML & CSS", title: "Build a page",
-      text: "Three small pages for a student robotics club. Each one has something missing or wrong. Fix it in the HTML and CSS boxes, watch the preview change as you type, and keep going until every item on the checklist is green.",
+      text: "The Robotics Club needs a website, and you are building it one task at a time: first the page structure, then the links, image and list, then the CSS. Edit the HTML and CSS boxes, watch the preview change as you type, and keep going until every item on the checklist is green.",
       // Two YouTube Shorts from the University of Bedfordshire to watch
       // BEFORE the three Robotics Club tasks. Shown as "Step 1" on the list
       // page and as a short reminder on each of the three task pages.
@@ -231,9 +231,9 @@ var TaskShell = (function () {
     html += "<div class=\"wrap task\"><div class=\"brief\">";
     if (g.text) { html += "<p class=\"scen\">" + esc(g.text) + "</p>"; }
     if (g.watch && g.watch.videos && g.watch.videos.length) {
-      html += "<p class=\"watchnote\"><b>Watched the two robot videos?</b> If not, watch them first: " + g.watch.videos.map(function (v) {
+      html += "<p class=\"watchnote\"><b>Have you met the robots yet?</b> If not, take two minutes to watch them first - they are the reason this club exists: " + g.watch.videos.map(function (v) {
         return "<a href=\"" + watchUrl(v) + "\" target=\"_blank\" rel=\"noopener\">" + esc(v.short || v.title) + " ↗</a>";
-      }).join(" · ") + " (they are also on <a href=\"" + PAGE + "#watch-first\">the task list</a>). Then build the Robotics Club website here.</p>";
+      }).join(" · ") + " (both are on <a href=\"" + PAGE + "#watch-first\">the task list</a> too). Then come back here and give the Robotics Club its website.</p>";
     }
     html += "<h2>Your brief</h2>" + briefHtml(task);
     if (task.vocabulary && task.vocabulary.length) {

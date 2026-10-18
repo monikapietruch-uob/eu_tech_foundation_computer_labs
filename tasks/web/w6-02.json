@@ -28,7 +28,7 @@
       "gloss": "an unordered (bullet) list, and one item in it"
     }
   ],
-  "starterHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Robotics Club</title>\n</head>\n<body>\n  <h1>Robotics Club</h1>\n  <p>We are part of the University of Bedfordshire.</p>\n\n  <img src=\"samples/img/gym.svg\" width=\"160\" height=\"120\" alt=\"\">\n\n  <h2>Meeting rules</h2>\n  <p>Be on time. Share the tools. Ask questions.</p>\n</body>\n</html>\n",
+  "starterHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Robotics Club</title>\n</head>\n<body>\n  <h1>Robotics Club</h1>\n  <p>We are part of the University of Bedfordshire.</p>\n\n  <img src=\"samples/img/drone.svg\" width=\"160\" height=\"120\" alt=\"\">\n\n  <h2>Meeting rules</h2>\n  <p>Be on time. Share the tools. Ask questions.</p>\n</body>\n</html>\n",
   "starterCss": "body { font-family: Arial, sans-serif; padding: 1rem; }\nimg { border: 1px solid #ccc; }\n",
   "checks": [
     {
@@ -57,9 +57,10 @@
     }
   ],
   "hints": [
-    "A link looks like <a href=\"https://www.beds.ac.uk\">the university website</a>. Put it inside the first paragraph.",
+    "A link looks like <a href=\"https://www.beds.ac.uk\">the university website</a>. Put it inside the first paragraph. (Clicking it in the preview opens the real site in a new tab - your page stays here.)",
     "To open in a new tab, add a second attribute: target=\"_blank\". Attributes are separated by a space.",
-    "Replace the rules paragraph with <ul> <li>Be on time.</li> <li>Share the tools.</li> <li>Ask questions.</li> </ul>. And put words inside the empty alt=\"\" — say what the picture shows."
+    "Alt text lives inside the <img> tag. The image already has alt=\"\" - it is empty, so a screen reader says nothing. Put words between the quotes that say what the picture shows, for example alt=\"A small drone with four propellers\". Keep the quotes.",
+    "Replace the rules paragraph with a list: <ul> <li>Be on time.</li> <li>Share the tools.</li> <li>Ask questions.</li> </ul>."
   ],
-  "solutionHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Robotics Club</title>\n</head>\n<body>\n  <h1>Robotics Club</h1>\n  <p>We are part of the <a href=\"https://www.beds.ac.uk\" target=\"_blank\">University of Bedfordshire</a>.</p>\n\n  <img src=\"samples/img/gym.svg\" width=\"160\" height=\"120\" alt=\"A dumbbell\">\n\n  <h2>Meeting rules</h2>\n  <ul>\n    <li>Be on time.</li>\n    <li>Share the tools.</li>\n    <li>Ask questions.</li>\n  </ul>\n</body>\n</html>\n"
+  "solutionHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Robotics Club</title>\n</head>\n<body>\n  <h1>Robotics Club</h1>\n  <p>We are part of the <a href=\"https://www.beds.ac.uk\" target=\"_blank\">University of Bedfordshire</a>.</p>\n\n  <img src=\"samples/img/drone.svg\" width=\"160\" height=\"120\" alt=\"A small drone with four propellers\">\n\n  <h2>Meeting rules</h2>\n  <ul>\n    <li>Be on time.</li>\n    <li>Share the tools.</li>\n    <li>Ask questions.</li>\n  </ul>\n</body>\n</html>\n"
 }

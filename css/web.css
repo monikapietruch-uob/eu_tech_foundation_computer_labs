@@ -103,6 +103,10 @@ main:focus { outline: none; }
 .browser-nav { display: flex; gap: 2px; color: #5F6368; }
 .browser-nav svg { width: 28px; height: 28px; padding: 5px; border-radius: 50%; }
 .browser-nav svg:first-child { color: #3C4043; }
+.browser-navbtn { all: unset; display: inline-flex; cursor: pointer; border-radius: 50%; }
+.browser-navbtn.off { cursor: default; opacity: .45; }
+button.browser-navbtn:hover svg, button.browser-navbtn:focus-visible svg { background: #E8EAED; }
+button.browser-navbtn:focus-visible { outline: 2px solid var(--black); }
 .browser-address { flex: 1; min-width: 0; display: flex; align-items: center; gap: 9px; background: #EEF1F4; border-radius: 999px; padding: 7px 14px; font-size: 13.5px; color: #5F6368; font-weight: 500; }
 .browser-address svg { width: 11px; height: 13px; flex: none; color: #3C4043; }
 .browser-notsecure { font-size: 12px; color: #5F6368; padding-right: 9px; border-right: 1px solid #C4C7CC; white-space: nowrap; }
@@ -134,6 +138,8 @@ main:focus { outline: none; }
 .check { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: 2px solid var(--line); margin-bottom: 6px; font-size: 15px; font-weight: 500; transition: border-color .2s; }
 .check-status { width: 24px; height: 24px; flex: none; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: var(--paper); border: 2px solid var(--line); color: var(--grey); }
 .check.pass { border-color: var(--green); background: #F3FAF5; } .check.pass .check-status { background: var(--green); border-color: var(--green); color: var(--white); }
+.check.part { border-color: #C98A00; background: #FFF8E6; } .check.part .check-status { background: #F2B01E; border-color: #F2B01E; color: var(--black); }
+.check-note { margin-left: auto; font-size: 13px; color: #8A5F00; font-weight: 600; white-space: nowrap; } .check-note:empty { display: none; }
 
 /* Inspect this page */
 .tip { background: var(--paper); border-left: 6px solid var(--black); padding: 12px 14px; font-size: 14px; font-weight: 500; line-height: 1.55; margin: 14px 0 0; }
