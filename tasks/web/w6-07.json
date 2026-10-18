@@ -1,0 +1,71 @@
+{
+  "id": "web-w6-07",
+  "week": 6,
+  "type": "html-editor",
+  "title": "Fix the form: labels and a real button",
+  "concepts": [
+    "form",
+    "label",
+    "id",
+    "input type",
+    "button"
+  ],
+  "brief": "A form is only useful if people can fill it in. The Drone Society's sign-up form has three problems: the questions are ordinary paragraphs, not labels, so a screen reader does not know which box each question belongs to; the email box is a plain text box; and the big yellow \"button\" is a div, so you cannot reach it with the Tab key.\n\nFix the form in the HTML box: turn each <p> question into a <label for=\"…\"> that points at the id of its box, make the email box type=\"email\", and replace the div with a real <button>. The CSS already styles labels and buttons, so you do not need to change it.",
+  "vocabulary": [
+    {
+      "term": "label",
+      "gloss": "the text that says what a form box is for; <label for=\"name\"> connects it to the box whose id is name"
+    },
+    {
+      "term": "id",
+      "gloss": "a name for one element on the page, used to connect a label to its box"
+    },
+    {
+      "term": "type",
+      "gloss": "the attribute that says what kind of box an input is: text, email, checkbox…"
+    },
+    {
+      "term": "button",
+      "gloss": "the element for a real button; keyboards and screen readers know how to use it, a div is just a box"
+    }
+  ],
+  "starterHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Drone Society - sign up</title>\n</head>\n<body>\n  <header>\n    <img src=\"samples/img/drone.svg\" width=\"120\" height=\"90\" alt=\"A small quadcopter drone\">\n    <div>\n      <h1>Drone Society</h1>\n      <p>Build it. Fly it. Try not to land it on the library roof again.</p>\n    </div>\n  </header>\n\n  <h2>Sign up</h2>\n  <form>\n    <p>Your name</p>\n    <input type=\"text\" id=\"name\">\n\n    <p>Your university email</p>\n    <input type=\"text\" id=\"email\">\n\n    <p>Have you flown a drone before?</p>\n    <input type=\"checkbox\" id=\"flown\">\n\n    <div class=\"btn\" onclick=\"this.textContent='Thanks!'\">Join the society</div>\n  </form>\n</body>\n</html>\n",
+  "starterCss": "body { font-family: Verdana, Geneva, sans-serif; background: #E8F3EF; color: #10332C; margin: 0; padding: 1.2rem; }\nheader { display: flex; align-items: center; gap: 1rem; }\nheader img { border-radius: 12px; background: #fff; }\nh1 { margin: 0; color: #0F5C4C; font-size: 2rem; }\nheader p { margin: .2rem 0 0; font-style: italic; }\nh2 { color: #0F5C4C; margin-top: 1.4rem; }\nform { background: #fff; border: 2px solid #0F5C4C; border-radius: 12px; padding: 1rem 1.2rem; max-width: 420px; }\nform p, label { display: block; margin: .9rem 0 .3rem; font-weight: bold; }\ninput[type=\"text\"], input[type=\"email\"] { width: 100%; padding: .5rem; border: 1px solid #0F5C4C; border-radius: 6px; box-sizing: border-box; font: inherit; }\n.btn, button { display: inline-block; margin-top: 1rem; background: #F2B134; color: #10332C; padding: .6rem 1.2rem; border-radius: 999px; border: 0; font: inherit; font-weight: bold; cursor: pointer; }\n",
+  "checks": [
+    {
+      "label": "Every input has a label connected to it with for=\"…\" and the input's id",
+      "kind": "labelled",
+      "selector": "input"
+    },
+    {
+      "label": "No <p> is left inside the form (the questions are labels now)",
+      "kind": "count",
+      "selector": "form p",
+      "exact": 0
+    },
+    {
+      "label": "The email box is type=\"email\"",
+      "kind": "count",
+      "selector": "input[type='email']",
+      "min": 1
+    },
+    {
+      "label": "There is a real <button> inside the form",
+      "kind": "count",
+      "selector": "form button",
+      "min": 1
+    },
+    {
+      "label": "No <div> with an onclick is pretending to be a button",
+      "kind": "count",
+      "selector": "div[onclick]",
+      "exact": 0
+    }
+  ],
+  "hints": [
+    "A label is connected to a box by the box's id: <label for=\"name\">Your name</label> goes with <input type=\"text\" id=\"name\">. Change all three <p> questions this way.",
+    "On the email box, change type=\"text\" to type=\"email\". On a phone this gives a keyboard with the @ sign on it, and the browser checks the address.",
+    "Replace the whole <div class=\"btn\" onclick=\"…\">Join the society</div> line with <button type=\"submit\">Join the society</button>. The CSS already styles button the same way."
+  ],
+  "solutionHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Drone Society - sign up</title>\n</head>\n<body>\n  <header>\n    <img src=\"samples/img/drone.svg\" width=\"120\" height=\"90\" alt=\"A small quadcopter drone\">\n    <div>\n      <h1>Drone Society</h1>\n      <p>Build it. Fly it. Try not to land it on the library roof again.</p>\n    </div>\n  </header>\n\n  <h2>Sign up</h2>\n  <form>\n    <label for=\"name\">Your name</label>\n    <input type=\"text\" id=\"name\">\n\n    <label for=\"email\">Your university email</label>\n    <input type=\"email\" id=\"email\">\n\n    <label for=\"flown\">Have you flown a drone before?</label>\n    <input type=\"checkbox\" id=\"flown\">\n\n    <button type=\"submit\">Join the society</button>\n  </form>\n</body>\n</html>\n"
+}

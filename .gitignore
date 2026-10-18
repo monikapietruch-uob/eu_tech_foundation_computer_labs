@@ -7,3 +7,11 @@ Thumbs.db
 *.swp
 .vscode/
 .idea/
+
+# Teaching materials (answer keys etc.) - keep off the public site
+teaching-materials/
+
+teaching-files/
+
+# Claude working files (copies of the teaching files above) - keep off the public site
+Claude outputs/

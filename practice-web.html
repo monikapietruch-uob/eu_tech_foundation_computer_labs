@@ -1,110 +1,45 @@
 <!DOCTYPE html>
 <!--
-  practice-web.html — weeks 6 to 8: how the web works. The same task shell
-  as the Python page (task list, brief, hints, verdict, reflections; see
-  js/task-shell.js) with the right-hand column filled by js/web-tasks.js
+  practice-web.html — weeks 6 to 8: how the web works. Built like the hub's
+  Python pages (index.html): js/web-shell.js draws either the task list or
+  one task into <main id="app">, and js/web-tasks.js fills the task area
   according to the task type:
     html-editor  — HTML + CSS boxes with a live preview and a checklist
     inspect      — a flawed sample page beside a checklist, with Reveal
     walkthrough  — the request/response step-through, matching, writing
     summary      — a text, a note-taking frame, a 30-word summary box
+  Styles: css/hub.css (shared with index.html) plus css/web.css.
   Progress and reflections are saved in this browser by js/progress.js.
   Header, nav and footer come from js/layout.js.
 -->
-<html lang="en">
+<html lang="en-GB">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Web practice — Tech Practice Hub</title>
-  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml" />
-  <link rel="stylesheet" href="css/style.css?v=6" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light">
+  <title>Web practice - Tech Practice Hub</title>
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/hub.css?v=1">
+  <link rel="stylesheet" href="css/web.css?v=2">
 </head>
 <body>
 
   <div data-layout="header"></div>
   <div data-layout="nav"></div>
 
-  <main>
-    <section class="pagehead"><div class="container">
-      <p class="eyebrow">EU Foundation &middot; Weeks 6&ndash;8</p>
-      <h1>How the web works</h1>
-      <p class="page-intro">Look inside real web pages, then learn what happens between your browser and a server.</p>
-    </div></section>
-    <div class="container page-body">
-
-    <!-- TASK TILES: one small card per task, grouped by week (js/task-shell.js) -->
-    <section class="task-picker" id="taskPicker" aria-label="Choose a task">
-      <div class="task-picker-head">
-        <h2 id="taskPickerTitle">Choose a task</h2>
-        <p class="muted small" id="taskPickerNote">Tasks go in order. A tick means you finished it on this computer.</p>
-      </div>
-      <div id="taskNav"><p class="muted">Loading the task list…</p></div>
-      <div class="task-nav-extra">
-            <h3>Also try</h3>
-            <a href="exercises/html-css-1/html-css-1-devtools.html">DevTools Website Makeover</a>
-          </div>
-    </section>
-
-    <div class="task-layout" id="taskLayout" hidden>
-
-      <!-- LEFT: task list and the task itself (owned by js/task-shell.js) -->
-      <aside class="task-side">
-
-        <section class="task-brief" id="taskBrief" aria-live="polite">
-          <p class="week-label" id="taskWeek"></p>
-          <h2 id="taskTitle">Loading…</h2>
-          <div class="concepts" id="taskConcepts"></div>
-          <div class="brief-text" id="taskText"></div>
-          <div class="vocab" id="taskVocab"></div>
-          <div class="hints">
-            <button type="button" class="btn outline" id="hintButton">Show a hint</button>
-            <ol class="hint-list" id="hintList"></ol>
-          </div>
-        </section>
-      </aside>
-
-      <!-- RIGHT: the task area (filled by js/web-tasks.js) -->
-      <section class="task-work">
-        <div id="webArea" class="web-area">
-          <p class="muted">Loading…</p>
-        </div>
-
-        <p class="saved-note" id="savedNote">Your work is saved only in this browser, on this computer.</p>
-
-        <div class="verdict" id="verdict" hidden></div>
-
-        <section class="reflect" id="reflect" hidden>
-          <h3>Two questions about your learning</h3>
-          <p class="muted small">Your answers are saved in this browser. Later, use “Copy my reflections” to paste them into Padlet.</p>
-          <label for="reflectTried">What did you try first, and what happened?</label>
-          <textarea id="reflectTried" rows="3"></textarea>
-          <label for="reflectWord">What is one word from this task you could now explain to a classmate?</label>
-          <textarea id="reflectWord" rows="2"></textarea>
-          <div id="reflectExtra" hidden>
-            <label for="reflectWriting" id="reflectExtraLabel"></label>
-            <textarea id="reflectWriting" rows="3"></textarea>
-          </div>
-          <div class="reflect-foot">
-            <span class="muted small" id="reflectSaved"></span>
-            <button type="button" class="btn outline small-btn" id="copyReflections">Copy my reflections</button>
-          </div>
-        </section>
-
-        <div class="next" id="next" hidden>
-          <a class="btn" id="nextLink" href="#">Next task</a>
-        </div>
-      </section>
-    </div>
-    </div>
+  <main id="app">
+    <section class="pagehead"><div class="wrap"><h1>Web practice</h1><p>Loading the tasks…</p></div></section>
   </main>
 
   <div data-layout="footer"></div>
 
   <script src="js/layout.js?v=7"></script>
-  <script src="js/tasks.js?v=5"></script>
+  <script src="js/tasks.js?v=6"></script>
   <script src="js/progress.js?v=5"></script>
-  <script src="js/reflections.js?v=5"></script>
-  <script src="js/task-shell.js?v=5"></script>
-  <script src="js/web-tasks.js?v=5"></script>
+  <script src="js/web-shell.js?v=3"></script>
+  <script src="js/web-tasks.js?v=8"></script>
 </body>
 </html>

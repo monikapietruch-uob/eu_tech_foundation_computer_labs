@@ -13,19 +13,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Riverside Library</title>
   <style>
-    body { font-family: Arial, sans-serif; margin: 0; color: #222; background: #fff; }
-    header { background: #1a1a2e; color: #fff; padding: 1.2rem 1.5rem; }
-    header h1 { margin: 0; font-size: 1.6rem; }
-    main { padding: 1.2rem 1.5rem; max-width: 700px; }
-    img { display: block; margin: 0.5rem 0 1rem; border-radius: 6px; }
-    h4 { margin: 1rem 0 0.4rem; font-size: 1.2rem; }
-    ul { padding-left: 1.2rem; }
-    .info { background: #d9d9d9; color: #9a9a9a; padding: 0.8rem 1rem; border-radius: 6px; margin: 1rem 0; }
-    .btn { display: inline-block; background: #C8102E; color: #fff; padding: 0.55rem 1.1rem; border-radius: 6px; cursor: pointer; margin: 0.5rem 0 1rem; }
-    form { margin-top: 1rem; }
-    input { padding: 0.45rem 0.6rem; border: 1px solid #aaa; border-radius: 4px; width: 60%; }
-    button { padding: 0.45rem 0.9rem; border: none; background: #1a1a2e; color: #fff; border-radius: 4px; }
-    footer { padding: 1rem 1.5rem; font-size: 0.85rem; color: #666; border-top: 1px solid #ddd; margin-top: 1.5rem; }
+    /* A calm library look: pale blue, navy, serif text and thin rules. */
+    body { font-family: Georgia, "Times New Roman", serif; margin: 0; color: #1C2B3A; background: #EEF4FA; }
+    header { background: #1F3A5F; color: #fff; padding: 1.2rem 1.5rem; }
+    header h1 { margin: 0; font-size: 1.8rem; font-weight: 400; letter-spacing: .02em; border-left: 6px solid #8FB8DE; padding-left: .8rem; }
+    main { padding: 1.4rem 1.5rem; max-width: 700px; background: #fff; margin: 1.2rem 1.5rem; border: 1px solid #C9D9E8; line-height: 1.55; }
+    main > p:first-child { font-size: 1.1rem; color: #1F3A5F; }
+    img { display: block; margin: 0.5rem 0 1rem; border: 1px solid #C9D9E8; padding: 6px; background: #EEF4FA; }
+    h4 { margin: 1.2rem 0 0.4rem; font-size: 1.2rem; font-weight: 400; color: #1F3A5F; text-transform: uppercase; letter-spacing: .12em; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-size: .95rem; }
+    ul { padding-left: 0; list-style: none; }
+    li { border-bottom: 1px solid #C9D9E8; padding: .35rem 0; }
+    .info { background: #d9d9d9; color: #9a9a9a; padding: 0.8rem 1rem; border-radius: 6px; margin: 1rem 0; font-family: Arial, sans-serif; font-size: .95rem; }
+    .btn { display: inline-block; background: #C8102E; color: #fff; padding: 0.55rem 1.1rem; cursor: pointer; margin: 0.5rem 0 1rem; font-family: "Segoe UI", Helvetica, Arial, sans-serif; font-weight: 700; border-radius: 3px; }
+    form { margin-top: 1rem; border-top: 1px solid #C9D9E8; padding-top: 1rem; }
+    input { padding: 0.5rem 0.7rem; border: 1px solid #8FB8DE; border-radius: 3px; width: 60%; font: inherit; }
+    button { padding: 0.5rem 1rem; border: none; background: #1F3A5F; color: #fff; border-radius: 3px; font: inherit; }
+    footer { padding: 1rem 1.5rem 1.4rem; font-size: 0.85rem; color: #4A5D70; }
   </style>
 </head>
 <body>
@@ -54,6 +57,6 @@
     </form>
   </main>
   <footer>Riverside Library · Bedford</footer>
-  <script src="reveal.js"></script>
+  <script src="reveal.js?v=2"></script>
 </body>
 </html>

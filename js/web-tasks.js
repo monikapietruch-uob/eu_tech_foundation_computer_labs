@@ -1,20 +1,23 @@
 /*
   js/web-tasks.js — the four task types on practice-web.html (weeks 6–8).
 
-  js/task-shell.js owns the task list, brief, hints, verdict, reflections
-  and Next link; this file fills the #webArea box for the open task:
+  js/web-shell.js owns the page (task list, task bar, brief, hints,
+  verdict, reflections, previous/next); this file fills the #webArea box
+  for the open task:
 
     html-editor  HTML and CSS boxes, a live preview (an iframe fed with
-                 srcdoc, updated a moment after typing stops), a Reset
-                 button, and a checklist that is checked automatically
-                 against the preview document — so "the page has one h1"
-                 turns green the moment it is true.
-    inspect      a deliberately flawed sample page from samples/ in an
-                 iframe, beside a checklist of possible problems (five
-                 real, two not). The student ticks what they find and
-                 writes why it matters; Check marks the answers; Reveal
-                 reloads the sample with ?reveal=1 so samples/reveal.js
-                 outlines the real problems.
+                 srcdoc, updated a moment after typing stops) inside a
+                 pretend browser window whose tab shows the page's <title>,
+                 a Reset button, and a checklist that is checked
+                 automatically against the preview document — so "the page
+                 has one h1" turns green the moment it is true.
+    inspect      a deliberately flawed sample page from samples/ shown
+                 full-width in a pretend browser window (TaskShell.stage),
+                 with a checklist of possible problems (five real, two not)
+                 below. The student ticks what they find and writes why it
+                 matters; Check marks the answers; Reveal reloads the
+                 sample with ?reveal=1 so samples/reveal.js outlines the
+                 real problems.
     walkthrough  type a URL, press Enter, step through browser → DNS →
                  request → server → database → response → render; then
                  a matching exercise and a two-sentence writing box.
@@ -28,7 +31,7 @@
 (function () {
   "use strict";
 
-  var area = document.getElementById("webArea");
+  var area = null;   // #webArea, drawn by the shell for each task
   var make = TaskShell.make, clear = TaskShell.clear, text = TaskShell.text;
   var task = null;
   var passedThisOpen = false;
@@ -50,6 +53,7 @@
   function render(t) {
     task = t;
     passedThisOpen = false;
+    area = document.getElementById("webArea");
     clear(area);
     var data = Progress.getData(task.id);
     switch (task.type) {
@@ -63,38 +67,122 @@
   }
 
   // =====================================================================
+  // A pretend browser window around an iframe: a tab that shows the
+  // page's <title> (or the file name when there is none, as Chrome does),
+  // the three window dots, an address bar, and room for a button or two.
+  //   browserWindow({ url, secure, frameTitle, tools: [nodes], className })
+  //   -> { wrap, frame, setTitle(text), setUrl(text) }
+  // =====================================================================
+  var ICON = {
+    back: '<svg viewBox="0 0 20 20"><path d="M12.5 4.5 7 10l5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    forward: '<svg viewBox="0 0 20 20"><path d="m7.5 4.5 5.5 5.5-5.5 5.5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    reload: '<svg viewBox="0 0 20 20"><path d="M15.5 10a5.5 5.5 0 1 1-1.6-3.9" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/><path d="M15.5 4.5v3.5H12" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>',
+    menu: '<svg viewBox="0 0 20 20"><circle cx="10" cy="4.5" r="1.6" fill="currentColor"/><circle cx="10" cy="10" r="1.6" fill="currentColor"/><circle cx="10" cy="15.5" r="1.6" fill="currentColor"/></svg>',
+    lock: '<svg viewBox="0 0 12 14" aria-hidden="true"><rect x="1" y="6" width="10" height="7.5" rx="1.5" fill="currentColor"/><path d="M3 6V4a3 3 0 0 1 6 0v2" fill="none" stroke="currentColor" stroke-width="1.6"/></svg>'
+  };
+
+  function browserWindow(opts) {
+    var win = el("div", "browser" + (opts.className ? " " + opts.className : ""));
+
+    var tabs = el("div", "browser-tabs");
+    var dots = el("span", "browser-dots");
+    dots.setAttribute("aria-hidden", "true");
+    for (var i = 0; i < 3; i++) { dots.appendChild(el("i")); }
+    tabs.appendChild(dots);
+    var tab = el("div", "browser-tab");
+    tab.appendChild(el("span", "browser-favicon"));
+    var tabTitle = el("span", "browser-tab-title", opts.title || "New tab");
+    tab.appendChild(tabTitle);
+    tabs.appendChild(tab);
+    win.appendChild(tabs);
+
+    var plus = el("span", "browser-newtab", "+");
+    plus.setAttribute("aria-hidden", "true");
+    tabs.appendChild(plus);
+
+    var bar = el("div", "browser-bar");
+    var nav = el("span", "browser-nav");
+    nav.setAttribute("aria-hidden", "true");
+    nav.innerHTML = ICON.back + ICON.forward + ICON.reload;
+    bar.appendChild(nav);
+    var address = el("div", "browser-address");
+    // a padlock for an https address; "Not secure", as Chrome says, for a local page
+    if (opts.secure === false) { address.appendChild(el("span", "browser-notsecure", "Not secure")); }
+    else { address.innerHTML = ICON.lock; }
+    var urlSpan = el("span", "browser-url");
+    address.appendChild(urlSpan);
+    bar.appendChild(address);
+    var tools = el("div", "browser-tools");
+    (opts.tools || []).forEach(function (t) { tools.appendChild(t); });
+    var avatar = el("span", "browser-avatar", "TG");
+    avatar.setAttribute("aria-hidden", "true");
+    tools.appendChild(avatar);
+    var menu = el("span", "browser-menu");
+    menu.setAttribute("aria-hidden", "true");
+    menu.innerHTML = ICON.menu;
+    tools.appendChild(menu);
+    bar.appendChild(tools);
+    win.appendChild(bar);
+
+    var frame = el("iframe", "browser-page");
+    frame.setAttribute("title", opts.frameTitle || "Web page");
+    win.appendChild(frame);
+
+    function setTitle(t) { text(tabTitle, t); }
+    // host in black, the rest in grey, like a real address bar
+    function setUrl(u) {
+      clear(urlSpan);
+      var m = /^([^\/?#]+)(.*)$/.exec(String(u || ""));
+      if (m) { urlSpan.appendChild(el("b", null, m[1])); urlSpan.appendChild(document.createTextNode(m[2])); }
+      else { urlSpan.appendChild(document.createTextNode(String(u || ""))); }
+    }
+    setUrl(opts.url || "");
+    frame.addEventListener("load", function () {
+      var t = "";
+      try { t = (frame.contentDocument && frame.contentDocument.title || "").trim(); } catch (e) { t = ""; }
+      setTitle(t || opts.untitled || String(opts.url || "").split("/").pop() || "Untitled");
+    });
+    return { wrap: win, frame: frame, setTitle: setTitle, setUrl: setUrl };
+  }
+
+  // =====================================================================
   // 1. HTML + CSS editor with live preview and automatic checklist
   // =====================================================================
   function renderEditor(data) {
     var wrap = el("div", "web-editor");
 
-    var boxes = el("div", "web-editor-boxes");
     var htmlBox = codeBox("HTML", "webHtml", data.html != null ? data.html : (task.starterHtml || ""), 12);
-    var cssBox = codeBox("CSS", "webCss", data.css != null ? data.css : (task.starterCss || ""), 12);
-    boxes.appendChild(htmlBox.wrap);
-    boxes.appendChild(cssBox.wrap);
-    wrap.appendChild(boxes);
+    var cssBox = codeBox("CSS", "webCss", data.css != null ? data.css : (task.starterCss || ""), 8);
+    wrap.appendChild(htmlBox.wrap);
+    wrap.appendChild(cssBox.wrap);
 
     wrap.appendChild(el("p", "editor-hint", "Tab inserts 2 spaces. To leave a code box with the keyboard, press Escape, then Tab."));
 
-    var previewHead = el("div", "web-preview-head");
-    previewHead.appendChild(el("span", null, "Preview"));
-    var reset = el("button", "btn outline small-btn", "Reset");
+    // The browser window goes full-width above the code; it updates as they type.
+    var stage = TaskShell.stage() || wrap;
+    var reset = el("button", null, "Reset to starter code");
     reset.type = "button";
-    previewHead.appendChild(reset);
-    wrap.appendChild(previewHead);
-
-    var frame = el("iframe", "web-preview");
-    frame.setAttribute("title", "Preview of your page");
+    var win = browserWindow({ url: "localhost:8000/index.html", secure: false, frameTitle: "Preview of your page", tools: [reset], className: "preview", untitled: "index.html" });
+    var frame = win.frame;
     frame.setAttribute("sandbox", "allow-same-origin");
-    wrap.appendChild(frame);
+    stage.appendChild(el("p", "web-caption", "Your page, as a browser shows it. It updates as you type; the tab shows the page's title."));
+    stage.appendChild(win.wrap);
 
-    wrap.appendChild(el("h3", "tests-title", "Checklist"));
-    wrap.appendChild(el("p", "muted small", "Checked automatically from the preview as you type. The task is complete when every item is green."));
+    var head = el("div", "checklist-head");
+    head.appendChild(el("h3", "tests-title", "Checklist"));
+    var meter = el("span", "meter");
+    var meterFill = el("i");
+    meter.appendChild(meterFill);
+    var meterText = el("b", "meter-text", "0 of " + (task.checks || []).length);
+    var meterWrap = el("span", "meter-wrap");
+    meterWrap.appendChild(meter); meterWrap.appendChild(meterText);
+    head.appendChild(meterWrap);
+    wrap.appendChild(head);
+    wrap.appendChild(el("p", "muted small", "Checked from the preview as you type. An item turns green the moment it is true; the task is complete when all of them are."));
     var list = el("ul", "checklist");
     var items = (task.checks || []).map(function (check) {
-      var li = el("li", "check pending");
-      li.appendChild(el("span", "check-status", "…"));
+      var li = el("li", "check todo");
+      li.appendChild(el("span", "check-status", ""));
       li.appendChild(el("span", "check-label", check.label));
       list.appendChild(li);
       return li;
@@ -119,15 +207,18 @@
     frame.addEventListener("load", function () {
       var doc = frame.contentDocument;
       if (!doc) { return; }
-      var allOk = true;
+      var allOk = true, passed = 0, total = (task.checks || []).length;
       (task.checks || []).forEach(function (check, i) {
         var ok = false;
         try { ok = runCheck(check, doc, frame.contentWindow); } catch (e) { ok = false; }
-        items[i].className = "check " + (ok ? "pass" : "fail");
-        text(items[i].firstChild, ok ? "✓" : "✗");
-        if (!ok) { allOk = false; }
+        items[i].className = "check " + (ok ? "pass" : "todo");
+        text(items[i].firstChild, ok ? "✓" : "");
+        if (ok) { passed++; } else { allOk = false; }
       });
-      if (allOk && (task.checks || []).length) {
+      meterFill.style.width = (total ? Math.round(passed / total * 100) : 0) + "%";
+      text(meterText, passed === total && total ? "All " + total + " green" : passed + " of " + total);
+      meterWrap.className = "meter-wrap" + (passed ? " some" : "") + (passed === total && total ? " all" : "");
+      if (allOk && total) {
         pass("Every item on the checklist is green. Well done!");
       }
     });
@@ -171,23 +262,94 @@
       var found = doc.querySelector(check.selector);
       return !!found && found.textContent.indexOf(check.contains) !== -1;
     }
+    if (check.kind === "every") {
+      // Every element matching `selector` must also match `matches`
+      // (e.g. every input has an id). Passes only if there is at least one.
+      var all = doc.querySelectorAll(check.selector);
+      if (!all.length) { return false; }
+      return Array.prototype.every.call(all, function (node) { return node.matches(check.matches); });
+    }
+    if (check.kind === "labelled") {
+      // Every form control matching `selector` has a label: either a
+      // <label for="its id"> somewhere on the page, or it sits inside a
+      // <label>. Passes only if there is at least one control.
+      var controls = doc.querySelectorAll(check.selector || "input, select, textarea");
+      if (!controls.length) { return false; }
+      return Array.prototype.every.call(controls, function (c) {
+        if (c.closest("label")) { return true; }
+        var id = c.getAttribute("id");
+        if (!id) { return false; }
+        return Array.prototype.some.call(doc.querySelectorAll("label[for]"), function (l) { return l.getAttribute("for") === id && l.textContent.trim().length > 0; });
+      });
+    }
+    if (check.kind === "contrast") {
+      // WCAG contrast ratio between the text colour of the first matching
+      // element and the first solid background behind it. Normal text
+      // needs 4.5, large text 3. `min` sets the ratio required.
+      var target = doc.querySelector(check.selector);
+      if (!target) { return false; }
+      var ratio = contrastRatio(target, win);
+      return ratio != null && ratio >= (check.min || 4.5);
+    }
     return false;
   }
 
-  // A labelled textarea with line numbers, like the Python editor's.
+  // "rgb(1, 2, 3)" or "rgba(1, 2, 3, 0.5)" -> [r, g, b, a]; null if it is
+  // not a colour the browser could resolve.
+  function parseRgb(value) {
+    var m = /rgba?\(\s*([\d.]+)\s*,\s*([\d.]+)\s*,\s*([\d.]+)\s*(?:,\s*([\d.]+)\s*)?\)/.exec(value || "");
+    if (!m) { return null; }
+    return [+m[1], +m[2], +m[3], m[4] == null ? 1 : +m[4]];
+  }
+  function luminance(rgb) {
+    var c = rgb.slice(0, 3).map(function (v) {
+      v = v / 255;
+      return v <= 0.03928 ? v / 12.92 : Math.pow((v + 0.055) / 1.055, 2.4);
+    });
+    return 0.2126 * c[0] + 0.7152 * c[1] + 0.0722 * c[2];
+  }
+  // Walk up from the element until a background colour that is not fully
+  // transparent is found; the page's default is white.
+  function backgroundBehind(node, win) {
+    var bg = [255, 255, 255, 1];
+    for (var n = node; n && n.nodeType === 1; n = n.parentNode) {
+      var c = parseRgb(win.getComputedStyle(n).backgroundColor);
+      if (c && c[3] > 0) {
+        if (c[3] >= 1) { return c; }
+        // semi-transparent: blend over white, close enough for a checklist
+        return [Math.round(c[0] * c[3] + 255 * (1 - c[3])), Math.round(c[1] * c[3] + 255 * (1 - c[3])), Math.round(c[2] * c[3] + 255 * (1 - c[3])), 1];
+      }
+    }
+    return bg;
+  }
+  function contrastRatio(node, win) {
+    var fg = parseRgb(win.getComputedStyle(node).color);
+    if (!fg) { return null; }
+    var bg = backgroundBehind(node, win);
+    if (fg[3] < 1) { fg = [Math.round(fg[0] * fg[3] + bg[0] * (1 - fg[3])), Math.round(fg[1] * fg[3] + bg[1] * (1 - fg[3])), Math.round(fg[2] * fg[3] + bg[2] * (1 - fg[3])), 1]; }
+    var l1 = luminance(fg), l2 = luminance(bg);
+    var hi = Math.max(l1, l2), lo = Math.min(l1, l2);
+    return (hi + 0.05) / (lo + 0.05);
+  }
+
+  // A code box with line numbers, built like the hub's Python editor:
+  // a black label bar, then a gutter beside the textarea.
   function codeBox(label, id, value, rows) {
-    var wrap = el("div", "web-codebox");
-    var lab = el("label", null, label);
-    lab.htmlFor = id;
-    wrap.appendChild(lab);
+    var wrap = el("div", "web-codebox " + label.toLowerCase());
     var editor = el("div", "editor");
-    var gutter = el("pre", "gutter");
+    var lab = el("div", "lab");
+    lab.appendChild(el("span", null, label));
+    editor.appendChild(lab);
+    var edwrap = el("div", "edwrap");
+    var gutter = el("div", "gutter");
     gutter.setAttribute("aria-hidden", "true");
-    var ta = el("textarea");
+    var ta = el("textarea", "code");
     ta.id = id; ta.rows = rows; ta.spellcheck = false; ta.wrap = "off";
+    ta.setAttribute("aria-label", "Your " + label);
     ta.value = value;
-    editor.appendChild(gutter);
-    editor.appendChild(ta);
+    edwrap.appendChild(gutter);
+    edwrap.appendChild(ta);
+    editor.appendChild(edwrap);
     wrap.appendChild(editor);
 
     function refresh() {
@@ -223,22 +385,20 @@
     var whys = data.whys || {};
     var revealed = !!data.revealed;
 
-    var head = el("div", "web-preview-head");
-    head.appendChild(el("span", null, "The sample page"));
-    var openLink = el("a", "small-link", "Open it in a new tab (easier for DevTools) ↗");
+    // The website goes full-width above the brief and the checklist.
+    var stage = TaskShell.stage() || wrap;
+    var openLink = el("a", null, "Open in a new tab ↗");
     openLink.href = task.sample; openLink.target = "_blank"; openLink.rel = "noopener";
-    head.appendChild(openLink);
-    wrap.appendChild(head);
-
-    var frame = el("iframe", "web-sample");
-    frame.setAttribute("title", "Sample page to inspect");
+    openLink.title = "Open the page on its own - easier with the developer tools";
+    var win = browserWindow({ url: task.displayUrl || task.sample, frameTitle: "The website to inspect", tools: [openLink], className: "sample" });
+    var frame = win.frame;
     frame.src = task.sample + (revealed ? "?reveal=1" : "");
-    wrap.appendChild(frame);
+    stage.appendChild(win.wrap);
 
     var tip = el("div", "tip");
     tip.appendChild(el("strong", null, "How to look at the real HTML: "));
-    tip.appendChild(document.createTextNode("right-click the image (or anything else) and choose Inspect. The developer tools open and show the tag under your mouse. Press Escape then Tab to leave a box on this page with the keyboard."));
-    wrap.appendChild(tip);
+    tip.appendChild(document.createTextNode("right-click anything on the website and choose Inspect. The developer tools open and show the tag under your mouse. If the window is too small, open the page in a new tab with the button in its address bar."));
+    stage.appendChild(tip);
 
     wrap.appendChild(el("h3", "tests-title", "What is wrong with this page?"));
     wrap.appendChild(el("p", "muted small", "Tick the problems you find. Then write one sentence for each: why does it matter for a real user?"));
@@ -271,8 +431,8 @@
     rows.forEach(function (r) { list.appendChild(r.li); });
 
     var buttons = el("div", "controls");
-    var check = el("button", "btn", "Check my answers"); check.type = "button";
-    var reveal = el("button", "btn outline", revealed ? "Answers are revealed" : "Reveal the answers"); reveal.type = "button";
+    var check = el("button", "button primary", "Check my answers"); check.type = "button";
+    var reveal = el("button", "button", revealed ? "Answers are revealed" : "Reveal the answers"); reveal.type = "button";
     reveal.disabled = revealed;
     buttons.appendChild(check); buttons.appendChild(reveal);
     wrap.appendChild(buttons);
@@ -322,7 +482,8 @@
           r.li.className = "problem revealed";
         }
       });
-      TaskShell.showVerdict("neutral", "The five real problems are outlined in red on the sample page. Tick them and write your own sentence for each, then Check.");
+      var realCount = rows.filter(function (r) { return !r.p.decoy; }).length;
+      TaskShell.showVerdict("neutral", "The " + realCount + " real problems are outlined in red on the sample page. Tick them and write your own sentence for each, then Check.");
     });
   }
 
@@ -334,14 +495,36 @@
     var state = { url: data.url || "", step: data.step != null ? data.step : -1, answers: data.answers || {} };
     var wrap = el("div", "web-walk");
 
-    // URL bar
-    var bar = el("form", "url-bar");
-    var lab = el("label", null, "Type a website address and press Enter"); lab.htmlFor = "walkUrl";
-    var input = el("input"); input.type = "text"; input.id = "walkUrl"; input.placeholder = "www.beds.ac.uk"; input.value = state.url;
+    // The address bar, drawn as a browser window (no page in it yet)
+    var bar = el("form", "url-bar browser mini");
+    var tabs = el("div", "browser-tabs");
+    var dots = el("span", "browser-dots"); dots.setAttribute("aria-hidden", "true");
+    for (var d = 0; d < 3; d++) { dots.appendChild(el("i")); }
+    tabs.appendChild(dots);
+    var tab = el("div", "browser-tab");
+    tab.appendChild(el("span", "browser-favicon"));
+    // The task file may change the wording: urlLabel ("Type a username and
+    // press Log in"), urlPlaceholder ("student123"), goLabel ("Log in") and
+    // tabTitle (what the pretend tab shows once something is typed).
+    var urlLabel = task.urlLabel || "Type a website address and press Enter";
+    var placeholder = task.urlPlaceholder || "www.beds.ac.uk";
+    function tabText() { return state.url ? (task.tabTitle || state.url) : "New tab"; }
+    var tabTitle = el("span", "browser-tab-title", tabText());
+    tab.appendChild(tabTitle);
+    tabs.appendChild(tab);
+    var plus = el("span", "browser-newtab", "+"); plus.setAttribute("aria-hidden", "true");
+    tabs.appendChild(plus);
+    bar.appendChild(tabs);
+    var row = el("div", "browser-bar");
+    var navGlyphs = el("span", "browser-nav"); navGlyphs.setAttribute("aria-hidden", "true");
+    navGlyphs.innerHTML = ICON.back + ICON.forward + ICON.reload;
+    row.appendChild(navGlyphs);
+    var lab = el("label", "visually-hidden", urlLabel); lab.htmlFor = "walkUrl";
+    var input = el("input", "browser-input"); input.type = "text"; input.id = "walkUrl"; input.placeholder = urlLabel + ", e.g. " + placeholder; input.value = state.url;
     input.autocomplete = "off";
-    var go = el("button", "btn", "Go"); go.type = "submit";
-    bar.appendChild(lab);
-    var row = el("div", "url-row"); row.appendChild(input); row.appendChild(go); bar.appendChild(row);
+    var go = el("button", "button primary small", task.goLabel || "Go"); go.type = "submit";
+    row.appendChild(lab); row.appendChild(input); row.appendChild(go);
+    bar.appendChild(row);
     wrap.appendChild(bar);
 
     // diagram
@@ -359,8 +542,8 @@
     var cardTitle = el("h3"); var cardText = el("p"); var cardCount = el("p", "muted small");
     card.appendChild(cardTitle); card.appendChild(cardText); card.appendChild(cardCount);
     var nav = el("div", "controls");
-    var back = el("button", "btn outline small-btn", "← Back"); back.type = "button";
-    var next = el("button", "btn small-btn", "Next step →"); next.type = "button";
+    var back = el("button", "button small", "← Back"); back.type = "button";
+    var next = el("button", "button black small", "Next step →"); next.type = "button";
     nav.appendChild(back); nav.appendChild(next);
     card.appendChild(nav);
     wrap.appendChild(card);
@@ -386,7 +569,7 @@
       return { m: m, sel: sel, fb: fb, row: r };
     });
     matching.appendChild(table);
-    var checkBtn = el("button", "btn", "Check answers"); checkBtn.type = "button";
+    var checkBtn = el("button", "button primary", "Check answers"); checkBtn.type = "button";
     matching.appendChild(checkBtn);
     wrap.appendChild(matching);
 
@@ -397,7 +580,7 @@
     var savedR = Progress.get(task.id);
     wTa.value = (savedR && savedR.reflections && savedR.reflections.writing) || "";
     var wCount = el("p", "muted small");
-    var finish = el("button", "btn", "Finish the task"); finish.type = "button";
+    var finish = el("button", "button primary", "Finish the task"); finish.type = "button";
     writing.appendChild(el("h3", "tests-title", "Now explain it yourself"));
     writing.appendChild(wLab); writing.appendChild(wTa); writing.appendChild(wCount); writing.appendChild(finish);
     wrap.appendChild(writing);
@@ -433,8 +616,9 @@
 
     bar.addEventListener("submit", function (e) {
       e.preventDefault();
-      state.url = input.value.trim() || "www.beds.ac.uk";
+      state.url = input.value.trim() || placeholder;
       input.value = state.url;
+      text(tabTitle, tabText());
       state.step = 0;
       save({ url: state.url });
       showStep();
@@ -484,7 +668,7 @@
         if (!allSaved) { TaskShell.showVerdict("bad", "Check the matching exercise first — every word must be right."); return; }
         matchingCorrect = true;
       }
-      if (n < 15) { TaskShell.showVerdict("bad", "Your explanation is " + n + " words. Two full sentences are usually at least 15. Say what a server is, then what it does."); return; }
+      if (n < 15) { TaskShell.showVerdict("bad", "Your explanation is " + n + " words. Two full sentences are usually at least 15. " + (task.writingHint || "Say what a server is, then what it does.")); return; }
       Progress.saveReflection(task.id, task, "writing", wTa.value);
       Progress.saveReflection(task.id, task, "writingPrompt", task.writingPrompt || "");
       pass("Matching complete and your explanation is saved with your reflections. Well done!");
@@ -549,7 +733,7 @@
     });
     write.appendChild(el("p", "small muted", "Self-check before you finish:"));
     write.appendChild(checks);
-    var finish = el("button", "btn", "Finish the task"); finish.type = "button";
+    var finish = el("button", "button primary", "Finish the task"); finish.type = "button";
     write.appendChild(finish);
     wrap.appendChild(write);
     area.appendChild(wrap);
@@ -598,5 +782,5 @@
     });
   }
 
-  TaskShell.init({ types: ["html-editor", "inspect", "walkthrough", "summary"], render: render });
+  TaskShell.init({ render: render });
 })();

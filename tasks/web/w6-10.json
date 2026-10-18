@@ -1,0 +1,76 @@
+{
+  "id": "web-w6-10",
+  "week": 6,
+  "type": "inspect",
+  "title": "Inspect this page: What's On at the SU",
+  "concepts": [
+    "accessibility",
+    "alt text",
+    "link text",
+    "colour",
+    "small print",
+    "label"
+  ],
+  "brief": "The students' union has made a bright poster of a page for this week's events. It looks great. Five things on it make it hard for some people to use: two you have found before, three are new kinds of problem. Find them. Tick each one you find and write one sentence saying why it matters for a real user. Not every item in the list is a real problem on this page, so look before you tick.\n\nTo look at the real HTML: right-click anything on the sample page and choose Inspect. The browser's developer tools open and show the tag under your mouse.",
+  "vocabulary": [
+    {
+      "term": "alt text",
+      "gloss": "words that describe an image for people who cannot see it; a file name is not a description"
+    },
+    {
+      "term": "link text",
+      "gloss": "the words inside <a> … </a>; they should say where the link goes"
+    },
+    {
+      "term": "colour blindness",
+      "gloss": "about 1 in 12 men and 1 in 200 women cannot tell some colours apart, most often red and green"
+    },
+    {
+      "term": "placeholder",
+      "gloss": "grey text inside a box that disappears when you type; it is not a label"
+    }
+  ],
+  "sample": "samples/events-site.html",
+  "problems": [
+    {
+      "id": "badalt",
+      "label": "The picture's alt text is a file name, not a description",
+      "why": "A screen reader reads the alt text aloud, so the listener hears \"IMG 4471 jpg\" and learns nothing about the picture."
+    },
+    {
+      "id": "clickhere",
+      "label": "A link's text is only \"click here\"",
+      "why": "Screen-reader users often jump from link to link; \"click here\" on its own does not say where the link goes, and it is slower for everyone scanning the page."
+    },
+    {
+      "id": "tiny",
+      "label": "Some text is far too small (10px)",
+      "why": "Small print is hard for everyone and impossible for many people with low vision, and it hides the conditions people need to know."
+    },
+    {
+      "id": "colouronly",
+      "label": "Whether an event has tickets is shown only by a coloured dot",
+      "why": "Anyone who cannot tell the two colours apart, and anyone using a screen reader, gets no information: the word \"sold out\" is needed too."
+    },
+    {
+      "id": "label",
+      "label": "A form input has no label",
+      "why": "Placeholder text disappears when you type and is not read reliably; a label says what the box is for."
+    },
+    {
+      "id": "d1",
+      "label": "The page has no h1",
+      "decoy": true
+    },
+    {
+      "id": "d2",
+      "label": "A button is made from a <div>, not a <button>",
+      "decoy": true
+    }
+  ],
+  "hints": [
+    "Two of the five are things you have found before: a form box, and a picture. But this time read the alt text itself: right-click the picture, choose Inspect, and look at alt=\"…\".",
+    "Two are about text: one link and one paragraph. Read the link out loud without the words around it. Can you read the small print at the bottom without leaning in?",
+    "The last one is about colour: what do the green and red dots in the list mean, and where does the page tell you? Real problems: 5; the other two items in the list are not true here."
+  ]
+}

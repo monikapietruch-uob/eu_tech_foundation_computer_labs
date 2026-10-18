@@ -31,6 +31,7 @@
     }
   ],
   "sample": "samples/gym-site.html",
+  "displayUrl": "fitzonegym.example.com",
   "problems": [
     {
       "id": "alt",

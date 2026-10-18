@@ -98,37 +98,78 @@
           "id": "web-w6-01",
           "type": "html-editor",
           "file": "web/w6-01.json",
-          "title": "Page structure and headings"
+          "title": "Page structure and headings",
+          "concept": "Elements, headings and the title tag"
         },
         {
           "id": "web-w6-02",
           "type": "html-editor",
           "file": "web/w6-02.json",
-          "title": "Links, images and lists"
+          "title": "Links, images and lists",
+          "concept": "Attributes: href, alt and a list"
         },
         {
           "id": "web-w6-03",
           "type": "html-editor",
           "file": "web/w6-03.json",
-          "title": "Basic CSS styling"
+          "title": "Basic CSS styling",
+          "concept": "Selectors, properties and values"
+        },
+        {
+          "id": "web-w6-07",
+          "type": "html-editor",
+          "file": "web/w6-07.json",
+          "title": "Fix the form: labels and a real button",
+          "concept": "label for, type=\"email\", a real <button>"
+        },
+        {
+          "id": "web-w6-08",
+          "type": "html-editor",
+          "file": "web/w6-08.json",
+          "title": "A timetable as a table",
+          "concept": "table, tr, th, td and caption"
+        },
+        {
+          "id": "web-w6-09",
+          "type": "html-editor",
+          "file": "web/w6-09.json",
+          "title": "Make it readable: contrast and size",
+          "concept": "Contrast ratio, font-size, line-height: CSS only"
         },
         {
           "id": "web-w6-04",
           "type": "inspect",
           "file": "web/w6-04.json",
-          "title": "Inspect this page: The Corner Cafe"
+          "title": "Inspect this page: The Corner Cafe",
+          "concept": "Alt text, heading levels, contrast, labels"
         },
         {
           "id": "web-w6-05",
           "type": "inspect",
           "file": "web/w6-05.json",
-          "title": "Inspect this page: FitZone Gym"
+          "title": "Inspect this page: FitZone Gym",
+          "concept": "The same five problems, found faster"
         },
         {
           "id": "web-w6-06",
           "type": "inspect",
           "file": "web/w6-06.json",
-          "title": "Inspect this page: Riverside Library"
+          "title": "Inspect this page: Riverside Library",
+          "concept": "All five, without the hints"
+        },
+        {
+          "id": "web-w6-10",
+          "type": "inspect",
+          "file": "web/w6-10.json",
+          "title": "Inspect this page: What's On at the SU",
+          "concept": "Alt text, link text, small print, colour alone"
+        },
+        {
+          "id": "web-w6-11",
+          "type": "inspect",
+          "file": "web/w6-11.json",
+          "title": "Inspect this page: Bytes & Bolts repairs",
+          "concept": "Heading levels, th, contrast, icon links"
         }
       ]
     },
@@ -140,7 +181,15 @@
           "id": "web-w7-01",
           "type": "walkthrough",
           "file": "web/w7-01.json",
-          "title": "What happens when you press Enter"
+          "title": "What happens when you press Enter",
+          "concept": "Browser, DNS, request, server, response"
+        },
+        {
+          "id": "web-w7-02",
+          "type": "walkthrough",
+          "file": "web/w7-02.json",
+          "title": "What happens when you log in",
+          "concept": "Form, POST, hash, database, cookie"
         }
       ]
     },
@@ -152,7 +201,15 @@
           "id": "web-w8-01",
           "type": "summary",
           "file": "web/w8-01.json",
-          "title": "Summarise: how HTTPS protects your data"
+          "title": "Summarise: how HTTPS protects your data",
+          "concept": "Notes, the main idea, your own words"
+        },
+        {
+          "id": "web-w8-02",
+          "type": "summary",
+          "file": "web/w8-02.json",
+          "title": "Summarise: what cookies are for",
+          "concept": "Notes, the main idea, your own words: again"
         }
       ]
     },

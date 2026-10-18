@@ -1,0 +1,76 @@
+{
+  "id": "web-w6-11",
+  "week": 6,
+  "type": "inspect",
+  "title": "Inspect this page: Bytes & Bolts repairs",
+  "concepts": [
+    "accessibility",
+    "heading levels",
+    "table header",
+    "contrast",
+    "icon link",
+    "button"
+  ],
+  "brief": "A phone repair shop near the campus has a dark-mode website. Dark mode is fine, but it has to be done with care. Five things on this page make it hard for some people to use: two you know well, three are new, and one of them is inside a table. Find them. Tick each one you find and write one sentence saying why it matters for a real user. Two items in the list are not true on this page.\n\nTo look at the real HTML: right-click anything on the sample page and choose Inspect. The browser's developer tools open and show the tag under your mouse.",
+  "vocabulary": [
+    {
+      "term": "header cell",
+      "gloss": "a <th> cell: the name of a column or row, which a screen reader reads together with each data cell"
+    },
+    {
+      "term": "icon",
+      "gloss": "a small picture used instead of a word, like a phone symbol for \"call us\""
+    },
+    {
+      "term": "aria-label",
+      "gloss": "an attribute that gives an element a name for screen readers when it has no visible text"
+    },
+    {
+      "term": "dark mode",
+      "gloss": "a design with a dark background and light text; the contrast rules are the same"
+    }
+  ],
+  "sample": "samples/repair-site.html",
+  "problems": [
+    {
+      "id": "heading",
+      "label": "A heading jumps from h1 straight to h4",
+      "why": "Screen readers and outlines use heading levels like a contents page; a skipped level makes the structure confusing."
+    },
+    {
+      "id": "noth",
+      "label": "The price table has no header cells (th)",
+      "why": "A screen reader reads a cell together with its column header, so without th the listener hears \"£35\" and does not know what it is the price of."
+    },
+    {
+      "id": "lowcontrast",
+      "label": "Dark grey text on the black background is hard to read",
+      "why": "Low contrast is tiring for everyone and unreadable for many people with low vision; dark mode still needs light text."
+    },
+    {
+      "id": "divbutton",
+      "label": "A button is made from a <div>, not a <button>",
+      "why": "A div cannot be reached with the Tab key or pressed with Enter, so keyboard and screen-reader users cannot use it."
+    },
+    {
+      "id": "iconlink",
+      "label": "The phone link in the header is only an icon, with no text",
+      "why": "A screen reader announces \"link\" and nothing else; a short text or an aria-label would say \"call us\"."
+    },
+    {
+      "id": "d1",
+      "label": "An image has no alt text",
+      "decoy": true
+    },
+    {
+      "id": "d2",
+      "label": "A form input has no label",
+      "decoy": true
+    }
+  ],
+  "hints": [
+    "Start at the top of the page: right-click the green phone icon and choose Inspect. What text is inside the <a> … </a>? Then read the headings in order.",
+    "Right-click a price in the table and Inspect: are the cells in the first row <th> or <td>? Then do the same for the green \"Book a repair\" button.",
+    "One paragraph is much harder to read than the rest: look under the button. Real problems: 5; the image and the form on this page are fine."
+  ]
+}

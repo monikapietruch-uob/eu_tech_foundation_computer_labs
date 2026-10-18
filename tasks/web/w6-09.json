@@ -1,0 +1,84 @@
+{
+  "id": "web-w6-09",
+  "week": 6,
+  "type": "html-editor",
+  "title": "Make it readable: contrast and size",
+  "concepts": [
+    "CSS",
+    "contrast ratio",
+    "font-size",
+    "line-height",
+    "dark mode"
+  ],
+  "brief": "The campus night shuttle has a page in dark mode, which many people like. But whoever wrote the CSS chose text colours that are almost the same as the background, and text so small you have to zoom in. The HTML is fine: fix the page in the CSS box only.\n\nKeep the dark background. Make the paragraphs, the heading and the link light enough to read, make the paragraph text at least 16px, and give it more line height. The checklist measures the contrast ratio for you: 4.5 or more is the rule for normal text.",
+  "vocabulary": [
+    {
+      "term": "contrast ratio",
+      "gloss": "a number for how different two colours are: 1 means the same, 21 means black on white; text needs at least 4.5"
+    },
+    {
+      "term": "dark mode",
+      "gloss": "a design with a dark background and light text"
+    },
+    {
+      "term": "font-size",
+      "gloss": "the CSS property for the size of text, usually in px"
+    },
+    {
+      "term": "line-height",
+      "gloss": "the space from one line of text to the next; 1.5 means one and a half times the text size"
+    }
+  ],
+  "starterHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Campus night shuttle</title>\n</head>\n<body>\n  <img src=\"samples/img/bus.svg\" width=\"160\" height=\"120\" alt=\"A yellow night bus under a crescent moon\">\n  <h1>Campus night shuttle</h1>\n  <p>A free minibus between the library, the halls and the station, every night from 9 pm to 2 am. Show your student card to the driver.</p>\n  <p class=\"times\">Leaves the library at 15 and 45 minutes past the hour. Leaves the station on the hour and at half past.</p>\n  <p>Running late, or not running at all? Check the <a href=\"https://www.beds.ac.uk\">university website</a> before you wait outside in the rain.</p>\n</body>\n</html>\n",
+  "starterCss": "/* Only the CSS needs fixing. Keep the dark background. */\nbody {\n  font-family: Arial, Helvetica, sans-serif;\n  margin: 0;\n  padding: 1.2rem;\n  background-color: #14213D;\n  color: #3C4A6B;\n  font-size: 11px;\n  line-height: 1.1;\n}\n\nh1 {\n  color: #2E3B5C;\n  font-size: 14px;\n}\n\na {\n  color: #1D2B4F;\n}\n\nimg {\n  display: block;\n  margin: .5rem 0;\n}\n\n.times {\n  background: #1B2A4D;\n  padding: .6rem .8rem;\n}\n",
+  "checks": [
+    {
+      "label": "The background is still dark (not white)",
+      "kind": "style",
+      "selector": "body",
+      "property": "background-color",
+      "notIn": [
+        "rgba(0, 0, 0, 0)",
+        "rgb(255, 255, 255)"
+      ]
+    },
+    {
+      "label": "Paragraph text has a contrast ratio of at least 4.5 with its background",
+      "kind": "contrast",
+      "selector": "p",
+      "min": 4.5
+    },
+    {
+      "label": "The heading has a contrast ratio of at least 4.5",
+      "kind": "contrast",
+      "selector": "h1",
+      "min": 4.5
+    },
+    {
+      "label": "The link has a contrast ratio of at least 4.5",
+      "kind": "contrast",
+      "selector": "a",
+      "min": 4.5
+    },
+    {
+      "label": "Paragraph text is at least 16px",
+      "kind": "style",
+      "selector": "p",
+      "property": "font-size",
+      "min": 16
+    },
+    {
+      "label": "Line height is at least 1.4 (about 22px for 16px text)",
+      "kind": "style",
+      "selector": "p",
+      "property": "line-height",
+      "min": 22
+    }
+  ],
+  "hints": [
+    "In the body rule, change color to a light colour, for example #E5E5E5, and font-size to 16px. Paragraphs inherit both from body.",
+    "Do the same for the h1 and the a rules: h1 { color: #FCA311; } and a { color: #FFD166; } are both light enough on this navy background.",
+    "Change line-height in the body rule to 1.5. Line height is a number without px: 1.5 means one and a half times the text size."
+  ],
+  "solutionCss": "body {\n  font-family: Arial, Helvetica, sans-serif;\n  margin: 0;\n  padding: 1.2rem;\n  background-color: #14213D;\n  color: #E5E5E5;\n  font-size: 16px;\n  line-height: 1.5;\n}\n\nh1 {\n  color: #FCA311;\n  font-size: 28px;\n}\n\na {\n  color: #FFD166;\n}\n\nimg {\n  display: block;\n  margin: .5rem 0;\n}\n\n.times {\n  background: #1B2A4D;\n  padding: .6rem .8rem;\n}\n"
+}

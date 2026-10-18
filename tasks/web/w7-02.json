@@ -1,0 +1,110 @@
+{
+  "id": "web-w7-02",
+  "week": 7,
+  "type": "walkthrough",
+  "title": "What happens when you log in",
+  "concepts": [
+    "form",
+    "POST request",
+    "authentication",
+    "hash",
+    "database",
+    "cookie"
+  ],
+  "brief": "You type your username and password and press Log in. What happens next is the request-and-response journey again, with three new ideas: the POST request that carries your form to the server, the hash that lets the server check your password without ever storing it, and the cookie that keeps you logged in afterwards.\n\nType a username in the box, press Log in, and step through what happens. Then match the terms to their meanings and explain one of them in your own words.",
+  "vocabulary": [
+    {
+      "term": "POST request",
+      "gloss": "a request that sends data from a form to the server, for example a username and password"
+    },
+    {
+      "term": "hash",
+      "gloss": "a scrambled version of a password that cannot be turned back into the password; websites store this, not the password"
+    },
+    {
+      "term": "cookie",
+      "gloss": "a small piece of text a website stores in your browser, which the browser sends back with every later request"
+    },
+    {
+      "term": "authentication",
+      "gloss": "checking that you are who you say you are, for example with a password"
+    }
+  ],
+  "urlLabel": "Type a username and press Log in",
+  "urlPlaceholder": "student123",
+  "goLabel": "Log in",
+  "steps": [
+    {
+      "term": "form",
+      "title": "You fill in the form",
+      "text": "The login page is a form with two boxes, username and password. When you press Log in, the browser collects what you typed."
+    },
+    {
+      "term": "POST request",
+      "title": "The browser sends a POST request",
+      "text": "A request that carries data from a form is a POST request. With HTTPS it is encrypted, so your password cannot be read on the way."
+    },
+    {
+      "term": "server",
+      "title": "The server receives the request",
+      "text": "The server reads the username and the password out of the request. It does not show the password to anyone or keep it; it only checks it."
+    },
+    {
+      "term": "hash",
+      "title": "The server makes a hash",
+      "text": "Websites do not store passwords. They store a hash: a scrambled version that cannot be turned back into the password. The server hashes what you typed, ready to compare."
+    },
+    {
+      "term": "database",
+      "title": "The server looks you up in the database",
+      "text": "Your username, your password hash and your details are a row in a database. If the stored hash matches the new one, the server knows it is you. That is authentication."
+    },
+    {
+      "term": "cookie",
+      "title": "The response carries a cookie",
+      "text": "The server answers with a response: your account page, plus a cookie, a small piece of text your browser keeps. The cookie means \"this browser is logged in as student123\"."
+    },
+    {
+      "term": "logged in",
+      "title": "The cookie keeps you logged in",
+      "text": "Every later request sends the cookie back, so the server knows it is still you without asking for the password again. When you log out, the cookie is deleted and you are logged in no longer."
+    }
+  ],
+  "matching": [
+    {
+      "term": "POST request",
+      "definition": "a request that sends data from a form to the server"
+    },
+    {
+      "term": "hash",
+      "definition": "a scrambled version of a password that cannot be turned back into it"
+    },
+    {
+      "term": "authentication",
+      "definition": "checking that you are who you say you are"
+    },
+    {
+      "term": "cookie",
+      "definition": "a small piece of text a website stores in your browser"
+    },
+    {
+      "term": "database",
+      "definition": "where the website keeps usernames, password hashes and details"
+    },
+    {
+      "term": "response",
+      "definition": "the server's reply: a page, and sometimes a cookie with it"
+    },
+    {
+      "term": "HTTPS",
+      "definition": "encrypts the request so a password cannot be read on the way"
+    }
+  ],
+  "writingPrompt": "In two sentences, explain to a friend why a website should store a hash of your password and not the password itself.",
+  "writingHint": "Say what a hash is, then what happens if someone steals the database.",
+  "hints": [
+    "Each step has one key word in bold: form, POST request, server, hash, database, cookie. Find each one in the matching exercise.",
+    "A hash is one-way: password to hash is easy, hash back to password is not. That is why a website can check your password without keeping it.",
+    "For the writing: start with \"A hash is…\", then \"If someone steals the database…\"."
+  ]
+}

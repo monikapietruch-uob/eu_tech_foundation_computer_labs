@@ -1,8 +1,9 @@
 /*
   js/task-shell.js — the parts of a task page that every task type shares.
 
-  Both practice-python.html (console + karel tasks) and practice-web.html
-  (the web tasks) use this. It owns the left column (task list, brief,
+  practice-python.html (console + karel tasks) and practice-ai.html use
+  this. practice-web.html used to as well; since October 2026 it has its
+  own shell, js/web-shell.js, laid out like the hub's Python pages. It owns the left column (task list, brief,
   vocabulary, hints), the verdict banner, the reflection questions, the
   "Next task" link, and the progress bookkeeping. The page-specific part —
   the editor and Run button, or the web task area — is a "renderer" the

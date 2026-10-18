@@ -1,0 +1,198 @@
+/*
+  css/web.css — practice-web.html's own rules, loaded after css/hub.css.
+  The page head, task list rows, task bar, brief, word bank, hints, editor,
+  result box, reflection and pager all come from hub.css, so the web page
+  looks exactly like the Python pages in index.html. This file adds only
+  what the web tasks need on top: the HTML/CSS boxes, the pretend browser
+  window around a preview or a sample website, the problem list, the
+  request/response diagram, and the summary frame. Same palette, same
+  sharp black borders, no rounded corners, no shadows (the window dots are
+  the one round thing on the site).
+*/
+
+/* js/layout.js builds the header, nav and footer with .container (the
+   same classes the hub uses with .wrap), and adds a skip link. */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 24px; }
+@media (max-width: 640px) { .container { padding: 0 16px; } }
+.skip-link { position: absolute; left: 16px; top: -4rem; z-index: 20; background: var(--black); color: var(--white); padding: 10px 16px; text-decoration: none; }
+.skip-link:focus { top: 0; outline: 3px solid var(--red); }
+.nav a:focus-visible { outline-color: var(--white); outline-offset: -3px; }
+main:focus { outline: none; }
+[hidden] { display: none !important; }
+
+.muted { color: var(--grey); font-weight: 500; }
+.small { font-size: 13px; }
+.saved-note { font-size: 13px; color: var(--grey); font-weight: 500; margin: 10px 0 0; }
+.saved-note::before { content: "🔒 "; }
+.button.small { padding: 6px 12px; font-size: 13px; }
+.button:hover:not(.primary):not(.black) { background: var(--paper); }
+.button.black:hover { background: var(--ink); }
+.group.extra .trow .n { font-size: 30px; }
+
+/* "Watch first": the two University of Bedfordshire robot Shorts that sit
+   between the Week 6 "Build a page" heading and its three Robotics Club
+   tasks. Same sharp black panel as the rest of the hub; the Shorts are
+   vertical (9:16), so they stand side by side like two phones. */
+.watch { border: 3px solid var(--black); padding: 20px 22px 22px; margin: 0 0 18px; }
+.watch .step { font-family: var(--display); font-size: 34px; line-height: 1; color: var(--red); letter-spacing: .02em; white-space: nowrap; }
+.watch-head { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: start; }
+.watch-head h3 { font-size: 30px; margin: 0 0 6px; }
+.watch-head p { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.55; max-width: 70ch; }
+.watch-videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 250px)); gap: 22px; margin: 18px 0 0; }
+.watch-videos figure { margin: 0; }
+.watch-videos iframe { display: block; width: 100%; aspect-ratio: 9 / 16; border: 3px solid var(--black); background: var(--black); }
+.watch-videos figcaption { font-size: 13px; font-weight: 500; color: var(--grey); margin-top: 8px; line-height: 1.5; }
+.watch-videos figcaption b { display: block; color: var(--red); font-family: var(--display); font-size: 18px; letter-spacing: .04em; text-transform: uppercase; }
+.watch-videos figcaption a { color: var(--red); font-weight: 700; white-space: nowrap; }
+.watch-next { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: start; border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; }
+.watch-next p { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.5; max-width: 70ch; }
+@media (max-width: 720px) {
+  .watch { padding: 16px; }
+  .watch-head, .watch-next { grid-template-columns: 1fr; gap: 6px; }
+  .watch-videos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+}
+
+/* The reminder on each of the three Robotics Club task pages */
+.brief .watchnote { border: 2px solid var(--black); border-left: 6px solid var(--red); padding: 10px 14px; font-size: 14px; font-weight: 500; line-height: 1.55; margin: 0 0 18px; }
+.brief .watchnote b { font-weight: 800; }
+.brief .watchnote a { color: var(--red); font-weight: 700; }
+
+/* The brief: sample output in a fenced block, like the Python briefs */
+.brief .sample { font: 13px/1.5 var(--mono); background: var(--black); color: #eee; padding: 10px 12px; margin: 0 0 14px; white-space: pre-wrap; }
+
+/* Reflection: two short boxes rather than one long one */
+.reflect label { display: block; font-size: 15px; margin: 14px 0 6px; }
+.reflect textarea { min-height: 84px; }
+.reflect .btnrow { margin-top: 14px; }
+.result p.next { margin-top: 10px; }
+.result p.next .button { margin-left: 4px; }
+
+/* ── The work column ── */
+.web-area { min-width: 0; }
+.web-area .tests-title { font-size: 30px; margin: 28px 0 2px; border-top: 4px solid var(--black); padding-top: 16px; }
+.web-area .tests-title + .muted { margin: 0 0 12px; font-size: 14px; }
+.web-area > div > :first-child > .tests-title:first-child { border-top: 0; margin-top: 0; padding-top: 0; }  /* the first heading sits at the top of the column */
+.web-area .controls { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-top: 16px; }
+.web-area .editor-hint { font-size: 13px; color: var(--grey); font-weight: 500; margin: 0 0 14px; }
+
+/* HTML and CSS boxes: the hub's editor (black label bar, gutter, code) */
+.web-codebox { margin-bottom: 14px; }
+.web-codebox textarea.code { min-height: 230px; }
+.web-codebox.css textarea.code { min-height: 150px; }
+
+/* ── The pretend browser window ──
+   A tab strip with the window dots and one tab (the page's <title>), an
+   address bar with the padlock and the address, room for a button, then
+   the page itself in an iframe. It is a picture of a browser, so unlike
+   the rest of the site it has rounded corners and a soft shadow. */
+.web-stage { margin-top: 28px; }
+#app.has-stage .task { padding-top: 24px; }
+.web-caption { font-size: 13px; color: var(--grey); font-weight: 500; margin: 0 0 8px; }
+.browser { border-radius: 12px; overflow: hidden; background: var(--white); box-shadow: 0 0 0 1px rgba(0,0,0,.10), 0 10px 28px rgba(0,0,0,.14), 0 2px 6px rgba(0,0,0,.08); }
+.browser-tabs { display: flex; align-items: flex-end; gap: 6px; background: #DEE1E6; padding: 8px 12px 0; }
+.browser-dots { display: flex; gap: 7px; align-items: center; padding: 0 8px 12px 2px; }
+.browser-dots i { width: 12px; height: 12px; border-radius: 50%; display: block; }
+.browser-dots i:nth-child(1) { background: #FF5F57; }
+.browser-dots i:nth-child(2) { background: #FEBC2E; }
+.browser-dots i:nth-child(3) { background: #28C840; }
+.browser-tab { display: flex; align-items: center; gap: 9px; background: #F8F9FA; border-radius: 10px 10px 0 0; padding: 8px 16px 9px 14px; font-size: 13px; max-width: 360px; min-width: 0; position: relative; }
+.browser-favicon { width: 14px; height: 14px; border-radius: 4px; background: var(--uob-green); flex: none; }
+.browser-tab-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.browser-newtab { color: #5F6368; font-size: 20px; line-height: 1; padding: 0 8px 10px; font-weight: 400; }
+.browser-bar { display: flex; align-items: center; gap: 10px; padding: 7px 10px 7px 8px; background: #F8F9FA; border-bottom: 1px solid #DADCE0; }
+.browser-nav { display: flex; gap: 2px; color: #5F6368; }
+.browser-nav svg { width: 28px; height: 28px; padding: 5px; border-radius: 50%; }
+.browser-nav svg:first-child { color: #3C4043; }
+.browser-address { flex: 1; min-width: 0; display: flex; align-items: center; gap: 9px; background: #EEF1F4; border-radius: 999px; padding: 7px 14px; font-size: 13.5px; color: #5F6368; font-weight: 500; }
+.browser-address svg { width: 11px; height: 13px; flex: none; color: #3C4043; }
+.browser-notsecure { font-size: 12px; color: #5F6368; padding-right: 9px; border-right: 1px solid #C4C7CC; white-space: nowrap; }
+.browser-url { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.browser-url b { color: #202124; font-weight: 500; }
+.browser-tools { display: flex; gap: 8px; align-items: center; }
+.browser-tools button, .browser-tools a { background: var(--white); color: #202124; border: 1px solid #C4C7CC; border-radius: 8px; padding: 5px 11px; font: inherit; font-size: 12.5px; text-decoration: none; cursor: pointer; white-space: nowrap; }
+.browser-tools button:hover, .browser-tools a:hover { background: #E8EAED; border-color: #AEB2B8; }
+.browser-avatar { width: 26px; height: 26px; border-radius: 50%; background: var(--uob-green); color: var(--black); font-size: 10px; letter-spacing: .04em; display: inline-flex; align-items: center; justify-content: center; margin-left: 4px; }
+.browser-menu { color: #5F6368; display: inline-flex; }
+.browser-menu svg { width: 20px; height: 20px; }
+.browser-page { display: block; width: 100%; border: 0; background: var(--white); height: 380px; }
+.browser.sample .browser-page { height: 620px; }
+.browser.mini .browser-bar { border-bottom: 0; }
+.browser.mini .browser-input { flex: 1; min-width: 0; font: 14px/1.3 var(--body); font-weight: 500; color: #202124; padding: 8px 14px; border: 0; border-radius: 999px; background: #EEF1F4; }
+.browser.mini .browser-input:focus { outline: 2px solid var(--black); outline-offset: 0; background: var(--white); }
+.browser.mini .button { padding: 7px 14px; border-radius: 999px; }
+.visually-hidden { position: absolute; left: -9999px; }
+
+/* Checklist under the code: grey until an item is true, then green */
+.checklist-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; border-top: 4px solid var(--black); margin-top: 28px; padding-top: 16px; }
+.checklist-head .tests-title { border-top: 0; margin: 0; padding-top: 0; }
+.meter-wrap { display: inline-flex; align-items: center; gap: 10px; font-size: 13px; color: var(--grey); padding-bottom: 4px; }
+.meter { width: 140px; height: 10px; background: var(--paper); border: 1px solid var(--line); display: inline-block; overflow: hidden; }
+.meter i { display: block; height: 100%; width: 0; background: var(--uob-green); transition: width .3s; }
+.meter-wrap.some { color: var(--green); }
+.meter-wrap.all .meter i { background: var(--green); }
+.checklist { list-style: none; margin: 10px 0 0; padding: 0; }
+.check { display: flex; align-items: center; gap: 10px; padding: 9px 12px; border: 2px solid var(--line); margin-bottom: 6px; font-size: 15px; font-weight: 500; transition: border-color .2s; }
+.check-status { width: 24px; height: 24px; flex: none; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: var(--paper); border: 2px solid var(--line); color: var(--grey); }
+.check.pass { border-color: var(--green); background: #F3FAF5; } .check.pass .check-status { background: var(--green); border-color: var(--green); color: var(--white); }
+
+/* Inspect this page */
+.tip { background: var(--paper); border-left: 6px solid var(--black); padding: 12px 14px; font-size: 14px; font-weight: 500; line-height: 1.55; margin: 14px 0 0; }
+.tip strong { font-weight: 700; }
+.problems { list-style: none; margin: 10px 0 0; padding: 0; }
+.problem { border: 2px solid var(--black); padding: 12px 14px; margin-bottom: 10px; }
+.problem-top { display: flex; align-items: center; gap: 10px; }
+.problem-top input { width: 18px; height: 18px; accent-color: var(--red); flex: none; margin: 0; }
+.problem-top label { font-size: 15px; font-weight: 500; cursor: pointer; }
+.problem-why { margin-top: 10px; padding-left: 28px; }
+.problem-why label { display: block; font-size: 13px; color: var(--grey); font-weight: 500; margin-bottom: 4px; }
+.problem-why input { width: 100%; font: inherit; font-weight: 500; font-size: 14px; padding: 7px 10px; border: 2px solid var(--black); }
+.problem-feedback { margin: 10px 0 0 28px; padding: 8px 10px; font-size: 14px; font-weight: 500; border-left: 6px solid var(--red); background: var(--paper); }
+.problem.good { border-color: var(--green); } .problem.good .problem-feedback { border-left-color: var(--green); }
+.problem.bad  { border-color: var(--red); }
+.problem.warn { border-color: #B8860B; }  .problem.warn .problem-feedback { border-left-color: #B8860B; }
+.problem.revealed { border-color: var(--line); background: var(--paper); } .problem.revealed .problem-feedback { background: var(--white); border-left-color: var(--black); }
+
+/* Request and response: from the address bar to the server and back */
+.walk-diagram { list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 16px 0; padding: 0; }
+.walk-node { border: 2px solid var(--line); padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; color: var(--grey); font-weight: 500; }
+.walk-node-num { font-family: var(--display); font-size: 24px; line-height: 1; color: var(--ink); }
+.walk-node-term { font-family: var(--mono); font-size: 12px; }
+.walk-node.done { border-color: var(--green); color: var(--green); } .walk-node.done .walk-node-num { color: var(--green); }
+.walk-node.current { border-color: var(--black); background: var(--black); color: var(--white); } .walk-node.current .walk-node-num { color: var(--uob-green); }
+.walk-card { border: 2px solid var(--black); border-left: 6px solid var(--red); padding: 16px 20px; margin-bottom: 16px; }
+.walk-card h3 { font-size: 26px; margin-bottom: 8px; }
+.walk-card p { font-size: 16px; font-weight: 500; line-height: 1.55; margin: 0 0 8px; }
+.walk-card .controls { margin-top: 8px; }
+.key-term { background: var(--paper); border-bottom: 2px solid var(--red); padding: 0 2px; font-weight: 700; }
+.match-table { display: flex; flex-direction: column; gap: 6px; margin: 10px 0 12px; }
+.match-row { display: grid; grid-template-columns: 11rem 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border: 2px solid var(--line); font-size: 14px; font-weight: 500; }
+.match-row select { font: inherit; font-weight: 500; font-size: 14px; padding: 5px 6px; border: 2px solid var(--black); background: var(--white); }
+.match-row.good { border-color: var(--green); } .match-row.good .match-fb { color: var(--green); font-weight: 700; }
+.match-row.bad  { border-color: var(--red); }   .match-row.bad .match-fb { color: var(--maroon); font-size: 13px; }
+.walk-writing label, .summary-write label, .note-frame label { display: block; font-size: 15px; margin: 12px 0 6px; }
+.walk-writing textarea, .summary-write textarea { width: 100%; min-height: 110px; font: inherit; font-weight: 500; font-size: 15px; padding: 10px; border: 2px solid var(--black); resize: vertical; }
+.walk-matching .button, .walk-writing .button, .summary-write .button { margin-top: 8px; }
+
+/* Summarise: read, take notes, write 30 words */
+.reading-text { font-size: 16px; font-weight: 500; line-height: 1.7; background: var(--paper); border-left: 6px solid var(--black); padding: 14px 18px; max-width: 65ch; margin-top: 10px; }
+.note-frame input { width: 100%; font: inherit; font-weight: 500; font-size: 15px; padding: 8px 10px; border: 2px solid var(--black); }
+.word-count { font-size: 14px; color: var(--grey); font-weight: 500; margin: 6px 0 10px; font-variant-numeric: tabular-nums; }
+.word-count.good { color: var(--green); } .word-count.warn { color: var(--maroon); }
+.selfchecks { list-style: none; margin: 6px 0 0; padding: 0; }
+.selfchecks li { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 15px; font-weight: 500; }
+.selfchecks input { width: 18px; height: 18px; accent-color: var(--red); margin: 0; }
+
+@media (max-width: 800px) {
+  .walk-diagram { grid-template-columns: repeat(4, 1fr); }
+  .match-row { grid-template-columns: 1fr; }
+  .browser.sample .browser-page { height: 480px; }
+  .browser-page { height: 300px; }
+  .browser-nav, .browser-newtab, .browser-avatar { display: none; }
+  .browser-tab { max-width: 60%; }
+}
+@media (max-width: 640px) {
+  .topbar .wrap, .topbar .container { flex-wrap: wrap; padding-top: 12px; padding-bottom: 12px; }
+  .accred { text-align: left; }
+  .nav a { padding: 13px 14px; font-size: 14px; }
+  .pager { flex-direction: column; }
+}

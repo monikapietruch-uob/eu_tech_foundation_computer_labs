@@ -1,6 +1,8 @@
 /*
   js/layout.js — puts the same header, navigation bar and footer on every
-  practice page, matching the hub (index.html). There is no build step in
+  practice page, matching the hub (index.html). The inner <div> carries
+  both class names the two stylesheets use for it: "wrap" (css/hub.css,
+  the hub's rules) and "container" (css/style.css, the older pages). There is no build step in
   this project, so instead of copying the header into each HTML file we keep
   it once, here, and inject it into three placeholder elements:
   <div data-layout="header">, <div data-layout="nav"> and
@@ -35,7 +37,7 @@
     // The skip link is the first Tab stop on every page: keyboard users
     // jump straight past the banner and nav to the content.
     return '<a class="skip-link" href="#main">Skip to the content</a>' +
-           '<header class="topbar"><div class="container">' +
+           '<header class="topbar"><div class="wrap container">' +
              '<a class="logo" href="index.html">' +
                '<img src="assets/uob-logo.png" alt="University of Bedfordshire">' +
                '<span class="unit">CEFL<br>TECH GROUP</span>' +
@@ -46,7 +48,7 @@
 
   function buildNav() {
     var here = currentPageName();
-    var html = '<nav class="nav" aria-label="Main"><div class="container">';
+    var html = '<nav class="nav" aria-label="Main"><div class="wrap container">';
     NAV_LINKS.forEach(function (link) {
       var linkPage = link.href.split("#")[0];
       var isHere = linkPage === here && link.href.indexOf("#") === -1;
@@ -60,7 +62,7 @@
 
   function buildFooter() {
     var year = new Date().getFullYear();
-    return '<footer class="footer"><div class="container">' +
+    return '<footer class="footer"><div class="wrap container">' +
              '<h2>Learn it in class.<span>Build it here.</span></h2>' +
              '<p class="credit">The robot tasks on this site are inspired by Karel the Robot and its diamonds, created at Stanford University to teach the first steps of programming.</p>' +
              '<div class="row">' +

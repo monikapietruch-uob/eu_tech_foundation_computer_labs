@@ -35,7 +35,7 @@ Pages:
 |---|---|
 | `index.html` | the hub: progress strip, section cards, copy/clear saved work |
 | `practice-python.html` | weeks 2–4: console tasks and Karel |
-| `practice-web.html` | weeks 6–8: HTML/CSS editor, inspect-this-page, request/response, summarising |
+| `practice-web.html` | weeks 6–8: HTML/CSS editor, inspect-this-page, request/response, summarising — laid out like the hub's Python pages |
 | `practice-ai.html` | week 9: `call_gpt()` tasks, class code, call log |
 | `teachers.html` | every task with hints and solutions — not linked from the menu |
 | `dev/runner-test.html` | a test bench for the Python runner — not linked |
@@ -44,7 +44,9 @@ Pages:
 
 ```
 index.html, practice-*.html, teachers.html, 404.html
-css/style.css              the one stylesheet (UoB colours, fonts, every component)
+css/hub.css                the hub's stylesheet (UoB colours, fonts, task list, task page) - shared by index.html and practice-web.html
+css/web.css                what the web tasks add on top of hub.css (code boxes, preview, problem list, diagram)
+css/style.css              the older practice pages' stylesheet (practice-python.html, practice-ai.html, teachers.html, 404.html)
 js/
   layout.js                injects the shared header, nav and footer
   runner.js                Runner.runPython / runKarel — talks to the worker
@@ -52,14 +54,15 @@ js/
   karel-api.py, ai-api.py  Python loaded into Pyodide: Karel's functions, call_gpt()
   karel-render.js / karel-play.js / karel-check.js   canvas, playback, goal checking
   tasks.js                 loads tasks/index.json and task files; runs console tests
-  task-shell.js            the shared task page (list, brief, hints, verdict, reflections)
+  task-shell.js            the older shared task page (practice-python.html, practice-ai.html)
+  web-shell.js             practice-web.html's page: task list and task page in the hub's style
   task-screen.js           the Python task page (editor, Run/Stop, tests, Karel panel)
   web-tasks.js             the four web task types
   ai-screen.js, ai-config.js   the AI panel and the proxy address
   progress.js, reflections.js, hub.js   saving in localStorage, Padlet export, hub page
   teachers.js              builds teachers.html
 tasks/                     one JSON file per task + index.json (format in tasks/README.md)
-samples/                   deliberately flawed pages for the inspect tasks
+samples/                   deliberately flawed pages for the inspect tasks (cafe, gym, library, students' union, repair shop - each with its own look) and samples/img/ graphics
 vendor/pyodide/            Pyodide 314.0.6 (see its README to upgrade)
 worker/                    the Cloudflare Worker AI proxy (see its README to deploy)
 exercises/                 two earlier stand-alone exercises, still linked

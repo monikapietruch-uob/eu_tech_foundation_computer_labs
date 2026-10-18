@@ -1,0 +1,72 @@
+{
+  "id": "web-w6-08",
+  "week": 6,
+  "type": "html-editor",
+  "title": "A timetable as a table",
+  "concepts": [
+    "table",
+    "row",
+    "cell",
+    "header cell",
+    "caption"
+  ],
+  "brief": "Information in rows and columns belongs in a table, not in a list. A table has a header row that says what each column means, and a screen reader can read any cell together with its column name: \"Room: B12\".\n\nUnder the list, build a table of the lab timetable with four columns: Day, Time, Session and Room. Give it a caption, put the column names in th cells in the first row, and add one tr for each session. When the table is complete, delete the old list.\n\n```\n<table>\n  <caption>…</caption>\n  <tr><th>Day</th><th>…</th></tr>\n  <tr><td>Monday</td><td>…</td></tr>\n</table>\n```",
+  "vocabulary": [
+    {
+      "term": "table",
+      "gloss": "the element for information in rows and columns"
+    },
+    {
+      "term": "tr",
+      "gloss": "table row: one line of the table"
+    },
+    {
+      "term": "th / td",
+      "gloss": "a header cell (the name of a column) and an ordinary data cell"
+    },
+    {
+      "term": "caption",
+      "gloss": "the title of a table, written as the first thing inside <table>"
+    }
+  ],
+  "starterHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Lab timetable - week 7</title>\n</head>\n<body>\n  <h1>Computer lab timetable</h1>\n  <p>Week 7. Bring your student card: the doors are locked at 5 pm.</p>\n  <img src=\"samples/img/clock.svg\" width=\"160\" height=\"120\" alt=\"A wall clock showing five past nine\">\n\n  <ul class=\"rota\">\n    <li>Monday, 10:00 to 12:00, Python practice, B12</li>\n    <li>Tuesday, 14:00 to 16:00, Academic skills, B12</li>\n    <li>Wednesday, 09:00 to 11:00, Maths workshop, A4</li>\n    <li>Thursday, 13:00 to 15:00, Web practice, B12</li>\n    <li>Friday, 10:00 to 11:00, Drop-in help, Library</li>\n  </ul>\n\n  <!-- Build your table here -->\n\n</body>\n</html>\n",
+  "starterCss": "/* Graph paper: the background is drawn with two gradients. */\nbody { font-family: \"Courier New\", Courier, monospace; margin: 0; padding: 1.2rem; color: #1F3A5F;\n  background-color: #F6F8FB;\n  background-image: linear-gradient(#DCE4EE 1px, transparent 1px), linear-gradient(90deg, #DCE4EE 1px, transparent 1px);\n  background-size: 20px 20px; }\nh1 { font-size: 2rem; margin: 0 0 .3rem; text-transform: uppercase; letter-spacing: .05em; }\nimg { display: block; margin: .6rem 0 1rem; border: 3px solid #1F3A5F; background: #fff; }\ntable { border-collapse: collapse; background: #fff; border: 3px solid #1F3A5F; }\ncaption { font-weight: bold; text-align: left; padding: .4rem 0; }\nth, td { border: 1px solid #1F3A5F; padding: .5rem .8rem; text-align: left; }\nth { background: #1F3A5F; color: #fff; }\ntr:nth-child(even) td { background: #EEF3FA; }\n",
+  "checks": [
+    {
+      "label": "There is a table",
+      "kind": "count",
+      "selector": "table",
+      "min": 1
+    },
+    {
+      "label": "The table has a caption",
+      "kind": "count",
+      "selector": "table caption",
+      "min": 1
+    },
+    {
+      "label": "The first row has four header cells (th)",
+      "kind": "count",
+      "selector": "table tr:first-child th",
+      "exact": 4
+    },
+    {
+      "label": "At least four rows of four data cells (16 or more td)",
+      "kind": "count",
+      "selector": "table td",
+      "min": 16
+    },
+    {
+      "label": "The old list is gone",
+      "kind": "count",
+      "selector": ".rota",
+      "exact": 0
+    }
+  ],
+  "hints": [
+    "Start with the skeleton: <table> and </table>, with <caption>Lab timetable, week 7</caption> as the first line inside. Then add one <tr> … </tr> for the header row.",
+    "The header row is <tr><th>Day</th><th>Time</th><th>Session</th><th>Room</th></tr>. Each lesson is a <tr> with four <td> cells, in the same order.",
+    "Copy the five lessons from the list into five rows, one td for each piece of information, then delete everything from <ul class=\"rota\"> to </ul>."
+  ],
+  "solutionHtml": "<!DOCTYPE html>\n<html>\n<head>\n  <title>Lab timetable - week 7</title>\n</head>\n<body>\n  <h1>Computer lab timetable</h1>\n  <p>Week 7. Bring your student card: the doors are locked at 5 pm.</p>\n  <img src=\"samples/img/clock.svg\" width=\"160\" height=\"120\" alt=\"A wall clock showing five past nine\">\n\n  <table>\n    <caption>Lab timetable, week 7</caption>\n    <tr><th>Day</th><th>Time</th><th>Session</th><th>Room</th></tr>\n    <tr><td>Monday</td><td>10:00 to 12:00</td><td>Python practice</td><td>B12</td></tr>\n    <tr><td>Tuesday</td><td>14:00 to 16:00</td><td>Academic skills</td><td>B12</td></tr>\n    <tr><td>Wednesday</td><td>09:00 to 11:00</td><td>Maths workshop</td><td>A4</td></tr>\n    <tr><td>Thursday</td><td>13:00 to 15:00</td><td>Web practice</td><td>B12</td></tr>\n    <tr><td>Friday</td><td>10:00 to 11:00</td><td>Drop-in help</td><td>Library</td></tr>\n  </table>\n\n</body>\n</html>\n"
+}

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<!--
+  samples/repair-site.html — a deliberately flawed page for the second round
+  of "Inspect this page" tasks (web-w6-11). A dark-mode site for a phone and
+  laptop repair shop. It hides five problems, marked with data-flaw so
+  samples/reveal.js can outline them with ?reveal=1:
+    heading      the headings jump from h1 straight to h4
+    noth         a price table with no header cells (<th>)
+    lowcontrast  dark grey text on a black background
+    divbutton    a "button" made from a <div>
+    iconlink     a link that is only an icon, with no text
+  The image has alt text and the form input has a label, so the decoys in
+  the task are not true here. Do not "fix" this file — the flaws are the point.
+-->
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Bytes &amp; Bolts — phone and laptop repair</title>
+  <style>
+    body { margin: 0; background: #0D1117; color: #C9D1D9; font-family: "Segoe UI", Roboto, Helvetica, Arial, sans-serif; }
+    header { border-bottom: 1px solid #30363D; padding: 1rem 1.5rem; display: flex; align-items: center; justify-content: space-between; gap: 1rem; }
+    .brand { font-family: "SF Mono", Menlo, Consolas, "Courier New", monospace; color: #3FB950; font-size: 1.5rem; margin: 0; letter-spacing: -.02em; }
+    .brand::before { content: "> "; color: #8B949E; }
+    .call { color: #3FB950; display: inline-flex; padding: .4rem; border: 1px solid #3FB950; border-radius: 6px; }
+    .call svg { width: 22px; height: 22px; display: block; }
+    main { max-width: 720px; margin: 0 auto; padding: 1.4rem 1.5rem 2rem; }
+    .hero { display: grid; grid-template-columns: 160px 1fr; gap: 1.2rem; align-items: center; }
+    .hero img { border-radius: 8px; border: 1px solid #30363D; }
+    .hero p { font-size: 1.1rem; line-height: 1.5; margin: 0; }
+    .hero b { color: #3FB950; }
+    h4 { font-family: "SF Mono", Menlo, Consolas, monospace; color: #F0F6FC; font-weight: 400; font-size: 1.1rem; margin: 1.6rem 0 .6rem; }
+    h4::before { content: "## "; color: #8B949E; }
+    table { border-collapse: collapse; width: 100%; background: #161B22; border: 1px solid #30363D; }
+    td { padding: .6rem .8rem; border-top: 1px solid #30363D; }
+    td:last-child { text-align: right; color: #3FB950; font-family: Menlo, Consolas, monospace; }
+    .btn { display: inline-block; margin: 1.2rem 0 .3rem; padding: .65rem 1.2rem; background: #238636; color: #fff; border-radius: 6px; font-weight: 600; cursor: pointer; }
+    .note { color: #555; font-size: .95rem; line-height: 1.5; }
+    form { margin-top: 1.4rem; background: #161B22; border: 1px solid #30363D; border-radius: 8px; padding: 1rem; }
+    label { display: block; font-size: .9rem; color: #8B949E; margin-bottom: .4rem; }
+    input { width: 100%; box-sizing: border-box; padding: .55rem .7rem; background: #0D1117; border: 1px solid #30363D; border-radius: 6px; color: #C9D1D9; font: inherit; margin-bottom: .7rem; }
+    button { padding: .55rem 1rem; border: 1px solid #3FB950; background: transparent; color: #3FB950; border-radius: 6px; font: inherit; cursor: pointer; }
+    footer { border-top: 1px solid #30363D; padding: 1rem 1.5rem; font-size: .85rem; color: #8B949E; }
+    @media (max-width: 520px) { .hero { grid-template-columns: 1fr; } }
+  </style>
+</head>
+<body>
+  <header>
+    <h1 class="brand">bytes_and_bolts</h1>
+    <a class="call" href="tel:01582000000" data-flaw="iconlink"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M6.6 10.8a15.1 15.1 0 0 0 6.6 6.6l2.2-2.2a1 1 0 0 1 1-.25c1.1.37 2.3.57 3.6.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1A17 17 0 0 1 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.45.57 3.57a1 1 0 0 1-.25 1L6.6 10.8z"/></svg></a>
+  </header>
+  <main>
+    <div class="hero">
+      <img src="img/phone.svg" width="160" height="120" alt="A phone with a cracked screen next to a screwdriver" />
+      <p>Cracked screen? Dead battery? Laptop fan that sounds like a drone? <b>Most repairs done the same day</b>, while you wait, five minutes from campus.</p>
+    </div>
+
+    <h4 data-flaw="heading">Prices this month</h4>
+    <table data-flaw="noth">
+      <tr><td>Phone screen replacement</td><td>from £49</td></tr>
+      <tr><td>Phone battery</td><td>£35</td></tr>
+      <tr><td>Laptop keyboard</td><td>from £59</td></tr>
+      <tr><td>Laptop fan clean and new thermal paste</td><td>£30</td></tr>
+      <tr><td>Diagnosis (taken off the repair price)</td><td>£15</td></tr>
+    </table>
+
+    <div class="btn" onclick="this.textContent='Booked!'" data-flaw="divbutton">Book a repair</div>
+
+    <p class="note" data-flaw="lowcontrast">Prices include parts and labour. Screens for the latest models may cost more; we will always tell you the price before we start. All repairs come with a 90-day guarantee.</p>
+
+    <form onsubmit="return false">
+      <label for="model">Which device is it? (make and model)</label>
+      <input id="model" type="text" />
+      <button type="submit">Get a quote</button>
+    </form>
+  </main>
+  <footer>Bytes &amp; Bolts · 12 Guildford Street, Luton · open Monday to Saturday, 9 to 6</footer>
+  <script src="reveal.js?v=2"></script>
+</body>
+</html>

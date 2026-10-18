@@ -1,0 +1,59 @@
+{
+  "id": "web-w8-02",
+  "week": 8,
+  "type": "summary",
+  "title": "Summarise: what cookies are for",
+  "concepts": [
+    "summarising",
+    "note-taking",
+    "cookie",
+    "tracking"
+  ],
+  "brief": "Read the text about cookies. Take notes in the frame: the main idea, the key words, and the examples you will leave out. Then write a summary of about 30 words in your own words.\n\nThis text has two halves: what cookies do for you, and what some cookies do to you. A good summary keeps both, drops the examples, and does not copy sentences from the text. Use the self-check list before you finish.",
+  "vocabulary": [
+    {
+      "term": "cookie",
+      "gloss": "a small piece of text a website stores in your browser and reads back on your next visit"
+    },
+    {
+      "term": "tracking",
+      "gloss": "following what a person looks at across many websites"
+    },
+    {
+      "term": "consent",
+      "gloss": "saying yes to something; a cookie banner asks for it"
+    },
+    {
+      "term": "paraphrase",
+      "gloss": "say the same thing in your own words"
+    }
+  ],
+  "text": "A cookie is a small piece of text that a website asks your browser to store. The next time you visit, the browser sends the cookie back, and the site recognises you. Cookies are what keep you logged in, remember the language you chose, and keep the items in your shopping basket while you look at other pages. Without them, every page would forget you as soon as you left it. Some cookies, however, are set not by the site you are on but by advertising companies, and they follow you from site to site to build a picture of what you look at. That is why websites in the UK and the EU must ask before setting those cookies, and why the banner lets you reject them.",
+  "noteFrame": [
+    {
+      "key": "main",
+      "label": "Main idea (one line)"
+    },
+    {
+      "key": "keywords",
+      "label": "Key words (3 to 5)"
+    },
+    {
+      "key": "drop",
+      "label": "Examples and details to leave out"
+    }
+  ],
+  "targetWords": 30,
+  "minWords": 20,
+  "maxWords": 40,
+  "selfChecks": [
+    "Did you say what a cookie is?",
+    "Did you keep both halves: the useful cookies and the tracking ones?",
+    "Did you use your own words and leave out the examples?"
+  ],
+  "hints": [
+    "The main idea comes first: a cookie is a small text a website stores in your browser so that it can recognise you next time.",
+    "Logging in, the language, the shopping basket, the banner: these are examples. Leave them out, or keep just one.",
+    "Try: Cookies are… Websites use them to… But some cookies… — three short sentences are enough for 30 words."
+  ]
+}

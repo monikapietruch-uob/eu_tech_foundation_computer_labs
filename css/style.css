@@ -1,7 +1,7 @@
 /*
-  css/style.css — the one stylesheet for the practice pages
-  (practice-web.html, practice-python.html, practice-ai.html, teachers.html,
-  404.html). It matches the hub (index.html, which carries its own copy of
+  css/style.css — the stylesheet for the older practice pages
+  (practice-python.html, practice-ai.html, teachers.html, 404.html).
+  practice-web.html uses css/hub.css + css/web.css instead. It matches the hub (index.html, which carries its own copy of
   these rules): the UoB red / maroon / black palette, Bebas Neue display
   headings, Univers body text, and sharp black-bordered panels — no rounded
   cards, no shadows.
@@ -355,83 +355,7 @@ details summary { cursor: pointer; font-size: 14px; color: var(--grey); margin-b
 .confirm p { color: var(--maroon); margin-bottom: 8px; }
 .confirm .btn { margin-right: 6px; }
 
-/* ══════════════════════════════════════════════════════════════
-   Web tasks (practice-web.html)
-   ══════════════════════════════════════════════════════════════ */
-.web-area { min-width: 0; }
-.tip { background: var(--paper); border-left: 6px solid var(--black); padding: 10px 14px; font-size: 14px; font-weight: 400; line-height: 1.55; margin: 14px 0; }
-.tip strong { font-weight: 700; }
-.small-link { font-size: 13px; color: var(--red); }
-
-/* editor: HTML and CSS boxes with a black label bar, like the hub's editor */
-.web-editor-boxes { display: grid; grid-template-columns: 3fr 2fr; gap: 14px; }
-.web-codebox { border: 3px solid var(--black); }
-.web-codebox label { display: block; background: var(--black); color: var(--white); font-family: var(--display); font-size: 20px; letter-spacing: .04em; text-transform: uppercase; padding: 6px 10px; }
-.web-codebox .editor { border: 0; }
-.web-codebox .editor textarea { min-height: 14rem; }
-.web-preview-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; font-size: 15px; margin: 20px 0 8px; }
-.web-preview, .web-sample { width: 100%; border: 3px solid var(--black); background: var(--white); display: block; }
-.web-preview { height: 320px; }
-.web-sample { height: 460px; }
-.checklist, .problems, .selfchecks { list-style: none; margin-top: 8px; }
-.check { display: flex; align-items: center; gap: 10px; padding: 8px 12px; border: 2px solid var(--line); margin-bottom: 6px; font-size: 15px; font-weight: 400; }
-.check-status { width: 24px; height: 24px; flex: none; display: inline-flex; align-items: center; justify-content: center; font-size: 14px; font-weight: 700; background: var(--paper); border: 1px solid var(--line); color: var(--grey); }
-.check.pass { border-color: var(--green); } .check.pass .check-status { background: var(--green); border-color: var(--green); color: var(--white); }
-.check.fail { border-color: var(--red); }   .check.fail .check-status { background: var(--red); border-color: var(--red); color: var(--white); }
-
-/* inspect: tick the problems on a sample page */
-.problem { border: 2px solid var(--line); padding: 10px 12px; margin-bottom: 8px; }
-.problem-top { display: flex; align-items: center; gap: 10px; }
-.problem-top input { width: 18px; height: 18px; accent-color: var(--red); flex: none; }
-.problem-top label { font-size: 15px; font-weight: 400; }
-.problem-why { margin-top: 8px; padding-left: 28px; }
-.problem-why label { display: block; color: var(--grey); font-weight: 400; margin-bottom: 4px; }
-.problem-why input { width: 100%; font: inherit; font-weight: 400; font-size: 14px; padding: 7px 10px; border: 2px solid var(--black); }
-.problem-feedback { margin: 6px 0 0 28px; font-size: 14px; font-weight: 400; color: var(--grey); }
-.problem.good { border-color: var(--green); } .problem.good .problem-feedback { color: var(--green); }
-.problem.bad { border-color: var(--red); }    .problem.bad .problem-feedback { color: var(--maroon); }
-.problem.warn { border-color: var(--amber); } .problem.warn .problem-feedback { color: var(--ink); }
-.problem.revealed { border-color: var(--line); background: var(--paper); }
-.web-inspect .controls { margin-top: 16px; }
-
-/* walkthrough: from the address bar to the server and back */
-.url-bar label { display: block; font-size: 15px; margin-bottom: 6px; }
-.url-row { display: flex; gap: 8px; }
-.url-row input { flex: 1; font: inherit; font-weight: 400; font-size: 16px; padding: 9px 12px; border: 2px solid var(--black); }
-.walk-diagram { list-style: none; display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 16px 0; }
-.walk-node { background: var(--white); border: 2px solid var(--line); padding: 8px 4px; text-align: center; display: flex; flex-direction: column; align-items: center; gap: 2px; font-size: 13px; color: var(--grey); font-weight: 400; transition: border-color .2s, background .2s; }
-.walk-node-num { font-family: var(--display); font-size: 22px; line-height: 1; color: var(--ink); }
-.walk-node-term { font-family: var(--mono); font-size: 12px; }
-.walk-node.done { border-color: var(--green); color: var(--green); } .walk-node.done .walk-node-num { color: var(--green); }
-.walk-node.current { border-color: var(--black); background: var(--black); color: var(--white); } .walk-node.current .walk-node-num { color: var(--uob-green); }
-.walk-card { border: 1px solid var(--line); border-left: 6px solid var(--red); padding: 16px 20px; margin-bottom: 16px; }
-.walk-card h3 { font-size: 26px; margin-bottom: 8px; }
-.walk-card p { font-size: 16px; font-weight: 400; line-height: 1.55; margin-bottom: 8px; }
-.key-term { background: var(--paper); border-bottom: 2px solid var(--red); padding: 0 2px; font-weight: 700; }
-.match-table { display: flex; flex-direction: column; gap: 6px; margin: 8px 0 12px; }
-.match-row { display: grid; grid-template-columns: 11rem 1fr auto; gap: 10px; align-items: center; padding: 8px 10px; border: 2px solid var(--line); font-size: 14px; }
-.match-row select { font: inherit; font-weight: 400; font-size: 14px; padding: 5px 6px; border: 2px solid var(--black); background: var(--white); }
-.match-row.good { border-color: var(--green); } .match-row.good .match-fb { color: var(--green); }
-.match-row.bad { border-color: var(--red); }    .match-row.bad .match-fb { color: var(--maroon); font-size: 13px; }
-.walk-writing label, .summary-write label, .note-frame label { display: block; font-size: 15px; margin: 12px 0 6px; }
-.walk-writing textarea, .summary-write textarea { width: 100%; font: inherit; font-weight: 400; font-size: 15px; padding: 10px; border: 2px solid var(--black); resize: vertical; }
-.walk-writing, .walk-matching { margin-top: 20px; }
-.walk-matching .btn, .walk-writing .btn, .summary-write .btn { margin-top: 8px; }
-
-/* summary: read, take notes, write 30 words */
-.reading-text { font-size: 16px; font-weight: 400; line-height: 1.7; background: var(--paper); border-left: 6px solid var(--black); padding: 14px 18px; max-width: 65ch; }
-.reading-text p + p { margin-top: 10px; }
-.note-frame input { width: 100%; font: inherit; font-weight: 400; font-size: 15px; padding: 8px 10px; border: 2px solid var(--black); }
-.word-count { font-size: 14px; color: var(--grey); margin: 6px 0 10px; font-variant-numeric: tabular-nums; }
-.word-count.good { color: var(--green); } .word-count.warn { color: var(--maroon); }
-.selfchecks li { display: flex; align-items: center; gap: 8px; margin-bottom: 6px; font-size: 15px; font-weight: 400; }
-.selfchecks input { width: 18px; height: 18px; accent-color: var(--red); }
-
-@media (max-width: 800px) {
-  .web-editor-boxes { grid-template-columns: 1fr; }
-  .walk-diagram { grid-template-columns: repeat(4, 1fr); }
-  .match-row { grid-template-columns: 1fr; }
-}
+/* The web tasks' rules moved to css/web.css (practice-web.html now uses css/hub.css + css/web.css). */
 
 /* ══════════════════════════════════════════════════════════════
    AI panel (practice-ai.html)
