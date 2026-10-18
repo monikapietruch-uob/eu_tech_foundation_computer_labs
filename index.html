@@ -1179,7 +1179,7 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
 
   /* ---------- chrome ---------- */
   function chrome(current, inner) {
-    var links = [['home', 'Home', '#/'], ['python', 'Python practice', '#/python'], ['web', 'Web practice', '#/web'], ['ai', 'AI task', '#/ai'], ['res', 'Resources', '#/resources']];
+    var links = [['home', 'Home', '#/'], ['python', 'Python practice', '#/python'], ['web', 'Web practice', 'practice-web.html'], ['ai', 'AI task', '#/ai'], ['res', 'Resources', '#/resources']];
     return '<header class="topbar"><div class="wrap"><a class="logo" href="#/"><img src="' + LOGO + '" alt="University of Bedfordshire"><span class="unit">CEFL<br>TECH GROUP</span></a><div class="accred">Accredited by the British Council<br>for the teaching of English in the UK</div></div></header>' +
       '<nav class="nav" aria-label="Main"><div class="wrap">' + links.map(function (l) { return '<a href="' + l[2] + '"' + (l[0] === current ? ' aria-current="page"' : '') + '>' + l[1] + '</a>'; }).join('') + '</div></nav>' +
       inner +
@@ -1190,11 +1190,11 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
   function homePage() {
     var w2 = countDone(function (t) { return t.week === 2; }), w3 = countDone(function (t) { return t.week === 3; }), all = countDone();
     var inner = '<section class="hero"><div class="wrap"><p class="eyebrow">EU FOUNDATION · ACADEMIC SKILLS FOUNDATION</p><h1>Code it.</h1><p class="lede">The Tech Group\'s home for practice - code, web, AI and more.</p>' +
-      '<div class="hero-foot"><div class="chips"><a class="chip on" href="#/python">Python practice</a><a class="chip" href="#/web">How the web works</a><a class="chip" href="#/ai">Working with AI</a><a class="chip" href="#extra">Games</a></div>' +
+      '<div class="hero-foot"><div class="chips"><a class="chip on" href="#/python">Python practice</a><a class="chip" href="practice-web.html">How the web works</a><a class="chip" href="#/ai">Working with AI</a><a class="chip" href="#extra">Games</a></div>' +
       '<div class="hero-note">' + all.total + ' tasks.<br>Saved in this browser.<br>Nothing sent anywhere.</div></div></div></section>' +
       '<section class="block"><div class="wrap"><h2>Practice</h2><p class="intro">Each block matches a few weeks of the unit. Your progress appears here as you finish tasks on this computer.</p><div class="cards">' +
       card('maroon', 'Weeks 2–3', 'Python practice', 'Program a rover on Mars, a warehouse robot and an ocean drone. Functions, loops and if-statements - then your first real Python programs with variables, input and print.', all.done + ' of ' + all.total + ' done', 'Open', '#/python') +
-      card('red', 'Weeks 6–8', 'How the web works', 'Build a small page, look inside real websites for problems, follow a request from your browser to a server and back.', 'Opens in week 6', 'Open', '#/web') +
+      card('red', 'Weeks 6–8', 'How the web works', 'Build a small page, look inside real websites for problems, follow a request from your browser to a server and back.', '<span id="webCount">Open now</span>', 'Open', 'practice-web.html') +
       card('black', 'Week 9', 'Working with AI', 'Write a Python program that asks an AI a question with call_gpt() and prints the answer. Then check whether the answer is true.', 'Opens in week 9', 'Open', '#/ai') +
       card('outline', 'Any time', 'Extra practice and games', 'Coding games made by other people, and the official guides, for when you want more.', 'Opens in a new tab', 'See the games', '#extra') +
       '</div></div></section>' +
@@ -1209,8 +1209,20 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
       '<section class="block"><div class="wrap two"><div><h2>Your saved work</h2><p>Your code and progress are saved only in this browser, on this computer. Nothing is sent anywhere. Reflections are posted on Padlet - use the button at the end of each task.</p><div class="btnrow"><a class="button primary" href="' + PADLET + '" target="_blank" rel="noopener">Open the class Padlet</a><button class="button" id="clearAll">Clear my saved work</button></div></div>' +
       '<div><h2>Resources</h2><ul class="reslist">' + res('Python docs - the official Python tutorial', 'https://docs.python.org/3/tutorial/') + res('MDN web docs - a guide to HTML and CSS', 'https://developer.mozilla.org/en-US/docs/Learn') + res('W3Schools - quick examples you can copy', 'https://www.w3schools.com/python/') + '</ul></div></div></section>';
     $app.innerHTML = chrome('home', inner);
-    document.getElementById('clearAll').onclick = function () { if (confirm('Clear all saved code, progress and reflections on this computer?')) { state = { done: {}, code: {} }; save(state); homePage(); } };
+    document.getElementById('clearAll').onclick = function () { if (confirm('Clear all saved code, progress and reflections on this computer?')) { state = { done: {}, code: {} }; save(state); try { localStorage.removeItem('asf-progress-v1'); } catch (e) { /* ignore */ } homePage(); } };
     void w2; void w3;
+    updateWebCount();
+  }
+  /* The web block (weeks 6-8) lives on practice-web.html and saves its progress
+     under its own key (see js/progress.js). Count its passed tasks for the card. */
+  function updateWebCount() {
+    var el = document.getElementById('webCount'); if (!el || !window.fetch) return;
+    fetch('tasks/index.json').then(function (r) { return r.json(); }).then(function (ix) {
+      var total = 0, done = 0, saved = {};
+      try { saved = JSON.parse(localStorage.getItem('asf-progress-v1')) || {}; } catch (e) { saved = {}; }
+      (ix.weeks || []).forEach(function (w) { if (w.week >= 6 && w.week <= 8) (w.tasks || []).forEach(function (t) { total++; if (saved[t.id] && saved[t.id].status === 'passed') done++; }); });
+      if (total && document.getElementById('webCount') === el) el.textContent = done + ' of ' + total + ' done';
+    }).catch(function () { /* leave "Open now" */ });
   }
   function card(cls, when, title, text, count, btn, href) {
     return '<div class="card ' + cls + '"><div class="when">' + when.toUpperCase() + '</div><h3>' + title + '</h3><p>' + text + '</p><div class="foot"><div class="count">' + count + '</div><a class="btn" href="' + href + '"' + (href.indexOf('http') === 0 ? ' target="_blank" rel="noopener"' : '') + '>' + btn + '</a></div></div>';
@@ -1576,7 +1588,7 @@ if (typeof module !== 'undefined') module.exports = RobotWorld;
     if (h === '' || h === 'extra') { homePage(); if (h === 'extra') { var el = document.getElementById('extra'); if (el) el.scrollIntoView(); } return; }
     if (h === 'python') return listPage();
     if (h.indexOf('python/') === 0) return taskPage(h.slice(7));
-    if (h === 'web') return noticePage('web', 'How the web works', 'This block opens in week 6. You will build a small page, look inside real websites for problems, and follow a request from your browser to a server and back.');
+    if (h === 'web') { location.replace('practice-web.html'); return; }
     if (h === 'ai') return noticePage('ai', 'Working with AI', 'This block opens in week 9. You will write a Python program that asks an AI a question with call_gpt() and prints the answer - and then check whether the answer is true.');
     if (h === 'resources') return noticePage('res', 'Resources', 'The official Python tutorial, MDN web docs and W3Schools are linked at the bottom of the home page. Your code, progress and reflections are stored only in this browser on this computer; nothing is sent to a server.');
     homePage();

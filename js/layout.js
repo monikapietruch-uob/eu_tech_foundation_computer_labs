@@ -13,10 +13,10 @@
 
   var NAV_LINKS = [
     { href: "index.html",           label: "Home" },
-    { href: "practice-python.html", label: "Python practice" },
+    { href: "index.html#/python",   label: "Python practice" },
     { href: "practice-web.html",    label: "Web practice" },
-    { href: "practice-ai.html",     label: "AI task" },
-    { href: "index.html#resources", label: "Resources" }
+    { href: "index.html#/ai",       label: "AI task" },
+    { href: "index.html#/resources", label: "Resources" }
   ];
 
   // The file name of the page we are on, e.g. "practice-web.html".
