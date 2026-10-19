@@ -29,27 +29,131 @@ main:focus { outline: none; }
 .button.black:hover { background: var(--ink); }
 .group.extra .trow .n { font-size: 30px; }
 
-/* "Watch first": the two University of Bedfordshire robot Shorts that sit
-   between the Week 6 "Build a page" heading and its three Robotics Club
-   tasks. Same sharp black panel as the rest of the hub; the Shorts are
-   vertical (9:16), so they stand side by side like two phones. */
-.watch { border: 3px solid var(--black); padding: 20px 22px 22px; margin: 0 0 18px; }
-.watch .step { font-family: var(--display); font-size: 34px; line-height: 1; color: var(--red); letter-spacing: .02em; white-space: nowrap; }
-.watch-head { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: start; }
-.watch-head h3 { font-size: 30px; margin: 0 0 6px; }
-.watch-head p { margin: 0; font-size: 15px; font-weight: 500; line-height: 1.55; max-width: 70ch; }
-.watch-videos { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 250px)); gap: 22px; margin: 18px 0 0; }
-.watch-videos figure { margin: 0; }
-.watch-videos iframe { display: block; width: 100%; aspect-ratio: 9 / 16; border: 3px solid var(--black); background: var(--black); }
-.watch-videos figcaption { font-size: 13px; font-weight: 500; color: var(--grey); margin-top: 8px; line-height: 1.5; }
-.watch-videos figcaption b { display: block; color: var(--red); font-family: var(--display); font-size: 18px; letter-spacing: .04em; text-transform: uppercase; }
-.watch-videos figcaption a { color: var(--red); font-weight: 700; white-space: nowrap; }
-.watch-next { display: grid; grid-template-columns: 120px 1fr; gap: 18px; align-items: start; border-top: 1px solid var(--line); margin-top: 22px; padding-top: 18px; }
-.watch-next p { margin: 0; font-size: 16px; font-weight: 700; line-height: 1.5; max-width: 70ch; }
+/* ── The list page (Oct 2026): a deck of flip cards in the home page's
+   style. Red hero like the hub's, the two robot Shorts top and centre,
+   then one pile of cards per strand in the hub's four card colours. The
+   one new colour is the yellow (--sun) that marks the next card, as on the
+   home page's "Continue" button. ── */
+:root { --sun: #FFC83D; }
+
+/* the hero: the hub's .hero plus a yellow dot on the maroon circle */
+.hero .sun { position: absolute; z-index: 1; width: clamp(70px, 8vw, 120px); height: clamp(70px, 8vw, 120px); border-radius: 50%; background: var(--sun); right: 12vw; top: 56%; pointer-events: none; }
+.hero .chip { font-size: 22px; }
+
+/* Watch first: the two University of Bedfordshire robot Shorts, side by
+   side in the middle of the page. They are vertical (9:16), so they stand
+   like two phones. */
+.watch { padding: 44px 0 4px; text-align: center; }
+.watch h2 { font-size: 40px; }
+.watch > .wrap > p { color: var(--grey); font-size: 15px; margin: 6px auto 22px; max-width: 60ch; }
+.watch-videos { display: flex; justify-content: center; align-items: flex-start; gap: 22px; flex-wrap: wrap; }
+.watch-videos figure { margin: 0; width: 250px; max-width: 46%; background: var(--black); color: var(--white); padding: 10px 10px 12px; text-align: left; }
+.watch-videos .lab { display: block; font-size: 11px; letter-spacing: .18em; color: #cfcfcf; margin: 0 0 8px; }
+.watch-videos iframe { display: block; width: 100%; aspect-ratio: 9 / 16; border: 0; background: #111; }
+.watch-videos figcaption { font-size: 14px; line-height: 1.4; margin-top: 10px; }
+.watch-videos figcaption a { color: var(--sun); font-size: 13px; white-space: nowrap; }
+
+/* The deck: progress, and how the cards work */
+.deck { padding: 44px 0 0; }
+.deck-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 20px 48px; flex-wrap: wrap; border-top: 4px solid var(--black); padding-top: 18px; }
+.deck-head h2 { font-size: 46px; }
+.deck-head p { color: var(--grey); font-size: 15px; margin: 6px 0 0; max-width: 70ch; }
+.deck-progress { flex: 0 1 380px; }
+.deck-progress .row { display: flex; justify-content: space-between; gap: 12px; font-size: 14px; margin-bottom: 8px; }
+.deck-progress .row span { color: var(--grey); }
+.deck-progress .segs { display: flex; gap: 4px; }
+.deck-progress .segs i { flex: 1; height: 12px; background: var(--line); display: block; }
+.deck-progress .segs i.done { background: var(--red); }
+.deck-progress .segs i.next { background: var(--sun); }
+.deck-how { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(280px, 100%), 1fr)); gap: 16px; margin-top: 22px; }
+.deck-how > div { display: flex; gap: 16px; align-items: flex-start; border: 2px solid var(--black); padding: 18px 20px; }
+.deck-how .n { font-family: var(--display); font-size: 52px; line-height: .8; color: var(--red); flex: none; }
+.deck-how b { display: block; font-size: 17px; margin-bottom: 4px; }
+.deck-how span:not(.n) { font-size: 14px; color: var(--grey); line-height: 1.45; }
+.deck-note { display: flex; justify-content: flex-end; align-items: flex-end; gap: 6px; margin: 16px 0 0; font-family: "Caveat", "Bradley Hand", "Segoe Print", cursive; font-size: 30px; font-weight: 700; line-height: 1.05; color: var(--red); transform: rotate(-2deg); text-align: right; }
+.deck-note svg { width: 40px; height: 68px; flex: none; }
+
+/* The piles */
+.pile { padding: 44px 0 0; }
+.pile:last-of-type { padding-bottom: 24px; }
+.pile-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 8px 24px; flex-wrap: wrap; margin-bottom: 18px; }
+.pile-head .sub { font-size: 12px; letter-spacing: .12em; color: var(--red); margin-bottom: 6px; }
+.pile-head h2 { font-size: 46px; }
+.pile-head .count { font-size: 14px; color: var(--grey); padding-bottom: 6px; }
+.fcards { display: grid; grid-template-columns: repeat(auto-fill, minmax(min(340px, 100%), 1fr)); gap: 16px; }
+
+/* A card: two faces stacked in one grid cell; .flipped turns it over */
+.fcard { perspective: 1200px; }
+.fcard-inner { display: grid; transform-style: preserve-3d; transition: transform .5s; }
+.fcard-face { grid-area: 1 / 1; backface-visibility: hidden; -webkit-backface-visibility: hidden; display: flex; flex-direction: column; gap: 10px; padding: 18px 20px; min-height: 236px; transition: visibility 0s .25s; }
+.fcard-back { transform: rotateY(180deg); visibility: hidden; }
+.fcard.flipped .fcard-inner { transform: rotateY(180deg); }
+.fcard.flipped .fcard-front { visibility: hidden; }
+.fcard.flipped .fcard-back { visibility: visible; }
+.fcard-front { color: var(--white); cursor: pointer; }
+.fcard.build .fcard-front { background: var(--maroon); }
+.fcard.inspect .fcard-front { background: var(--red); }
+.fcard.behind .fcard-front { background: var(--black); }
+.fcard.summarise .fcard-front { background: var(--white); color: var(--ink); border: 3px solid var(--black); }
+.fcard-top { display: flex; justify-content: space-between; align-items: center; gap: 8px 12px; flex-wrap: wrap; min-height: 26px; }
+.fcard-strand { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: .14em; }
+.fcard-strand svg { width: 15px; height: 15px; flex: none; }
+.fcard-chip { font-size: 11px; letter-spacing: .08em; padding: 3px 8px; white-space: nowrap; }
+.fcard-chip.done { background: var(--white); color: var(--black); display: inline-flex; align-items: center; gap: 5px; }
+.fcard-chip.done svg { width: 12px; height: 12px; }
+.fcard.summarise .fcard-chip.done { background: var(--black); color: var(--white); }
+.fcard-chip.r2 { border: 1.5px solid currentColor; }
+.fcard-main { display: flex; align-items: flex-end; gap: 16px; }
+.fcard-num { font-family: var(--display); font-size: 108px; line-height: .78; flex: none; }
+.fcard-main h3 { font-family: var(--body); text-transform: none; letter-spacing: 0; font-size: 20px; line-height: 1.2; margin: 0 0 4px; }
+.fcard-flip { margin-top: auto; align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px; border: 2px solid currentColor; background: transparent; color: inherit; font-size: 13px; letter-spacing: .06em; }
+.fcard-flip svg { width: 16px; height: 16px; }
+.fcard-flip:hover, .fcard-front:hover .fcard-flip { background: rgba(255,255,255,.14); }
+.fcard.summarise .fcard-flip:hover, .fcard.summarise .fcard-front:hover .fcard-flip { background: var(--paper); }
+/* the back: a ruled index card */
+.fcard-back { color: var(--ink); border: 3px solid var(--black); padding: 12px 18px 16px; background-color: var(--white); background-image: repeating-linear-gradient(transparent 0, transparent 27px, #DCE6F2 27px, #DCE6F2 28px); }
+.fcard-back .fcard-top { flex-wrap: nowrap; min-height: 44px; gap: 10px; padding-bottom: 8px; border-bottom: 2px solid #F0B9BC; }
+.fcard-tag { padding: 4px 10px; font-size: 12px; letter-spacing: .12em; flex: none; background: var(--sun); color: var(--black); }
+.fcard-tag.done { background: var(--green); color: var(--white); }
+.fcard-tag.todo { background: var(--black); color: var(--white); }
+.fcard-back h3 { flex: 1; min-width: 0; font-family: var(--body); text-transform: none; letter-spacing: 0; font-size: 18px; line-height: 1.2; margin: 0; }
+.fcard-unflip { flex: none; width: 44px; height: 44px; padding: 0; border: 2px solid var(--black); background: var(--white); color: var(--black); display: inline-flex; align-items: center; justify-content: center; }
+.fcard-unflip svg { width: 17px; height: 17px; }
+.fcard-unflip:hover { background: var(--paper); }
+.fcard-concept { font-size: 14px; color: var(--grey); margin: 0; font-weight: 500; }
+.fcard-words .lab { display: block; font-size: 11px; letter-spacing: .18em; color: var(--grey); margin-bottom: 6px; }
+.fcard-words ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 6px; }
+.fcard-words li { padding: 3px 9px; border: 1.5px solid var(--black); background: var(--white); font-size: 13px; }
+.fcard-words li.muted { border-color: var(--line); }
+.fcard-actions { margin-top: auto; display: flex; flex-wrap: wrap; align-items: center; gap: 8px 18px; padding-top: 6px; }
+.button.sun { background: var(--sun); border-color: var(--sun); color: var(--black); }
+.button.sun:hover { filter: brightness(.95); }
+.fcard-actions .padlet { color: var(--red); font-size: 14px; min-height: 44px; display: inline-flex; align-items: center; }
+/* the odd card at the end of a pile */
+.fcard-filler { min-height: 236px; display: flex; flex-direction: column; justify-content: space-between; gap: 14px; padding: 18px 20px; text-decoration: none; color: inherit; }
+.fcard-filler .lab { font-size: 11px; letter-spacing: .18em; }
+.fcard-filler h3 { font-size: 36px; line-height: .95; }
+.fcard-filler .go { font-size: 14px; }
+.fcard-filler.print { border: 2px dashed var(--black); color: var(--ink); }
+.fcard-filler.print .lab { color: var(--grey); }
+.fcard-filler.print p { font-size: 18px; line-height: 1.4; margin: 0; }
+.fcard-filler.padlet { background: var(--black); color: var(--white); }
+.fcard-filler.padlet .lab { color: var(--sun); }
+.fcard-filler.extra { background: var(--paper); color: var(--ink); }
+.fcard-filler.extra .lab { color: var(--red); }
+a.fcard-filler:hover h3 { text-decoration: underline; }
+@media (prefers-reduced-motion: reduce) {
+  .fcard-inner { transition: none; transform: none !important; }
+  .fcard-back { transform: none; }
+  .fcard-face { transition: none; backface-visibility: visible; -webkit-backface-visibility: visible; }
+}
 @media (max-width: 720px) {
-  .watch { padding: 16px; }
-  .watch-head, .watch-next { grid-template-columns: 1fr; gap: 6px; }
-  .watch-videos { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
+  .hero .sun { display: none; }
+  .watch h2, .deck-head h2, .pile-head h2 { font-size: 36px; }
+  .watch-videos { gap: 12px; }
+  .watch-videos figure { padding: 8px 8px 10px; }
+  .fcard-num { font-size: 88px; }
+  .deck-note { font-size: 26px; }
 }
 
 /* The reminder on each of the three Robotics Club task pages */
@@ -124,7 +228,8 @@ button.browser-navbtn:focus-visible { outline: 2px solid var(--black); }
 .browser.mini .browser-input { flex: 1; min-width: 0; font: 14px/1.3 var(--body); font-weight: 500; color: #202124; padding: 8px 14px; border: 0; border-radius: 999px; background: #EEF1F4; }
 .browser.mini .browser-input:focus { outline: 2px solid var(--black); outline-offset: 0; background: var(--white); }
 .browser.mini .button { padding: 7px 14px; border-radius: 999px; }
-.visually-hidden { position: absolute; left: -9999px; }
+/* clipped rather than pushed off-screen, so a hidden label inside a flipped (rotated) card cannot widen the page */
+.visually-hidden { position: absolute; left: auto; width: 1px; height: 1px; margin: -1px; padding: 0; overflow: hidden; clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; border: 0; }
 
 /* Checklist under the code: grey until an item is true, then green */
 .checklist-head { display: flex; justify-content: space-between; align-items: flex-end; gap: 16px; flex-wrap: wrap; border-top: 4px solid var(--black); margin-top: 28px; padding-top: 16px; }

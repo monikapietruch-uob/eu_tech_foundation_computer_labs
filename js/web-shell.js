@@ -3,9 +3,11 @@
   built the same way as the hub's Python pages in index.html.
 
   Two screens, chosen by the URL:
-    practice-web.html                the task list: red page head with the
-                                     progress chips, then the tasks grouped
-                                     under big headings, one numbered row each
+    practice-web.html                the task list: the red hero (like the
+                                     home page), the two robot Shorts, then
+                                     one pile of flip cards per strand - the
+                                     front is the task, the back its word
+                                     bank and Start button (Oct 2026)
     practice-web.html?task=<id>      one task: red task bar with the step
                                      squares, the brief / word bank / hints on
                                      the left, the task itself on the right
@@ -159,62 +161,161 @@ var TaskShell = (function () {
   }
 
   // ------------------------------------------------------------ the list page
-  function listPage() {
-    document.title = "Web practice - Tech Practice Hub";
-    var all = countDone();
-    var html = "<section class=\"pagehead\"><div class=\"wrap\"><h1>Web practice</h1>" +
-      "<p>" + countWord(list.length) + " short tasks for weeks 6, 7 and 8. First you build and fix small pages in the browser, then you inspect websites with the developer tools, follow a request from your browser to a server and back, and finish by summarising how HTTPS keeps your data safe. Each brief is written in the language of the lectures: the words in <b>bold</b> are the terms you need to know, and every task has a word bank to check them. Finish a task, then answer its reflection questions - you will need those answers for your Padlet posts and your presentation.</p>" +
-      "<p class=\"credit\">The cafe, the gym, the library, the students' union and the repair shop you inspect are made up, but their problems are the ones you will find on real websites every day.</p>" +
-      "<div class=\"weeknav\"><span class=\"chip on\">" + all.done + " of " + all.total + " done</span>" +
-      (list.length ? "<a class=\"chip\" href=\"" + urlFor(list[0]) + "\">Start at task 1</a>" : "") +
-      "</div></div></section><section class=\"tasklist\"><div class=\"wrap\">";
+  // One pile of flip cards per strand, in the home page's colours (the
+  // same four as its cards): maroon for Build a page, red for Inspect this
+  // page, black for Request and response, white with a black border for
+  // Summarise the web. The front of a card is the task; the back has the
+  // word bank and the Start button. The first task not yet done starts
+  // face up (back showing) so the next step is obvious.
+  var STRAND_ORDER = ["html-editor", "inspect", "walkthrough", "summary"];
+  var STRAND_KEY = { "html-editor": "build", inspect: "inspect", walkthrough: "behind", summary: "summarise" };
+  var ICONS = {
+    "html-editor": "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 7l-5 5 5 5\"></path><path d=\"M16 7l5 5-5 5\"></path></svg>",
+    inspect: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6\"></circle><path d=\"M15 15l5.5 5.5\"></path></svg>",
+    walkthrough: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M3 8h15\"></path><path d=\"M14 4l4 4-4 4\"></path><path d=\"M21 16H6\"></path><path d=\"M10 12l-4 4 4 4\"></path></svg>",
+    summary: "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 6h16\"></path><path d=\"M4 11h16\"></path><path d=\"M4 16h10\"></path></svg>"
+  };
+  var FLIP_ICON = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12a8 8 0 0 1 14-5.3\"></path><path d=\"M18 3v4h-4\"></path><path d=\"M20 12a8 8 0 0 1-14 5.3\"></path><path d=\"M6 21v-4h4\"></path></svg>";
+  var TICK_ICON = "<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.4\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M4 12.5l5 5L20 6.5\"></path></svg>";
 
-    var placed = {};
-    GROUPS.forEach(function (g) {
-      var mine = list.filter(function (e) { return groupFor(e) === g; });
-      if (!mine.length) { return; }
-      html += groupHtml(g, mine);
-      mine.forEach(function (e) { placed[e.id] = true; });
-    });
-    // Any task that no group claims still gets a row, under its week.
-    var rest = list.filter(function (e) { return !placed[e.id]; });
-    if (rest.length) { html += groupHtml({ sub: "More tasks", title: "Other tasks", text: "" }, rest); }
+  // The base group (no `ids`) for a strand: its heading and sub-heading.
+  function strandGroup(type) {
+    for (var i = 0; i < GROUPS.length; i++) { if (!GROUPS[i].ids && GROUPS[i].type === type) { return GROUPS[i]; } }
+    return { sub: "", title: type, text: "" };
+  }
+  function isRoundTwo(entry) { var g = groupFor(entry); return !!(g && g.ids); }
+  // "Inspect this page: The Corner Cafe" -> "The Corner Cafe" (the pile's
+  // heading already says which strand it is).
+  function cardTitle(entry) {
+    var t = String(entry.title || "").replace(/^(inspect this page|summarise)\s*:\s*/i, "");
+    return t.charAt(0).toUpperCase() + t.slice(1);
+  }
+  function nextEntry() {
+    for (var i = 0; i < list.length; i++) { if (!isDone(list[i].id)) { return list[i]; } }
+    return null;
+  }
+  function pad2(n) { return (n < 10 ? "0" : "") + n; }
 
-    html += "<div class=\"group extra\"><div class=\"group-head\"><div><div class=\"sub\">ANY TIME · EXTRA</div><h2>Also try</h2></div><p>Open any website you like and give it a temporary makeover in the developer tools: change the text, the colours, the sizes and the spacing, and see what each CSS property does. Nothing you change is saved, so experiment.</p></div>" +
-      "<a class=\"trow\" href=\"exercises/html-css-1/html-css-1-devtools.html\"><div class=\"n\">+</div><div><div class=\"t\">DevTools Website Makeover</div><div class=\"c\">Change a real page live in DevTools</div></div><div class=\"s\">OPEN</div></a></div>";
-
-    html += "</div></section>";
-    $app.innerHTML = html;
-    window.scrollTo(0, 0);
+  function cardHtml(e, isNext) {
+    var type = typeOf(e), g = strandGroup(type), n = list.indexOf(e) + 1, done = isDone(e.id), r2 = isRoundTwo(e);
+    var status = done ? "done" : isNext ? "next" : "todo";
+    var title = cardTitle(e);
+    var chip = done ? "<span class=\"fcard-chip done\">" + TICK_ICON + "DONE</span>" : r2 ? "<span class=\"fcard-chip r2\">ROUND 2</span>" : "";
+    var tag = done ? "<span class=\"fcard-tag done\">DONE</span>" : isNext ? "<span class=\"fcard-tag next\">NEXT</span>" : "<span class=\"fcard-tag todo\">TO DO</span>";
+    var start = done ? "Open task " + n + " again" : "Start task " + n;
+    return "<article class=\"fcard " + STRAND_KEY[type] + " " + status + (isNext ? " flipped" : "") + "\" data-id=\"" + esc(e.id) + "\" data-n=\"" + n + "\">" +
+      "<div class=\"fcard-inner\">" +
+        "<div class=\"fcard-face fcard-front\">" +
+          "<div class=\"fcard-top\"><span class=\"fcard-strand\">" + ICONS[type] + esc(g.title).toUpperCase() + " · W" + esc(e.week) + "</span>" + chip + "</div>" +
+          "<div class=\"fcard-main\"><span class=\"fcard-num\" aria-hidden=\"true\">" + pad2(n) + "</span><h3><span class=\"visually-hidden\">Task " + n + ": </span>" + esc(title) + "</h3></div>" +
+          "<button type=\"button\" class=\"fcard-flip\" aria-label=\"Flip card " + n + " to see the word bank\">" + FLIP_ICON + "FLIP</button>" +
+        "</div>" +
+        "<div class=\"fcard-face fcard-back\">" +
+          "<div class=\"fcard-top\">" + tag + "<h3>" + pad2(n) + " · " + esc(title) + "</h3><button type=\"button\" class=\"fcard-unflip\" aria-label=\"Flip card " + n + " back\">" + FLIP_ICON + "</button></div>" +
+          "<p class=\"fcard-concept\">" + esc(e.concept || "") + "</p>" +
+          "<div class=\"fcard-words\"><span class=\"lab\">WORD BANK</span><ul data-words=\"" + esc(e.id) + "\"><li class=\"muted\">Loading…</li></ul></div>" +
+          "<div class=\"fcard-actions\"><a class=\"button sun\" href=\"" + urlFor(e) + "\">" + start + " →</a><a class=\"padlet\" href=\"" + PADLET + "\" target=\"_blank\" rel=\"noopener\">Reflect on Padlet</a></div>" +
+        "</div>" +
+      "</div></article>";
   }
 
-  // YouTube links for a group's "watch first" videos (Shorts embed like any
-  // other video; the nocookie host keeps YouTube's tracking off the page).
+  // The odd card at the end of a pile, so the rows stay full.
+  var FILLERS = {
+    inspect: "<div class=\"fcard-filler print\"><span class=\"lab\">THE SMALL PRINT</span><p>The cafe, the gym, the library, the students' union and the repair shop are made up. Their problems, sadly, are not.</p></div>",
+    walkthrough: "<a class=\"fcard-filler padlet\" href=\"" + PADLET + "\" target=\"_blank\" rel=\"noopener\"><span class=\"lab\">CLASS PADLET</span><h3>One thing you learned, after every card</h3><span class=\"go\">Open Padlet →</span></a>",
+    summary: "<a class=\"fcard-filler extra\" href=\"exercises/html-css-1/html-css-1-devtools.html\"><span class=\"lab\">ANY TIME · EXTRA</span><h3>DevTools website makeover</h3><span class=\"go\">Change a real page live in DevTools →</span></a>"
+  };
+
+  function listPage() {
+    document.title = "Web practice - Tech Practice Hub";
+    var all = countDone(), next = nextEntry(), nextN = next ? list.indexOf(next) + 1 : 0;
+
+    // the red hero, like the home page
+    var chips = STRAND_ORDER.map(function (type, i) {
+      return "<a class=\"chip" + (i === 0 ? " on" : "") + "\" href=\"#" + STRAND_KEY[type] + "\">" + esc(strandGroup(type).title) + "</a>";
+    }).join("");
+    var html = "<section class=\"hero\"><span class=\"sun\" aria-hidden=\"true\"></span><div class=\"wrap\"><p class=\"eyebrow\">EU FOUNDATION · WEB PRACTICE · WEEKS 6–8</p><h1>Web practice</h1>" +
+      "<p class=\"lede\">Every task is a card. Flip it for the words you need, then start.</p>" +
+      "<div class=\"hero-foot\"><div class=\"chips\">" + chips + "</div>" +
+      "<div class=\"hero-note\">" + all.total + " cards · " + all.done + " done.<br>Saved in this browser.<br>Nothing sent anywhere.</div></div></div></section>";
+
+    // the two robot Shorts, top and centre
+    var w = strandGroup("html-editor").watch;
+    if (w && w.videos && w.videos.length) {
+      html += "<section class=\"watch\" id=\"watch-first\"><div class=\"wrap\"><h2>Watch first: meet the university's robots</h2><p>Two short videos. The website you build is for a club that works with robots like these.</p><div class=\"watch-videos\">";
+      w.videos.forEach(function (v, i) {
+        html += "<figure><span class=\"lab\">VIDEO " + (i + 1) + " · SHORT</span><iframe src=\"" + embedUrl(v) + "\" title=\"" + esc(v.title) + "\" loading=\"lazy\" allow=\"accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>" +
+          "<figcaption>" + esc(v.short || v.title) + " <a href=\"" + watchUrl(v) + "\" target=\"_blank\" rel=\"noopener\">Open on YouTube ↗</a></figcaption></figure>";
+      });
+      html += "</div></div></section>";
+    }
+
+    // the deck: progress and how the cards work
+    var segs = list.map(function (e) { return "<i class=\"" + (isDone(e.id) ? "done" : e === next ? "next" : "") + "\"></i>"; }).join("");
+    html += "<section class=\"deck\"><div class=\"wrap\"><div class=\"deck-head\"><div><h2>The deck</h2><p>Four piles, one for each part of weeks 6–8. Do the cards in order.</p></div>" +
+      "<div class=\"deck-progress\"><div class=\"row\"><b>" + all.done + " of " + all.total + " done</b><span>" + (next ? "Next: task " + nextN : "All done") + "</span></div><div class=\"segs\" aria-hidden=\"true\">" + segs + "</div></div></div>" +
+      "<div class=\"deck-how\">" +
+        "<div><span class=\"n\">1</span><div><b>Find the card marked NEXT</b><span>That is your next task. The cards go in order, so no skipping ahead.</span></div></div>" +
+        "<div><span class=\"n\">2</span><div><b>Flip it</b><span>The back has the word bank: the terms you need to use in this task.</span></div></div>" +
+        "<div><span class=\"n\">3</span><div><b>Start, then reflect</b><span>When you finish, post one thing you learned on the class Padlet.</span></div></div>" +
+      "</div>" +
+      (next ? "<p class=\"deck-note\">Tap a card to flip it. Card " + nextN + " is already flipped<svg viewBox=\"0 0 56 96\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"3.2\" stroke-linecap=\"round\" stroke-linejoin=\"round\" aria-hidden=\"true\"><path d=\"M8 10 C 40 14, 50 44, 34 88\"></path><path d=\"M24 78 L 34 90 L 44 77\"></path></svg></p>" : "") +
+      "</div></section>";
+
+    // the four piles
+    STRAND_ORDER.forEach(function (type) {
+      var mine = list.filter(function (e) { return typeOf(e) === type; });
+      if (!mine.length) { return; }
+      var g = strandGroup(type), done = mine.filter(function (e) { return isDone(e.id); }).length;
+      html += "<section class=\"pile\" id=\"" + STRAND_KEY[type] + "\"><div class=\"wrap\"><div class=\"pile-head\"><div><div class=\"sub\">" + esc(g.sub).toUpperCase() + "</div><h2>" + esc(g.title) + "</h2></div><div class=\"count\">" + done + " of " + mine.length + " done</div></div><div class=\"fcards\">" +
+        mine.map(function (e) { return cardHtml(e, e === next); }).join("") + (FILLERS[type] || "") +
+        "</div></div></section>";
+    });
+
+    $app.className = "";
+    $app.innerHTML = html;
+    bindFlips();
+    if (next) { fillWords(next.id); }
+    var target = window.location.hash && document.querySelector(window.location.hash);
+    if (target && target.scrollIntoView) { target.scrollIntoView(); } else { window.scrollTo(0, 0); }
+  }
+
+  // YouTube links for the "watch first" videos (Shorts embed like any other
+  // video; the nocookie host keeps YouTube's tracking off the page).
   function watchUrl(v) { return "https://www.youtube.com/shorts/" + encodeURIComponent(v.id); }
   function embedUrl(v) { return "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(v.id); }
 
-  // The "Step 1: watch these first / Step 2: now build the site" panel that
-  // sits between a group's heading and its task rows (list page only).
-  function watchHtml(w) {
-    if (!w || !w.videos || !w.videos.length) { return ""; }
-    var html = "<div class=\"watch\" id=\"watch-first\"><div class=\"watch-head\"><div class=\"step\">STEP 1</div><div><h3>" + esc(w.title) + "</h3><p>" + esc(w.intro) + "</p></div></div><div class=\"watch-videos\">";
-    w.videos.forEach(function (v, i) {
-      html += "<figure class=\"short\"><iframe src=\"" + embedUrl(v) + "\" title=\"" + esc(v.title) + "\" loading=\"lazy\" allow=\"accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share\" referrerpolicy=\"strict-origin-when-cross-origin\" allowfullscreen></iframe>" +
-        "<figcaption><b>Video " + (i + 1) + "</b>" + esc(v.title) + " <a href=\"" + watchUrl(v) + "\" target=\"_blank\" rel=\"noopener\">Open on YouTube ↗</a></figcaption></figure>";
-    });
-    html += "</div><div class=\"watch-next\"><div class=\"step\">STEP 2</div><p>" + esc(w.then) + "</p></div></div>";
-    return html;
+  // The word bank on the back of a card comes from the task's own file,
+  // fetched the first time the card is turned over.
+  function fillWords(id) {
+    var ul = document.querySelector("[data-words=\"" + id + "\"]");
+    if (!ul || ul.getAttribute("data-loaded")) { return; }
+    ul.setAttribute("data-loaded", "1");
+    Tasks.loadTask(id).then(function (t) {
+      var terms = (t.vocabulary || []).map(function (v) { return v.term; });
+      ul.innerHTML = terms.length ? terms.map(function (w) { return "<li>" + esc(w) + "</li>"; }).join("") : "<li class=\"muted\">See the task</li>";
+    }).catch(function () { ul.innerHTML = "<li class=\"muted\">See the task</li>"; });
   }
 
-  function groupHtml(g, tasks) {
-    var html = "<div class=\"group\"><div class=\"group-head\"><div><div class=\"sub\">" + esc(g.sub).toUpperCase() + "</div><h2>" + esc(g.title) + "</h2></div><p>" + esc(g.text) + "</p></div>";
-    html += watchHtml(g.watch);
-    tasks.forEach(function (e) {
-      var n = list.indexOf(e) + 1;
-      var done = isDone(e.id);
-      html += "<a class=\"trow" + (done ? " done" : "") + "\" href=\"" + urlFor(e) + "\"><div class=\"n\">" + n + "</div><div><div class=\"t\">" + esc(e.title) + "</div><div class=\"c\">" + esc(e.concept || "") + "</div></div><div class=\"s\">" + (done ? "DONE" : "TO DO") + "</div></a>";
-    });
-    return html + "</div>";
+  function setFlipped(card, on) {
+    card.classList.toggle("flipped", on);
+    if (on) { fillWords(card.getAttribute("data-id")); }
+    var focusTo = card.querySelector(on ? ".fcard-unflip" : ".fcard-flip");
+    // the hidden face only becomes focusable once its visibility transition has run (css/web.css)
+    if (focusTo) { window.setTimeout(function () { focusTo.focus({ preventScroll: true }); }, 320); }
+  }
+  function bindFlips() {
+    $app.onclick = function (ev) {
+      var card = ev.target.closest ? ev.target.closest(".fcard") : null;
+      if (!card) { return; }
+      if (ev.target.closest(".fcard-unflip")) { setFlipped(card, false); return; }
+      if (ev.target.closest(".fcard-flip") || (ev.target.closest(".fcard-front") && !ev.target.closest("a"))) { setFlipped(card, true); }
+    };
+    $app.onkeydown = function (ev) {
+      if (ev.key !== "Escape") { return; }
+      var card = ev.target.closest ? ev.target.closest(".fcard.flipped") : null;
+      if (card) { setFlipped(card, false); }
+    };
   }
 
   // ------------------------------------------------------------ the task page
